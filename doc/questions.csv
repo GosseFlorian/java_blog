@@ -1,0 +1,30 @@
+mcq;Qu'est-ce qu'une classe en Java ?;1;Un moule qui décrit un type d'objet;1;Un exemplaire déjà créé;0;Une base de données;0;Une page web;0
+mcq;Qu'est-ce qu'un objet (aussi appelé instance) ?;1;Un exemplaire concret créé à partir d'une classe;1;Le plan d'une classe;0;Un fichier de configuration;0;Une annotation;0
+mcq;Quel mot-clé permet de créer un nouvel objet ?;1;new;1;class;0;return;0;void;0
+mcq;À quoi sert un constructeur ?;1;À fabriquer un objet et initialiser ses attributs;1;À supprimer un objet;0;À afficher du texte;0;À démarrer le serveur;0
+mcq;Quels mots-clés concernent la visibilité (qui peut accéder) ?;2;public;1;private;1;void;0;return;0
+mcq;À quoi sert un getter ?;1;À lire la valeur d'un attribut privé;1;À supprimer la classe;0;À créer une dépendance;0;À démarrer Tomcat;0
+mcq;Par convention, comment nomme-t-on le getter du booléen publie ?;1;isPublie();1;publieGet();0;readPublie();0;boolPublie();0
+mcq;Que désigne le mot-clé this dans une classe ?;1;L'objet courant;1;Une nouvelle classe;0;Un import;0;Une URL;0
+mcq;Parmi ces propositions, lesquelles sont des types Java vus ce matin ?;2;String;1;int;1;boolean;1;public;0
+mcq;Quel type ne peut valoir que true ou false ?;1;boolean;1;String;0;int;0;List;0
+mcq;Que signifie void pour une méthode ?;1;Elle ne renvoie aucune valeur;1;Elle renvoie du texte;0;Elle renvoie un entier;0;Elle est forcément privée;0
+mcq;À quoi sert le mot-clé return ?;1;À renvoyer une valeur au code appelant;1;À déclarer une classe;0;À importer une bibliothèque;0;À ouvrir un bloc;0
+mcq;Qu'est-ce qu'un package en Java ?;1;Un dossier logique qui range les classes;1;Un serveur web;0;Une base de données;0;Un type de variable;0
+mcq;À quoi sert une ligne import ?;1;À indiquer où trouver une classe qu'on va utiliser;1;À démarrer l'application;0;À créer un objet;0;À supprimer un attribut;0
+mcq;Parmi ces propositions, lesquelles sont des annotations ?;2;@RestController;1;@GetMapping;1;@Override;1;String;0
+mcq;Que fait l'annotation @RestController ?;1;Elle indique que la classe répond à des requêtes web;1;Elle crée une table en base;0;Elle compile le projet;0;Elle installe Java;0
+mcq;Que fait @GetMapping placé au-dessus d'une méthode avec /ping ?;1;Elle associe l'URL /ping à cette méthode;1;Elle supprime l'URL /ping;0;Elle renvoie toujours une erreur;0;Elle crée une classe;0
+mcq;Sur quel port une application Spring Boot démarre-t-elle par défaut ?;1;8080;1;3306;0;443;0;22;0
+mcq;Quelle adresse désigne ta propre machine en local ?;1;localhost;1;google.com;0;tomcat;0;maven.org;0
+mcq;Qu'est-ce que le JSON ?;1;Un format texte standard pour échanger des données;1;Un langage compilé;0;Un serveur web;0;Un type d'annotation;0
+mcq;D'où viennent les noms des champs du JSON renvoyé (titre, contenu, publie) ?;1;Des getters de la classe;1;Du nom du package;0;Du fichier pom.xml;0;De l'adresse URL;0
+mcq;Quelle est la différence entre un JDK et un JRE ?;1;Le JDK compile et exécute, le JRE exécute seulement;1;Le JRE compile, pas le JDK;0;Ils sont identiques;0;Le JDK est une base de données;0
+mcq;Quelle commande vérifie la présence du compilateur Java ?;1;javac -version;1;java -version;0;mvnw -version;0;code -version;0
+mcq;À quoi sert Maven dans le projet ?;1;À gérer les dépendances et compiler le code;1;À dessiner l'interface;0;À héberger le site;0;À retoucher des images;0
+mcq;Qu'est-ce qu'une dépendance comme Spring Web ?;1;Du code écrit par d'autres que le projet réutilise;1;Un bug dans le programme;0;Un fichier image;0;Une variable privée;0
+mcq;Quelle commande lance l'application en ligne de commande sous macOS ou Linux ?;1;./mvnw spring-boot:run;1;run java now;0;start blog;0;java compile blog;0
+mcq;À quelle position se trouve le premier élément d'une List en Java ?;1;0;1;1;0;-1;0;à la fin;0
+mcq;Quelle méthode d'une List renvoie son nombre d'éléments ?;1;size();1;get();0;count();0;length();0
+mcq;Quelle annotation récupère la valeur à la place de {numero} dans /articles/{numero} ?;1;@PathVariable;1;@GetMapping;0;@RestController;0;@Override;0
+mcq;Que fait l'instruction System.out.println(...) ?;1;Elle affiche du texte dans la console;1;Elle renvoie du texte au navigateur;0;Elle crée un fichier;0;Elle démarre le serveur;0

@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/java_blog_test
+    username: postgres
+    password: ${POSTGRES_PASSWORD:postgres}
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema-test.sql
+      data-locations: classpath:data-test.sql
+
+jwt:
+  secret: "test-jwt-secret-minimum-32-characters"
+  expiration-ms: 3600000

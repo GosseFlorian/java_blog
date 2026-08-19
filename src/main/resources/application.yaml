@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: java_blog
+  datasource:
+    url: jdbc:postgresql://localhost:5432/java_blog
+    username: postgres
+    password: ${POSTGRES_PASSWORD:postgres}
+
+jwt:
+  secret: "dev-secret-java-blog-changez-moi-32chars"
+  expiration-ms: 86400000
