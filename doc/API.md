@@ -32,7 +32,7 @@
 |---|---|---|---|
 | POST | `/admin/articles` | **JWT** | Créer (brouillon) — `{ "titre", "contenu", "userId" }` |
 | PUT | `/admin/articles/{id}` | **JWT** | Modifier — `{ "titre", "contenu", "publie" }` |
-| DELETE | `/admin/articles/{id}` | **JWT** | Supprimer — 204 |
+| DELETE | `/admin/articles/{id}` | **JWT** | Supprimer — 204 (commentaires et liaisons N-N supprimés ou détachés avant l'article) |
 
 ## Codes HTTP usuels
 
@@ -43,6 +43,7 @@
 | 204 | Supprimé (DELETE) |
 | 401 | Non authentifié |
 | 404 | Ressource introuvable |
+| 500 | Erreur serveur (ex. FK non gérée à la suppression — voir [partie-04-06](partie-04-06-suppression-et-recap.md)) |
 
 ## Exemples curl
 

@@ -81,9 +81,11 @@ API REST + back-office admin pour un blog (formation ADA).
 
 - **Java 21** + Maven Wrapper (`./mvnw`)
 - **Node.js 20+** (dossier `admin/`)
-- **PostgreSQL** (partie 02 — dev local)
+- **PostgreSQL** — base `java_blog` + upgrades [doc/sql/README.md](sql/README.md)
 
 ## Démarrage rapide
+
+**Deux terminaux :**
 
 ```bash
 # Terminal 1 — API (port 8080)
@@ -93,13 +95,13 @@ API REST + back-office admin pour un blog (formation ADA).
 cd admin && npm install && npm run dev
 ```
 
-Compte admin démo : `alice@example.com` / `demo1234`
+Compte admin démo (après `upgrade-05-01-bcrypt-alice.sql`) : `alice@example.com` / `demo1234`
 
 ## Tests et qualité
 
 ```bash
 make test    # JUnit + PostgreSQL java_blog_test (PostgreSQL allumé)
-make ci      # comme GitHub Actions
+make ci      # backend + build frontend admin (comme GitHub Actions)
 ```
 
 ## Documentation
@@ -114,7 +116,7 @@ make ci      # comme GitHub Actions
 
 | Branche | Contenu |
 |---|---|
-| `main` | Projet Initializr |
+| `main` | Référence implémentée (backend 02–06 + admin React 04–05) |
 | `partie-03` | API articles (couches + CRUD) |
 | `partie-04` | Back-office React |
 | `partie-05` | Auth JWT |

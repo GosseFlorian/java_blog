@@ -369,7 +369,9 @@ git log --oneline
 | `command not found: npm` | Node.js absent | Installe Node LTS |
 | Page blanche React | Erreur JS | Ouvre la **console** du navigateur (F12) |
 | CORS blocked | Spring pas configuré | Étape 8 + redémarrage Spring |
+| `ERR_CONNECTION_REFUSED` sur `:5173` | React arrêté | `cd admin && npm run dev` |
 | `Failed to fetch` | Spring arrêté | Lance `./mvnw spring-boot:run` |
+| **401** au login (partie 05) | Upgrade BCrypt absent | [doc/sql/upgrade-05-01-bcrypt-alice.sql](sql/upgrade-05-01-bcrypt-alice.sql) |
 | Port 5173 already in use | Vite déjà lancé | Ferme l'autre terminal ou change le port dans `vite.config.js` |
 | `articles.length` = 0 | Aucun article **publié** en base | Normal si table vide ; teste aussi `/articles/recents` en API |
 

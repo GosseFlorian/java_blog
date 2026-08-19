@@ -267,6 +267,9 @@ public class ArticleRepository {
 }
 ```
 
+> ⚠️ **Avec `blog.sql` complet :** un article peut avoir des **commentaires**, des **liaisons catégories/médias**, etc. PostgreSQL **refuse** alors un `DELETE` direct (erreur **500** — violation de clé étrangère).  
+> 👉 Correction dans [partie-04-06-suppression-et-recap.md](partie-04-06-suppression-et-recap.md) § **« Backend — lignes liées (FK) »** : supprimer ou détacher les enfants **avant** l'article.
+
 **Lignes clés — `save` :**
 
 - `RETURNING id` → PostgreSQL renvoie le nouvel `id` dans la **même** requête.

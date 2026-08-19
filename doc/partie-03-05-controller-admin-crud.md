@@ -151,7 +151,15 @@ public class AdminArticleController {
 | PUT | `/admin/articles/{id}` | 200 |
 | DELETE | `/admin/articles/{id}` | 204 |
 
-> 🔐 Pas d'authentification pour l'instant : le préfixe `/admin` prépare la partie 04.
+> 🔐 Pas d'authentification pour l'instant : le préfixe `/admin` prépare la partie 05.
+
+---
+
+## 🆘 DELETE — erreur 500 ?
+
+| Symptôme | Cause | Solution |
+|---|---|---|
+| HTTP **500** à la suppression | Clés étrangères (`commentaires`, `articles_categories`, …) | [partie-04-06 § Backend — lignes liées (FK)](partie-04-06-suppression-et-recap.md) |
 
 ---
 

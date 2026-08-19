@@ -299,6 +299,7 @@ package fr.ada.java_blog.repository;
 import fr.ada.java_blog.model.Article;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
@@ -311,6 +312,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @JdbcTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
 @Import(ArticleRepository.class)
 class ArticleRepositoryTest {
@@ -352,10 +354,15 @@ class ArticleRepositoryTest {
 
     @Test
     void deleteById_supprimeLaLigne() {
-        boolean supprime = articleRepository.deleteById(2);
+        Article nouveau = articleRepository.save(new Article(
+                null, "A supprimer", "x", false,
+                LocalDateTime.now(), LocalDateTime.now(), 1
+        ));
+
+        boolean supprime = articleRepository.deleteById(nouveau.getId());
 
         assertTrue(supprime);
-        assertTrue(articleRepository.findById(2).isEmpty());
+        assertTrue(articleRepository.findById(nouveau.getId()).isEmpty());
     }
 }
 ```
@@ -367,6 +374,8 @@ class ArticleRepositoryTest {
 | `@JdbcTest` | Charge **uniquement** la couche JDBC |
 | `@ActiveProfiles("test")` | `application-test.yaml` → **`java_blog_test`** |
 | `@Import(ArticleRepository.class)` | Enregistre le repository |
+
+> 💡 **`deleteById`** : en dev (`java_blog` + `blog.sql`), le repository supprime d'abord les lignes liées (commentaires, liaisons N-N). En test, `schema-test.sql` n'a **pas** la table `commentaires` — `executeIfTableExists` (partie 04-06) évite une erreur SQL.
 
 ---
 

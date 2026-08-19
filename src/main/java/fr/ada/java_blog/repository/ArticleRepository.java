@@ -4,6 +4,7 @@ import fr.ada.java_blog.model.Article;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -123,9 +124,42 @@ public class ArticleRepository {
         return rows > 0;
     }
 
+    @Transactional
     public boolean deleteById(int id) {
+        deleteRelatedRows(id);
+
         int rows = jdbcTemplate.update("DELETE FROM articles WHERE id = ?", id);
         return rows > 0;
+    }
+
+    /** Supprime ou détache les lignes liées avant DELETE articles (FK blog.sql). */
+    private void deleteRelatedRows(int id) {
+        executeIfTableExists("commentaires",
+                "DELETE FROM commentaires WHERE article_id = ?", id);
+        executeIfTableExists("articles_categories",
+                "DELETE FROM articles_categories WHERE article_id = ?", id);
+        executeIfTableExists("articles_medias",
+                "DELETE FROM articles_medias WHERE article_id = ?", id);
+        executeIfTableExists("médias",
+                "UPDATE \"médias\" SET articles_id = NULL WHERE articles_id = ?", id);
+        executeIfTableExists("catégories",
+                "UPDATE \"catégories\" SET article_id = NULL WHERE article_id = ?", id);
+    }
+
+    private void executeIfTableExists(String tableName, String sql, Object... args) {
+        String regclass = tableName.matches("^[a-z_]+$")
+                ? "public." + tableName
+                : "public.\"" + tableName + "\"";
+
+        Boolean exists = jdbcTemplate.queryForObject(
+                "SELECT to_regclass(?) IS NOT NULL",
+                Boolean.class,
+                regclass
+        );
+
+        if (Boolean.TRUE.equals(exists)) {
+            jdbcTemplate.update(sql, args);
+        }
     }
 
     private static Timestamp toTimestamp(LocalDateTime value) {

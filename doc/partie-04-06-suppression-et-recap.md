@@ -20,6 +20,7 @@
 
 ## Todo
 
+- [ ] Corriger `ArticleRepository.deleteById` (FK — § **1**)
 - [ ] Ajouter `deleteArticle` dans `api/articles.js`
 - [ ] Créer `FeedbackMessage.jsx`
 - [ ] Brancher `handleDelete` avec `window.confirm`
@@ -51,9 +52,78 @@ Si besoin : `git checkout partie-04`
 
 > 💡 **204** = « c'est fait, rien à renvoyer ». On ne fait **pas** `response.json()` après un DELETE réussi.
 
+> ⚠️ **Piège fréquent :** avec le **`blog.sql` complet**, un article du seed a souvent des **commentaires** ou des liaisons N-N. Un simple `DELETE FROM articles` côté Java provoque une **500** (FK PostgreSQL). Voir § **2** ci-dessous.
+
 ---
 
-## 1. Fonction `deleteArticle`
+## 1. Backend — lignes liées (FK)
+
+Avant de supprimer l'article, le repository doit **nettoyer les tables enfants** référencées dans [blog.sql](blog.sql) :
+
+| Table | Action |
+|---|---|
+| `commentaires` | `DELETE … WHERE article_id = ?` |
+| `articles_categories` | `DELETE … WHERE article_id = ?` |
+| `articles_medias` | `DELETE … WHERE article_id = ?` |
+| `médias` / `catégories` | `UPDATE … SET … = NULL` (colonnes redondantes du seed) |
+
+Dans **`ArticleRepository.java`**, remplace `deleteById` par :
+
+```java
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional
+public boolean deleteById(int id) {
+    deleteRelatedRows(id);
+
+    int rows = jdbcTemplate.update("DELETE FROM articles WHERE id = ?", id);
+    return rows > 0;
+}
+
+/** Supprime ou détache les lignes liées avant DELETE articles (FK blog.sql). */
+private void deleteRelatedRows(int id) {
+    executeIfTableExists("commentaires",
+            "DELETE FROM commentaires WHERE article_id = ?", id);
+    executeIfTableExists("articles_categories",
+            "DELETE FROM articles_categories WHERE article_id = ?", id);
+    executeIfTableExists("articles_medias",
+            "DELETE FROM articles_medias WHERE article_id = ?", id);
+    executeIfTableExists("médias",
+            "UPDATE \"médias\" SET articles_id = NULL WHERE articles_id = ?", id);
+    executeIfTableExists("catégories",
+            "UPDATE \"catégories\" SET article_id = NULL WHERE article_id = ?", id);
+}
+
+private void executeIfTableExists(String tableName, String sql, Object... args) {
+    String regclass = tableName.matches("^[a-z_]+$")
+            ? "public." + tableName
+            : "public.\"" + tableName + "\"";
+
+    Boolean exists = jdbcTemplate.queryForObject(
+            "SELECT to_regclass(?) IS NOT NULL",
+            Boolean.class,
+            regclass
+    );
+
+    if (Boolean.TRUE.equals(exists)) {
+        jdbcTemplate.update(sql, args);
+    }
+}
+```
+
+**Explication :**
+
+| Point | En clair |
+|---|---|
+| `@Transactional` | Tout ou rien — pas d'article supprimé si une étape échoue |
+| `deleteRelatedRows` | Respecte l'ordre des **FK** définies dans `blog.sql` |
+| `executeIfTableExists` | Les **tests** (partie 06) n'ont que `articles` + `users` — pas de table `commentaires` |
+
+> ✅ **Todo :** redémarre Spring Boot ; DELETE depuis l'admin → **204**, plus de bandeau « Erreur HTTP 500 ».
+
+---
+
+## 2. Fonction `deleteArticle`
 
 Ajoute **à la fin** de **`admin/src/api/articles.js`** :
 
@@ -173,7 +243,7 @@ Ajoute dans **`App.css`** :
 
 ---
 
-## 3. Mettre à jour `App.jsx`
+## 4. Mettre à jour `App.jsx`
 
 **Remplace** **`admin/src/App.jsx`** par la version finale :
 
@@ -379,7 +449,7 @@ export default App;
 
 ---
 
-## 4. Schéma — flux DELETE
+## 5. Schéma — flux DELETE
 
 ```
 Clic « Supprimer » sur ArticleCard
@@ -399,7 +469,7 @@ deleteArticle(id)  →  DELETE /admin/articles/{id}
 
 ---
 
-## 5. Tester
+## 6. Tester
 
 ### Suppression OK
 
@@ -431,7 +501,7 @@ deleteArticle(id)  →  DELETE /admin/articles/{id}
 
 ---
 
-## 6. Enregistrer l'étape dans Git
+## 7. Enregistrer l'étape dans Git
 
 ```bash
 git add admin/src/
@@ -448,6 +518,7 @@ git log --oneline
 
 | Symptôme | Cause | Solution |
 |---|---|---|
+| **HTTP 500** à la suppression | FK PostgreSQL (`commentaires`, liaisons…) | § **2 Backend — lignes liées (FK)** + redémarrer Spring |
 | `Unexpected end of JSON input` | `response.json()` après DELETE | DELETE = 204, **pas** de JSON |
 | Article toujours visible | Liste non rechargée | `await loadArticles()` après DELETE |
 | Confirm en anglais | Navigateur / OS | Normal — le texte du message est le tien |

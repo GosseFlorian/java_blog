@@ -50,6 +50,30 @@ jobs:
       - name: Run tests
         run: ./mvnw -B test
 
+  frontend-build:
+    name: Frontend — npm build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: admin/package-lock.json
+
+      - name: Install dependencies
+        working-directory: admin
+        run: npm ci
+
+      - name: Build
+        working-directory: admin
+        run: npm run build
+
   doc-check:
     name: Documentation — fichiers présents
     runs-on: ubuntu-latest
