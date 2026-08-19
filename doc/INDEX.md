@@ -262,14 +262,14 @@ partie-07-02-corrige-formateur.md    (formateur — après remise)
 
 | Branche | Contenu |
 |---|---|
-| `main` | Projet Spring Boot vierge (Initializr uniquement) |
-| `partie-01` | Étape 01 — API en mémoire (`Article`, `/ping`, `/articles`) |
-| `partie-02` | Partie 02 — PostgreSQL, JDBC, `/db/ping`, `/articles/recents`, conception routes |
-| `partie-03` | API articles — couches + CRUD complet (socle backend) |
-| `partie-04` | Frontend React back-office (CRUD articles admin) |
-| `partie-05` | Auth JWT + sécurisation `/admin` + login React |
-| `partie-06` | DevOps : tests + CI + documentation projet |
-| `partie-07` | TP — routes complètes + front-office React `site/` |
+| `main` | **Référence formateur** — projet complet (backend + admin + auth + tests + CI) |
+| `partie-01` | Spring Boot minimal (`/ping`) |
+| `partie-02` | PostgreSQL + routes GET articles (sans CRUD admin) |
+| `partie-03` | API articles — couches + CRUD admin Java (sans React) |
+| `partie-04` | Back-office React CRUD (sans auth JWT) |
+| `partie-05` | Auth JWT + login React (sans tests partie 06) |
+| `partie-06` | Tests JUnit + CI + doc DevOps (= `main`) |
+| `partie-07` | Point de départ TP (= `main` ; travail élève sur cette branche) |
 
 ```bash
 git checkout main
