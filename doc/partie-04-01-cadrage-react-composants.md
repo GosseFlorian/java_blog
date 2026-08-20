@@ -9,6 +9,39 @@
 
 ---
 
+> ### Encadré — Démarrage partie 04 (formateur / apprenants)
+>
+> **Point de départ Git :** branche **`partie-03`** — pas **`main`** (référence formateur, React déjà inclus).
+>
+> ```bash
+> git clone https://github.com/ZoliveAllegret/java_blog.git
+> cd java_blog
+> git checkout partie-03
+> git branch                    # * partie-03
+> ls admin 2>/dev/null || echo "OK : pas de dossier admin/ — normal"
+> ./mvnw spring-boot:run        # http://localhost:8080/articles/recents
+> ```
+>
+> Puis créer ta branche de travail :
+>
+> ```bash
+> git checkout -b partie-04
+> ```
+>
+> | Élément | Partie 04 |
+> |---|---|
+> | **Tu as déjà** | API Spring (GET publics + CRUD `/admin/articles`), PostgreSQL `java_blog`, CORS (`WebConfig`) |
+> | **Tu crées ici** | Dossier **`admin/`** (Vite + React) — voir [partie-04-02](partie-04-02-setup-react-vite.md) |
+> | **Pas encore** | Login JWT (partie 05), tests DevOps complets (partie 06) |
+> | **BDD** | `doc/blog.sql` suffit — **pas** `upgrade-05-01` avant la partie 05 |
+> | **Prérequis machine** | Java 21, PostgreSQL, **Node.js 20+** (pour Vite) |
+>
+> **Supports :** [INDEX.md](INDEX.md) → tu es ici → [partie-04-02-setup-react-vite.md](partie-04-02-setup-react-vite.md) … `04-06`.
+>
+> Sur la branche `partie-03`, le **README** du dépôt décrit le projet **sans** React — ignore les mentions `cd admin` tant que tu n'as pas fini l'étape 04-02.
+
+---
+
 ## Objectif de cette étape
 
 Comprendre **comment on va construire le back-office** avant d'écrire du JSX :

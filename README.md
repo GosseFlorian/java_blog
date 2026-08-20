@@ -1,77 +1,59 @@
-# Blog Java — Spring Boot + React
+# Blog Java — Partie 03 (API backend)
 
-API REST + back-office admin pour un blog (formation ADA).
-
-![CI](https://github.com/ZoliveAllegret/java_blog/actions/workflows/ci.yml/badge.svg)
+> Branche **`partie-03`** : Spring Boot + PostgreSQL + CRUD articles **sans** front React.  
+> Prochaine étape : [doc/partie-04-01-cadrage-react-composants.md](doc/partie-04-01-cadrage-react-composants.md)
 
 ## Prérequis
 
 - **Java 21** + Maven Wrapper (`./mvnw`)
-- **PostgreSQL** — base `java_blog` ([doc/blog.sql](doc/blog.sql))
-- **Node.js 20+** — pour le front React (`admin/`)
+- **PostgreSQL** — base **`java_blog`** ([doc/blog.sql](doc/blog.sql), installée en partie 02)
+- **Node.js 20+** — requis à partir de la **partie 04** (Vite)
 
-## Installation base de données
+> ⚠️ Ne pas checkout **`main`** pour suivre le cours : cette branche contient déjà l'admin React et l'auth JWT.
 
-1. Créer la base `java_blog` dans pgAdmin
-2. Exécuter [doc/blog.sql](doc/blog.sql)
-3. **Obligatoire avant login admin** : [doc/sql/upgrade-05-01-bcrypt-alice.sql](doc/sql/upgrade-05-01-bcrypt-alice.sql)  
-   (`blog.sql` met un placeholder — sans cet upgrade → **401** au login)
-4. Tests JUnit : [doc/sql/upgrade-06-01-create-java-blog-test.sql](doc/sql/upgrade-06-01-create-java-blog-test.sql)
-
-Ordre détaillé : [doc/sql/README.md](doc/sql/README.md)
-
-## Démarrage rapide
-
-**Deux terminaux** (API + React) :
+## Clone et branche
 
 ```bash
-# Terminal 1 — API (port 8080)
-./mvnw spring-boot:run
+git clone https://github.com/ZoliveAllegret/java_blog.git
+cd java_blog
+git checkout partie-03
+```
 
-# Terminal 2 — Back-office React (port 5173)
-cd admin && npm install && npm run dev
+## Démarrage (backend seul)
+
+```bash
+./mvnw spring-boot:run
 ```
 
 | URL | Rôle |
 |---|---|
-| http://localhost:5173 | Admin React (login + CRUD) |
-| http://localhost:8080/ping | Santé API (`pong`) |
+| http://localhost:8080/ping | Santé API |
+| http://localhost:8080/db/ping | Connexion PostgreSQL |
+| http://localhost:8080/articles/recents | 5 derniers articles (JSON) |
+| http://localhost:8080/admin/articles | CRUD admin (ouvert — auth en partie 05) |
 
-Compte admin démo (après upgrade 05) : `alice@example.com` / `demo1234`
+Pas de dossier **`admin/`** sur cette branche : c'est **normal**.
 
-### Dépannage rapide
-
-| Symptôme | Cause probable | Action |
-|---|---|---|
-| `ERR_CONNECTION_REFUSED` sur `:5173` | React arrêté | `cd admin && npm run dev` |
-| `Failed to fetch` / liste vide | Spring arrêté | `./mvnw spring-boot:run` |
-| **401** au login | Upgrade BCrypt non fait | `doc/sql/upgrade-05-01-bcrypt-alice.sql` |
-| **500** à la suppression | FK (commentaires…) | [doc/partie-04-06](doc/partie-04-06-suppression-et-recap.md) § lignes liées |
-
-## Tests
+## Partie 04 — créer le React
 
 ```bash
-make test    # PostgreSQL + java_blog_test requis
-make ci      # comme GitHub Actions (backend + frontend build)
+git checkout -b partie-04
 ```
+
+Puis suivre [doc/partie-04-02-setup-react-vite.md](doc/partie-04-02-setup-react-vite.md) (création de `admin/` + CORS si besoin).
 
 ## Documentation
 
 | Document | Description |
 |---|---|
-| [doc/INDEX.md](doc/INDEX.md) | Parcours de formation (parties 01–07) |
-| [doc/API.md](doc/API.md) | Routes HTTP implémentées |
+| [doc/INDEX.md](doc/INDEX.md) | Parcours parties 01–07 |
+| [doc/partie-04-01-cadrage-react-composants.md](doc/partie-04-01-cadrage-react-composants.md) | **Commencer la partie 04** |
 | [doc/blog.sql](doc/blog.sql) | Schéma PostgreSQL + seed |
-| [doc/sql/README.md](doc/sql/README.md) | Scripts upgrade par partie |
-
-## Stack
-
-- Backend : Spring Boot 3, JDBC, PostgreSQL, Spring Security, JWT
-- Frontend : React (Vite) — `admin/` (CRUD articles + login JWT)
 
 ## Branches Git (formation)
 
 | Branche | Contenu |
 |---|---|
-| `main` | Référence implémentée (backend 02–06 + admin React 04–05) |
-| `partie-*` | Étapes pédagogiques (supports dans `doc/`) |
+| `partie-03` | **Tu es ici** — API articles complète, sans React |
+| `partie-04` | Branche **locale** élève — admin React (à créer depuis `partie-03`) |
+| `main` | Référence formateur — projet complet |
