@@ -247,7 +247,7 @@ class JwtServiceTest {
     }
 
     @Test
-    void generateToken puisParseToken_retourneUserId() {
+    void generateTokenPuisParseToken_retourneUserId() {
         User user = new User(1, "alice_dev", "alice@example.com", "hash");
 
         String token = jwtService.generateToken(user);

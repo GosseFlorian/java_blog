@@ -137,7 +137,7 @@ class ArticleControllerMockMvcTest {
         mockMvc.perform(get("/articles/recents"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(org.hamcrest.Matchers.greaterThanOrEqualTo(1)));
+                .andExpect(jsonPath("$", hasSize(org.hamcrest.Matchers.greaterThanOrEqualTo(1))));
     }
 
     @Test
