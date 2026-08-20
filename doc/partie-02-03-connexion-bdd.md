@@ -37,7 +37,7 @@ Coche au fur et à mesure :
 - [ ] Vérifier la branche Git `partie-02`
 - [ ] Ajouter les dépendances JDBC + driver PostgreSQL dans `pom.xml`
 - [ ] Configurer `application.yaml` (url, username, password)
-- [ ] Configurer `src/test/resources/application.yaml` (PostgreSQL — pas H2)
+- [ ] Configurer `src/test/resources/application.yaml` (PostgreSQL — voir § 10 bis)
 - [ ] Créer `DatabaseController` avec `/db/ping`
 - [ ] Lancer l'app et vérifier `http://localhost:8080/db/ping`
 - [ ] Comparer le nombre affiché avec celui vu dans pgAdmin
@@ -325,7 +325,7 @@ Ouvre **`pom.xml`**. Dans `<dependencies>`, **après** `spring-boot-starter-web`
 - `<scope>runtime</scope>` → nécessaire quand l'application **tourne** (dev **et** tests).
 - `</dependency>` → ferme le second bloc.
 
-> 💡 **Pas de H2** — on reste 100 % PostgreSQL (dev, tests, CI en partie 06).
+> 💡 **100 % PostgreSQL** — dev, tests et CI (partie 06) utilisent le même moteur.
 
 > ❓ **Pourquoi pas JPA tout de suite ?** JPA (`@Entity`, repositories…) viendra plus tard. Aujourd'hui, on pose juste le **câble** avec JDBC.
 
@@ -373,7 +373,7 @@ export POSTGRES_PASSWORD="ton_mot_de_passe"
 
 ## 10 bis. Configurer les tests (`src/test/resources/application.yaml`)
 
-Quand tu lances **`./mvnw test`**, Spring utilise un **autre** fichier de configuration — pas celui de `src/main/resources/`. Ici aussi : **PostgreSQL**, pas H2.
+Quand tu lances **`./mvnw test`**, Spring utilise un **autre** fichier de configuration — pas celui de `src/main/resources/`.
 
 > ⚠️ **Prérequis :** PostgreSQL **allumé** avec la base **`java_blog`** (comme pour `./mvnw spring-boot:run`).
 
@@ -391,7 +391,8 @@ spring:
 
 - Mêmes paramètres que le fichier **main** — suffisant tant que les tests ne font que `contextLoads()`.
 - Ce fichier **n'affecte pas** `./mvnw spring-boot:run` — seulement les tests.
-- En **partie 06**, on basculera sur une base dédiée **`java_blog_test`** + profil `@ActiveProfiles("test")` + seed SQL.
+- En **partie 06**, on bascule sur une base **dédiée** **`java_blog_test`** (script [upgrade-06-01](sql/upgrade-06-01-create-java-blog-test.sql)) + profil `@ActiveProfiles("test")` + `schema-test.sql` / `data-test.sql`.
+- **Jamais** lancer des tests POST/DELETE sur **`java_blog`** — tes données de cours seraient modifiées.
 
 > 💡 Rappel : voir aussi `partie-02-02-vue-ensemble-architecture.md`, section sur les deux `application.yaml`.
 
@@ -640,7 +641,7 @@ Ajoute une **deuxième méthode** dans le même `DatabaseController` :
 - [ ] Je suis sur la branche `partie-02`
 - [ ] J'ai configuré `application.yaml` avec l'URL JDBC
 - [ ] J'ai configuré `src/test/resources/application.yaml` (PostgreSQL)
-- [ ] J'ai ajouté JDBC + PostgreSQL dans `pom.xml` (sans H2)
+- [ ] J'ai ajouté JDBC + PostgreSQL dans `pom.xml`
 - [ ] `/db/ping` renvoie `connexion ok` avec le bon nombre d'articles
 - [ ] J'ai **commité** l'étape sur `partie-02`
 

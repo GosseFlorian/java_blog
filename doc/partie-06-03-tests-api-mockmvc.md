@@ -83,6 +83,28 @@ class MonTest {
 
 ---
 
+## 1bis. Tests qui **écrivent** — `@Transactional`
+
+Les tests **POST** / **DELETE** (MockMvc admin, `@JdbcTest` repository) modifient la base.
+
+| Règle | Pourquoi |
+|---|---|
+| **`@ActiveProfiles("test")`** | Pointe vers **`java_blog_test`**, jamais `java_blog` |
+| **`@Transactional`** sur la classe de test | Spring **rollback** après chaque test — pas de pollution |
+| Pas de POST/DELETE manuel sur `java_blog` | Protège tes vraies données de dev |
+
+```java
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+@Transactional   // ← rollback des écritures MockMvc
+class AdminArticleSecurityMockMvcTest { ... }
+```
+
+> 💡 Même principe sur **`ArticleRepositoryTest`** (`save`, `deleteById`).
+
+---
+
 # Test 1 — `ArticleControllerMockMvcTest.java`
 
 **Chemin :** `src/test/java/fr/ada/java_blog/controller/ArticleControllerMockMvcTest.java`
@@ -229,6 +251,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -237,6 +260,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 class AdminArticleSecurityMockMvcTest {
 
     @Autowired
@@ -290,7 +314,20 @@ class AdminArticleSecurityMockMvcTest {
 
     @Test
     void deleteAdmin_avecToken_retourne204() throws Exception {
-        mockMvc.perform(delete("/admin/articles/1")
+        String createBody = """
+                {"titre":"Temp","contenu":"x","userId":1}
+                """;
+        MvcResult created = mockMvc.perform(post("/admin/articles")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + bearerToken)
+                        .content(createBody))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        JsonNode json = objectMapper.readTree(created.getResponse().getContentAsString());
+        int id = json.get("id").asInt();
+
+        mockMvc.perform(delete("/admin/articles/" + id)
                         .header("Authorization", "Bearer " + bearerToken))
                 .andExpect(status().isNoContent());
     }

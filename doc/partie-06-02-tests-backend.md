@@ -1,8 +1,8 @@
 # Partie 06 — Étape 02
 # Tests backend — unitaires, PostgreSQL et repository
 
-> 📘 **Tu crées des tests JUnit** + la config **PostgreSQL** (profil `test`) — **pas de H2** : on teste sur le **même moteur** qu'en dev.  
-> 🗣️ **On vulgarise :** un test auto = un **robot** qui vérifie le code ; la base **`java_blog_test`** = un bac à sable séparé de ta vraie base `java_blog`.  
+> 📘 **Tu crées des tests JUnit** + la config **PostgreSQL** (profil `test`) sur la base dédiée **`java_blog_test`**.  
+> 🗣️ **On vulgarise :** un test auto = un **robot** qui vérifie le code ; **`java_blog_test`** = bac à sable séparé de ta vraie base **`java_blog`**.  
 > 📋 **Ordre de tous les supports :** `INDEX.md`  
 > ⚙️ **Prérequis :** [partie-06-01-cadrage-devops.md](partie-06-01-cadrage-devops.md) ; PostgreSQL **lancé** (partie 02).
 
@@ -19,8 +19,7 @@
 
 ## Todo
 
-- [ ] Créer la base **`java_blog_test`** dans pgAdmin
-- [ ] (Si présent) **retirer H2** du `pom.xml` — on reste 100 % PostgreSQL
+- [ ] Créer la base **`java_blog_test`** ([upgrade-06-01](sql/upgrade-06-01-create-java-blog-test.sql) — annoncé en [partie-02-03](partie-02-03-connexion-bdd.md))
 - [ ] Créer les fichiers `src/test/resources/`
 - [ ] Créer `ArticleMapperTest` et `JwtServiceTest`
 - [ ] Créer `ArticleRepositoryTest`
@@ -68,33 +67,16 @@ CREATE DATABASE java_blog_test;
 
 > 💡 Même utilisateur / mot de passe que la partie 02 (`postgres` / voir `POSTGRES_PASSWORD`). Seul le **nom de base** change.
 
-> ⚠️ **Pas de H2** dans ce projet — tout passe par PostgreSQL (local + CI GitHub Actions en 06-04).
+> ⚠️ **Jamais `./mvnw test` sur `java_blog`** — tes données de dev seraient modifiées (INSERT/DELETE des tests).
 
 ---
 
-## 1. Nettoyer H2 (si ajouté en partie 02)
-
-Si ton **`pom.xml`** contient encore :
-
-```xml
-<dependency>
-    <groupId>com.h2database</groupId>
-    <artifactId>h2</artifactId>
-    ...
-</dependency>
-```
-
-→ **Supprime** ce bloc (confirmation formateur si besoin).
-
-Remplace aussi **`src/test/resources/application.yaml`** s'il pointe vers `jdbc:h2:…` — voir étape 2 ci-dessous.
-
----
-
-## 2. Profil `test` — `application-test.yaml`
+## 1. Profil `test` — `application-test.yaml`
 
 **Chemin :** `src/test/resources/application-test.yaml`
 
 ```yaml
+# Profil test — base dédiée java_blog_test (jamais java_blog de dev).
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/java_blog_test
@@ -123,7 +105,7 @@ jwt:
 
 ---
 
-## 3. Schéma minimal — `schema-test.sql`
+## 2. Schéma minimal — `schema-test.sql`
 
 **Chemin :** `src/test/resources/schema-test.sql`
 
@@ -153,7 +135,7 @@ CREATE TABLE articles (
 
 ---
 
-## 4. Données de test — `data-test.sql`
+## 3. Données de test — `data-test.sql`
 
 **Chemin :** `src/test/resources/data-test.sql`
 
@@ -303,6 +285,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -315,6 +298,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
 @Import(ArticleRepository.class)
+@Transactional
 class ArticleRepositoryTest {
 
     @Autowired
@@ -374,6 +358,7 @@ class ArticleRepositoryTest {
 | `@JdbcTest` | Charge **uniquement** la couche JDBC |
 | `@ActiveProfiles("test")` | `application-test.yaml` → **`java_blog_test`** |
 | `@Import(ArticleRepository.class)` | Enregistre le repository |
+| `@Transactional` | **Rollback** après chaque test — les INSERT/DELETE ne polluent pas `java_blog_test` |
 
 > 💡 **`deleteById`** : en dev (`java_blog` + `blog.sql`), le repository supprime d'abord les lignes liées (commentaires, liaisons N-N). En test, `schema-test.sql` n'a **pas** la table `commentaires` — `executeIfTableExists` (partie 04-06) évite une erreur SQL.
 
@@ -394,7 +379,7 @@ Tests run: …, Failures: 0, Errors: 0
 BUILD SUCCESS
 ```
 
-> ✅ **Todo :** tests verts avec PostgreSQL — **pas** avec H2.
+> ✅ **Todo :** tests verts sur **`java_blog_test`** uniquement.
 
 ---
 
@@ -416,7 +401,7 @@ git commit -m "06-02 — tests backend : mapper, JWT, repository PostgreSQL"
 | `Table articles does not exist` | SQL init absent | `schema-test.sql` + `mode: always` |
 | `@JdbcTest` ne trouve pas le repo | Import manquant | `@Import(ArticleRepository.class)` |
 | JwtServiceTest échoue | Secret trop court | Min. 32 caractères |
-| Driver H2 dans les logs | H2 encore dans `pom.xml` | Supprimer la dépendance H2 |
+| Tests modifient `java_blog` | Mauvaise URL datasource | Vérifier `java_blog_test` dans `application-test.yaml` |
 
 ---
 

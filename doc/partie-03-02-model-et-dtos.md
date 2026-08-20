@@ -184,7 +184,7 @@ public class Article {
 | `contenu` | `contenu` | |
 | `publie` | `statut` | noms différents |
 | `date` | `date` | |
-| `update` | `"update"` | guillemets en SQL |
+| `update` | `"update"` | Mot réservé SQL → **guillemets obligatoires** ; colonne **conservée telle quelle** dans `blog.sql` (pas de renommage en `updated_at`) |
 | `userId` | `user_id` | camelCase ↔ snake_case |
 
 > ⚠️ **`setId` est indispensable** pour `save()` dans le repository (PostgreSQL renvoie l'id généré).

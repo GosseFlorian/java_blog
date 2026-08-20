@@ -149,6 +149,8 @@ public class ArticleRepository {
 
 ## Partie B — Lecture (Read)
 
+> 💡 Colonnes `"date"`, `"update"`, `"statut"` : guillemets doubles en SQL (mots réservés ou casse exacte). La colonne **`"update"`** reste ainsi dans **`blog.sql`** et dans toutes les requêtes JDBC — cohérence schéma ↔ code Java, sans migration de renommage.
+
 ```java
     public List<Article> findRecents(int limit) {
         return jdbcTemplate.query(

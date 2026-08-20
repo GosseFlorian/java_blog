@@ -42,7 +42,7 @@ Si besoin : `git checkout partie-06`
 
 ## 0. Docker — hors scope
 
-> 📌 **Docker = cours dédié.** PostgreSQL en dev = **partie 02** ; tests = **`java_blog_test`** ; CI = **service PostgreSQL** GitHub (pas H2).
+> 📌 **Docker = cours dédié.** PostgreSQL en dev = **`java_blog`** (partie 02) ; tests = **`java_blog_test`** ; CI = service PostgreSQL + seed SQL.
 
 ---
 

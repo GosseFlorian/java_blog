@@ -134,8 +134,10 @@ public class ArticleController {
 
 **Méthode `un` :**
 
-- `@GetMapping("/{id}")` → **en dernier** pour ne pas capturer `recents` ou `recents/count`.
+- `@GetMapping("/{id}")` → détail d'un article par id.
 - `.orElseThrow(… NOT_FOUND …)` → **404** si id inconnu (décision du controller).
+
+> 💡 **Route `/recents` vs `/{id}` :** l'ordre des méthodes dans le fichier **n'a aucune importance**. Spring donne la **priorité au segment fixe** (`recents`, `recents/count`) sur le segment **variable** (`{id}`) — ce n'est pas une question de « mot vs nombre », mais de chemin littéral vs chemin paramétré. Même logique que `/articles/count` vs `/articles/{numero}` en partie 01.
 
 | Route | Action | Remarque |
 |---|---|---|

@@ -127,16 +127,16 @@ GitHub Actions lance ./mvnw test + npm run build
 | Environnement | Base | Usage |
 |---|---|---|
 | **Dev local** | PostgreSQL **`java_blog`** (pgAdmin, **partie 02**) | Développement quotidien |
-| **Tests JUnit** | PostgreSQL **`java_blog_test`** | `./mvnw test` — même moteur qu'en prod |
-| **CI GitHub** | PostgreSQL **service** (conteneur éphémère) | Pipeline — pas H2 |
+| **Tests JUnit** | PostgreSQL **`java_blog_test`** | `./mvnw test` — jamais sur `java_blog` |
+| **CI GitHub** | PostgreSQL **service** (conteneur éphémère) | Pipeline + seed SQL test (06-04) |
 
-**Pourquoi PostgreSQL partout (pas H2) ?**
+**Pourquoi PostgreSQL partout ?**
 
 - Un seul moteur SQL à apprendre et déboguer.
 - `RETURNING id`, `"update"`, types PG — **identiques** dev / test / CI.
-- Pas de surprise « ça marche en H2, pas en prod ».
+- Pas de surprise entre environnements.
 
-> ⚠️ **Prérequis tests locaux :** PostgreSQL **lancé** + base **`java_blog_test`** ([upgrade-06-01](sql/upgrade-06-01-create-java-blog-test.sql), voir 06-02).
+> ⚠️ **Prérequis tests locaux :** PostgreSQL **lancé** + base **`java_blog_test`** ([upgrade-06-01](sql/upgrade-06-01-create-java-blog-test.sql), annoncé en [partie-02-03](partie-02-03-connexion-bdd.md), détaillé en 06-02).
 
 ---
 

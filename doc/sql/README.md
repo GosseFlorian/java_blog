@@ -32,6 +32,7 @@ psql -U postgres -d postgres -f doc/sql/upgrade-06-01-create-java-blog-test.sql
 ## Règle du projet
 
 - On **ne modifie pas** `blog.sql` pour chaque nouvelle partie — on ajoute un **`upgrade-NN-…sql`** si la BDD dev doit évoluer.
+- Colonne **`"update"`** sur `articles` : mot réservé SQL, toujours entre guillemets dans le JDBC ; **pas de renommage** dans le schéma de référence.
 - Les fichiers **`src/test/resources/schema-test.sql`** / **`data-test.sql`** suivent la doc partie 06 / 07-03 (schéma minimal de test, séparé de `java_blog`).
 
 ## Upgrades à venir

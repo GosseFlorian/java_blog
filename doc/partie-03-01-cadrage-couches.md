@@ -114,8 +114,8 @@ PostgreSQL
 
 **Objectif :** savoir **où** modifier si la BDD change vs si le JSON change.
 
-| # | Traduction | Où ? |
-|---|---|---|
+| # | Traduction | Où ? | En clair |
+|---|---|---|---|
 | ① | Ligne SQL → `Article` | `RowMapper` dans le **repository** | Comme « lire une ligne pgAdmin → remplir une fiche Article » |
 | ② | `Article` → `ArticleResponse` | **`ArticleMapper`** (appelé par le controller) | Comme « dresser l'assiette client à partir de la fiche cuisine » |
 

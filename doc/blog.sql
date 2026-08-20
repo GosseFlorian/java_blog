@@ -8,6 +8,8 @@
 --  4. FK articles -> articles_medias dupliquée -> supprimée
 --  5. Colonnes article_id/articles_id sur catégories et médias laissées
 --     NULLables car redondantes avec les tables de jonction (N-N)
+--  6. Colonne "update" sur articles conservée telle quelle (mot réservé SQL) ;
+--     toujours référencée entre guillemets dans le JDBC du projet
 -- =========================================================
 
 DROP TABLE IF EXISTS "articles_medias" CASCADE;

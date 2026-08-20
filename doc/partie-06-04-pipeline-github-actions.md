@@ -47,7 +47,7 @@ Si besoin : `git checkout partie-06`
 | 2 | Branche `partie-06` poussée : `git push -u origin partie-06` |
 | 3 | Onglet **Actions** activé (gratuit pour repos publics) |
 
-> 💡 La CI lance un **PostgreSQL éphémère** (service GitHub Actions) — pas H2, pas Docker à installer localement.
+> 💡 La CI lance un **PostgreSQL éphémère** (service GitHub Actions) puis charge **`schema-test.sql`** + **`data-test.sql`** sur **`java_blog_test`**.
 
 ---
 
@@ -104,6 +104,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
+    env:
+      POSTGRES_PASSWORD: postgres
+
     services:
       postgres:
         image: postgres:16-alpine
@@ -129,6 +132,16 @@ jobs:
           distribution: temurin
           java-version: "21"
           cache: maven
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Initialiser java_blog_test (schéma + seed)
+        run: |
+          PGPASSWORD=postgres psql -h localhost -U postgres -d java_blog_test \
+            -f src/test/resources/schema-test.sql
+          PGPASSWORD=postgres psql -h localhost -U postgres -d java_blog_test \
+            -f src/test/resources/data-test.sql
 
       - name: Run tests
         run: ./mvnw -B test
@@ -170,7 +183,10 @@ jobs:
 | `branches: partie-*` | Chaque branche pédagogique est testée |
 | `concurrency` | Annule la run précédente si tu pushes 2 fois vite |
 | `cache: maven` / `cache: npm` | Accélère les runs suivantes |
-| `./mvnw -B test` | Mode batch — tests sur PostgreSQL `java_blog_test` (service CI) |
+| `POSTGRES_DB: java_blog_test` | Base créée automatiquement dans le conteneur CI |
+| `Install PostgreSQL client` | Permet d'exécuter `psql` avant Maven |
+| `schema-test.sql` + `data-test.sql` | Seed minimal de test — **pas** `java_blog` de dev |
+| `./mvnw -B test` | Tests sur **`java_blog_test`** avec `@ActiveProfiles("test")` |
 | `working-directory: admin` | Job front dans le dossier React |
 | `npm ci` | Install **reproductible** (lock file) |
 | `--if-present` | Lance `npm test` seulement si script défini |
