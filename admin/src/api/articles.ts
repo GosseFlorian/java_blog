@@ -22,3 +22,9 @@ export async function fetchRecentArticles(): Promise<Article[]> {
 
   return response.json();
 }
+
+export async function fetchPublishedArticles(): Promise<Article[]> {
+  const response = await fetch(`${API_URL}/articles`);
+  if (!response.ok) throw new Error(`Erreur HTTP ${response.status}`);
+  return response.json();
+}
