@@ -21,7 +21,7 @@ Créer les **objets de données** de la partie 03 :
 
 ## Todo de cette étape
 
-- [ ] Supprimer `ArticleController.java`, `Auteur.java`, `Demo.java` (partie 01)
+- [ ] Supprimer `ArticleController.java`, `Auteur.java`, `Demo.java`, `controller/AuteurController.java` si créé en 7B (partie 01)
 - [ ] Créer le dossier `dto/` (s'il n'existe pas)
 - [ ] Remplacer `model/Article.java` (nouvelle version BDD)
 - [ ] Créer `dto/ArticleResponse.java`
@@ -74,6 +74,7 @@ Supprime ces fichiers :
 | Fichier | Pourquoi |
 |---|---|
 | `controller/ArticleController.java` | Articles en dur — remplacé à l'étape 04 |
+| `controller/AuteurController.java` | Exercice 7B partie 01 — importe `Auteur` ; supprimer **avec** `Auteur.java` |
 | `model/Auteur.java` | Démo partie 01, plus utilisé |
 | `model/Demo.java` | Démo console partie 01, plus utilisé |
 

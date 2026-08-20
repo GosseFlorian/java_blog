@@ -23,10 +23,12 @@ Refactorer **`ArticleController`** pour que les routes GET :
 
 ## Todo de cette étape
 
+- [ ] Supprimer `ArticleBddController.java` et `ArticleBdd.java` **en premier**
 - [ ] Créer `ArticleController.java` (nouvelle version)
-- [ ] Supprimer `ArticleBddController.java` et `ArticleBdd.java`
 - [ ] Tester les GET dans le navigateur
 - [ ] Committer l'étape sur `partie-03`
+
+> ⚠️ **Ne lance pas** `./mvnw spring-boot:run` tant que **les deux** controllers mappent `GET /articles/recents` — supprime l'ancien **avant** de démarrer l'appli (ou enchaîne suppression + création sans redémarrage entre les deux).
 
 ---
 
@@ -181,6 +183,15 @@ git add .
 git commit -m "03-04 — ArticleController GET + suppression ArticleBdd"
 git log --oneline
 ```
+
+---
+
+## 🆘 Dépannage
+
+| Erreur | Cause | Action |
+|---|---|---|
+| `IllegalStateException: Ambiguous mapping … GET /articles/recents` | Tu as encore **`ArticleBddController`** **et** le nouveau **`ArticleController`** | Supprime `ArticleBddController.java` (et `ArticleBdd.java`) |
+| Whitelabel 404 sur `/articles/recents` | Ancien supprimé, nouveau pas encore créé | Crée `ArticleController.java` puis relance Spring |
 
 ---
 

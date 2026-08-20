@@ -140,9 +140,11 @@ package fr.ada.java_blog.repository;
 import fr.ada.java_blog.model.Commentaire;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -151,8 +153,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @JdbcTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
 @Import(CommentaireRepository.class)
+@Transactional
 class CommentaireRepositoryTest {
 
     @Autowired
@@ -198,7 +202,9 @@ class CommentaireRepositoryTest {
 | Annotation | Rôle |
 |---|---|
 | `@JdbcTest` | Charge JDBC + `JdbcTemplate` — pas tout Spring Web |
+| `@AutoConfigureTestDatabase(replace = NONE)` | Utilise PostgreSQL `java_blog_test` — pas de base embarquée |
 | `@Import(CommentaireRepository.class)` | Enregistre **ton** repository dans le contexte test |
+| `@Transactional` | Rollback après chaque test (`save`, `deleteById`) |
 
 ---
 
@@ -216,6 +222,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -226,6 +233,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 class CommentaireControllerMockMvcTest {
 
     @Autowired
@@ -236,7 +244,7 @@ class CommentaireControllerMockMvcTest {
         mockMvc.perform(get("/articles/1/commentaires"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(org.hamcrest.Matchers.greaterThanOrEqualTo(1)));
+                .andExpect(jsonPath("$", hasSize(org.hamcrest.Matchers.greaterThanOrEqualTo(1))));
     }
 
     @Test
@@ -293,6 +301,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -301,6 +310,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 class AdminCommentaireMockMvcTest {
 
     @Autowired
