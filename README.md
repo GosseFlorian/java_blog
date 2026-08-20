@@ -48,7 +48,8 @@ Puis suivre [doc/partie-04-02-setup-react-vite.md](doc/partie-04-02-setup-react-
 |---|---|
 | [doc/INDEX.md](doc/INDEX.md) | Parcours parties 01–07 |
 | [doc/partie-04-01-cadrage-react-composants.md](doc/partie-04-01-cadrage-react-composants.md) | **Commencer la partie 04** |
-| [doc/annexe-reinstall-propre.md](doc/annexe-reinstall-propre.md) | **Réinstall propre** — nouveau dossier |
+| [doc/annexe-reinstall-propre.md](doc/annexe-reinstall-propre.md) | Réinstall propre — macOS / Linux |
+| [doc/annexe-reinstall-propre-windows.md](doc/annexe-reinstall-propre-windows.md) | Réinstall propre — Windows |
 | [doc/blog.sql](doc/blog.sql) | Schéma PostgreSQL + seed |
 
 ## Branches Git (formation)

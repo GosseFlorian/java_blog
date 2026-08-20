@@ -40,7 +40,7 @@
 >
 > Sur la branche `partie-03`, le **README** du dépôt décrit le projet **sans** React — ignore les mentions `cd admin` tant que tu n'as pas fini l'étape 04-02.
 >
-> **Ancienne copie / dossier iCloud ?** → [annexe-reinstall-propre.md](annexe-reinstall-propre.md)
+> **Ancienne copie / dossier iCloud ?** → [macOS / Linux](annexe-reinstall-propre.md) · [Windows](annexe-reinstall-propre-windows.md)
 
 ---
 

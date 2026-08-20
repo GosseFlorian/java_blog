@@ -69,7 +69,8 @@ Chaque **partie** regroupe ses supports ainsi :
 |---|---|
 | [blog.sql](blog.sql) | Schéma SQL + données de test (install partie 02) |
 | [sql/README.md](sql/README.md) | Upgrades SQL par partie (`upgrade-05-…`, `upgrade-06-…`) |
-| [annexe-reinstall-propre.md](annexe-reinstall-propre.md) | **Réinstall propre** — nouveau dossier, Spring + PostgreSQL + React |
+| [annexe-reinstall-propre.md](annexe-reinstall-propre.md) | **Réinstall propre** — macOS / Linux |
+| [annexe-reinstall-propre-windows.md](annexe-reinstall-propre-windows.md) | **Réinstall propre** — Windows |
 | [questions.csv](questions.csv) | QCM formateur |
 
 ---
@@ -142,7 +143,7 @@ partie-03-05-controller-admin-crud.md   (AdminArticleController + commit)
 
 > 🎯 **Pédagogie :** composants + **props** avant tout ; state/`useEffect` surtout dans le parent ; **très commenté** (public ~2 jours de React) ; **bonnes pratiques** obligatoires (1 composant = 1 fichier, props down / events up, pas de Redux).
 
-> 💡 **Ancienne copie du projet ?** [annexe-reinstall-propre.md](annexe-reinstall-propre.md) — clone dans un nouveau dossier + reset PostgreSQL.
+> 💡 **Ancienne copie du projet ?** [macOS / Linux](annexe-reinstall-propre.md) · [Windows](annexe-reinstall-propre-windows.md)
 
 | Fichier | Document | Code ? |
 |---|---|---|

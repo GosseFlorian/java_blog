@@ -1,7 +1,8 @@
-# Annexe — Réinstallation propre (nouveau dossier)
+# Annexe — Réinstallation propre (macOS / Linux)
 
 > 📘 **Quand l'utiliser :** ancienne copie du projet, dossier iCloud corrompu (`package 2.json`, `src 2/`), mélange de branches, ou tu veux repartir de zéro **sans réinstaller** PostgreSQL sur la machine.  
-> 📋 **Ordre du parcours :** [INDEX.md](INDEX.md)
+> 📋 **Ordre du parcours :** [INDEX.md](INDEX.md)  
+> 🪟 **Windows :** [annexe-reinstall-propre-windows.md](annexe-reinstall-propre-windows.md)
 
 ---
 
@@ -207,4 +208,4 @@ Sinon : repartir de `partie-03` est plus simple.
 > 4. pgAdmin : drop/create `java_blog` + `doc/blog.sql`  
 > 5. T1 : `./mvnw spring-boot:run` → `/articles/recents`  
 > 6. T2 : `doc/partie-04-02-setup-react-vite.md` puis `cd admin && npm install && npm run dev`  
-> Guide complet : [annexe-reinstall-propre.md](annexe-reinstall-propre.md)
+> Guide macOS / Linux : [annexe-reinstall-propre.md](annexe-reinstall-propre.md) — Windows : [annexe-reinstall-propre-windows.md](annexe-reinstall-propre-windows.md)
