@@ -60,7 +60,8 @@ make ci      # comme GitHub Actions (backend + frontend build)
 | Document | Description |
 |---|---|
 | [doc/INDEX.md](doc/INDEX.md) | Parcours de formation (parties 01–07) |
-| [doc/annexe-reinstall-propre.md](doc/annexe-reinstall-propre.md) | Réinstall propre — nouveau dossier |
+| [doc/annexe-reinstall-propre.md](doc/annexe-reinstall-propre.md) | Réinstall propre — macOS / Linux |
+| [doc/annexe-reinstall-propre-windows.md](doc/annexe-reinstall-propre-windows.md) | Réinstall propre — Windows |
 | [doc/API.md](doc/API.md) | Routes HTTP implémentées |
 | [doc/blog.sql](doc/blog.sql) | Schéma PostgreSQL + seed |
 | [doc/sql/README.md](doc/sql/README.md) | Scripts upgrade par partie |
