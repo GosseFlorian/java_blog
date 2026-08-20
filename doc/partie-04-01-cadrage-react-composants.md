@@ -39,6 +39,8 @@
 > **Supports :** [INDEX.md](INDEX.md) → tu es ici → [partie-04-02-setup-react-vite.md](partie-04-02-setup-react-vite.md) … `04-06`.
 >
 > Sur la branche `partie-03`, le **README** du dépôt décrit le projet **sans** React — ignore les mentions `cd admin` tant que tu n'as pas fini l'étape 04-02.
+>
+> **Ancienne copie / dossier iCloud ?** → [annexe-reinstall-propre.md](annexe-reinstall-propre.md)
 
 ---
 
