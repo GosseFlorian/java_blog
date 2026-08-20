@@ -79,3 +79,18 @@ export async function updateArticle(
 
   return response.json();
 }
+
+/**
+ * Supprime un article (DELETE /admin/articles/{id}).
+ */
+export async function deleteArticle(id: number): Promise<void> {
+  const response = await fetch(`${API_URL}/admin/articles/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Erreur HTTP ${response.status} lors de la suppression`);
+  }
+
+  // 204 No Content — pas de corps JSON à lire
+}
