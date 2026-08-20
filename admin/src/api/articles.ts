@@ -8,6 +8,18 @@ export const API_URL = "http://localhost:8080";
 
 import type { Article } from "../data/articleSample.ts";
 
+export interface CreateArticlePayload {
+  titre: string;
+  contenu: string;
+  userId: number;
+}
+
+export interface UpdateArticlePayload {
+  titre: string;
+  contenu: string;
+  publie: boolean;
+}
+
 /**
  * Récupère les 5 articles les plus récents (GET /articles/recents).
  * @returns tableau d'objets { id, titre, contenu, publie, date }
@@ -26,5 +38,44 @@ export async function fetchRecentArticles(): Promise<Article[]> {
 export async function fetchPublishedArticles(): Promise<Article[]> {
   const response = await fetch(`${API_URL}/articles`);
   if (!response.ok) throw new Error(`Erreur HTTP ${response.status}`);
+  return response.json();
+}
+
+/**
+ * Crée un article (POST /admin/articles).
+ */
+export async function createArticle(
+  payload: CreateArticlePayload,
+): Promise<Article> {
+  const response = await fetch(`${API_URL}/admin/articles`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Erreur HTTP ${response.status} lors de la création`);
+  }
+
+  return response.json();
+}
+
+/**
+ * Modifie un article (PUT /admin/articles/{id}).
+ */
+export async function updateArticle(
+  id: number,
+  payload: UpdateArticlePayload,
+): Promise<Article> {
+  const response = await fetch(`${API_URL}/admin/articles/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Erreur HTTP ${response.status} lors de la modification`);
+  }
+
   return response.json();
 }
