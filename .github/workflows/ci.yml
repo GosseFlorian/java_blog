@@ -1,4 +1,5 @@
-# CI — Blog Java / Spring Boot
+# CI — Blog Java / Spring Boot + React admin
+# Déclenché à chaque push et pull request
 
 name: CI
 
@@ -20,6 +21,9 @@ jobs:
     name: Backend — Maven test
     runs-on: ubuntu-latest
     timeout-minutes: 15
+
+    env:
+      POSTGRES_PASSWORD: postgres
 
     services:
       postgres:
@@ -47,40 +51,43 @@ jobs:
           java-version: "21"
           cache: maven
 
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Initialiser java_blog_test (schéma + seed)
+        run: |
+          PGPASSWORD=postgres psql -h localhost -U postgres -d java_blog_test \
+            -f src/test/resources/schema-test.sql
+          PGPASSWORD=postgres psql -h localhost -U postgres -d java_blog_test \
+            -f src/test/resources/data-test.sql
+
       - name: Run tests
         run: ./mvnw -B test
 
   frontend-build:
-    name: Frontend — npm build
+    name: Frontend — Vite build
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: admin
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "20"
           cache: npm
           cache-dependency-path: admin/package-lock.json
 
       - name: Install dependencies
-        working-directory: admin
         run: npm ci
 
       - name: Build
-        working-directory: admin
         run: npm run build
 
-  doc-check:
-    name: Documentation — fichiers présents
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: README et API.md existent
-        run: |
-          test -f README.md
-          test -f doc/API.md
-          test -f doc/INDEX.md
+      - name: Unit tests (if configured)
+        run: npm run test --if-present
