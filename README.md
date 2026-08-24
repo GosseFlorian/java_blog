@@ -1,63 +1,23 @@
-![CI](https://github.com/USER/REPO/actions/workflows/ci.yml/badge.svg)
+# Blog Java — Spring Boot + React
 
-# Blog Java — Partie 03 (API backend)
+API REST + back-office admin pour un blog (formation ADA).
 
-> Branche **`partie-03`** : Spring Boot + PostgreSQL + CRUD articles **sans** front React.  
-> Prochaine étape : [doc/partie-04-01-cadrage-react-composants.md](doc/partie-04-01-cadrage-react-composants.md)
+![CI](https://github.com/GosseFlorian/java_blog/actions/workflows/ci.yml/badge.svg)
 
 ## Prérequis
 
 - **Java 21** + Maven Wrapper (`./mvnw`)
-- **PostgreSQL** — base **`java_blog`** ([doc/blog.sql](doc/blog.sql), installée en partie 02)
-- **Node.js 20+** — requis à partir de la **partie 04** (Vite)
+- **Node.js 20+** (dossier `admin/`)
+- **PostgreSQL** — base `java_blog` + upgrades [doc/sql/README.md](sql/README.md)
 
-> ⚠️ Ne pas checkout **`main`** pour suivre le cours : cette branche contient déjà l'admin React et l'auth JWT.
+## Démarrage rapide
 
-## Clone et branche
-
-```bash
-git clone https://github.com/ZoliveAllegret/java_blog.git
-cd java_blog
-git checkout partie-03
-```
-
-## Démarrage (backend seul)
+**Deux terminaux :**
 
 ```bash
+# Terminal 1 — API (port 8080)
 ./mvnw spring-boot:run
+
+# Terminal 2 — Admin React (port 5173)
+cd admin && npm install && npm run dev
 ```
-
-| URL                                    | Rôle                                    |
-| -------------------------------------- | --------------------------------------- |
-| http://localhost:8080/ping             | Santé API                               |
-| http://localhost:8080/db/ping          | Connexion PostgreSQL                    |
-| http://localhost:8080/articles/recents | 5 derniers articles (JSON)              |
-| http://localhost:8080/admin/articles   | CRUD admin (ouvert — auth en partie 05) |
-
-Pas de dossier **`admin/`** sur cette branche : c'est **normal**.
-
-## Partie 04 — créer le React
-
-```bash
-git checkout -b partie-04
-```
-
-Puis suivre [doc/partie-04-02-setup-react-vite.md](doc/partie-04-02-setup-react-vite.md) (création de `admin/` + CORS si besoin).
-
-## Documentation
-
-| Document                                                                                     | Description                      |
-| -------------------------------------------------------------------------------------------- | -------------------------------- |
-| [doc/INDEX.md](doc/INDEX.md)                                                                 | Parcours parties 01–07           |
-| [doc/partie-04-01-cadrage-react-composants.md](doc/partie-04-01-cadrage-react-composants.md) | **Commencer la partie 04**       |
-| [doc/annexe-reinstall-propre.md](doc/annexe-reinstall-propre.md)                             | Réinstall propre — macOS / Linux |
-| [doc/annexe-reinstall-propre-windows.md](doc/annexe-reinstall-propre-windows.md)             | Réinstall propre — Windows       |
-| [doc/blog.sql](doc/blog.sql)                                                                 | Schéma PostgreSQL + seed         |
-
-## Branches Git (formation)
-
-| Branche     | Contenu                                                             |
-| ----------- | ------------------------------------------------------------------- |
-| `partie-03` | **Tu es ici** — API articles complète, sans React                   |
-| `partie-04` | Branche **locale** élève — admin React (à créer depuis `partie-03`) |
-| `main`      | Référence formateur — projet complet                                |
