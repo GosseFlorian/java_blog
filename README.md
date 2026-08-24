@@ -1,3 +1,5 @@
+![CI](https://github.com/USER/REPO/actions/workflows/ci.yml/badge.svg)
+
 # Blog Java — Partie 03 (API backend)
 
 > Branche **`partie-03`** : Spring Boot + PostgreSQL + CRUD articles **sans** front React.  
@@ -25,12 +27,12 @@ git checkout partie-03
 ./mvnw spring-boot:run
 ```
 
-| URL | Rôle |
-|---|---|
-| http://localhost:8080/ping | Santé API |
-| http://localhost:8080/db/ping | Connexion PostgreSQL |
-| http://localhost:8080/articles/recents | 5 derniers articles (JSON) |
-| http://localhost:8080/admin/articles | CRUD admin (ouvert — auth en partie 05) |
+| URL                                    | Rôle                                    |
+| -------------------------------------- | --------------------------------------- |
+| http://localhost:8080/ping             | Santé API                               |
+| http://localhost:8080/db/ping          | Connexion PostgreSQL                    |
+| http://localhost:8080/articles/recents | 5 derniers articles (JSON)              |
+| http://localhost:8080/admin/articles   | CRUD admin (ouvert — auth en partie 05) |
 
 Pas de dossier **`admin/`** sur cette branche : c'est **normal**.
 
@@ -44,18 +46,18 @@ Puis suivre [doc/partie-04-02-setup-react-vite.md](doc/partie-04-02-setup-react-
 
 ## Documentation
 
-| Document | Description |
-|---|---|
-| [doc/INDEX.md](doc/INDEX.md) | Parcours parties 01–07 |
-| [doc/partie-04-01-cadrage-react-composants.md](doc/partie-04-01-cadrage-react-composants.md) | **Commencer la partie 04** |
-| [doc/annexe-reinstall-propre.md](doc/annexe-reinstall-propre.md) | Réinstall propre — macOS / Linux |
-| [doc/annexe-reinstall-propre-windows.md](doc/annexe-reinstall-propre-windows.md) | Réinstall propre — Windows |
-| [doc/blog.sql](doc/blog.sql) | Schéma PostgreSQL + seed |
+| Document                                                                                     | Description                      |
+| -------------------------------------------------------------------------------------------- | -------------------------------- |
+| [doc/INDEX.md](doc/INDEX.md)                                                                 | Parcours parties 01–07           |
+| [doc/partie-04-01-cadrage-react-composants.md](doc/partie-04-01-cadrage-react-composants.md) | **Commencer la partie 04**       |
+| [doc/annexe-reinstall-propre.md](doc/annexe-reinstall-propre.md)                             | Réinstall propre — macOS / Linux |
+| [doc/annexe-reinstall-propre-windows.md](doc/annexe-reinstall-propre-windows.md)             | Réinstall propre — Windows       |
+| [doc/blog.sql](doc/blog.sql)                                                                 | Schéma PostgreSQL + seed         |
 
 ## Branches Git (formation)
 
-| Branche | Contenu |
-|---|---|
-| `partie-03` | **Tu es ici** — API articles complète, sans React |
+| Branche     | Contenu                                                             |
+| ----------- | ------------------------------------------------------------------- |
+| `partie-03` | **Tu es ici** — API articles complète, sans React                   |
 | `partie-04` | Branche **locale** élève — admin React (à créer depuis `partie-03`) |
-| `main` | Référence formateur — projet complet |
+| `main`      | Référence formateur — projet complet                                |
