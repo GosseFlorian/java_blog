@@ -91,3 +91,14 @@ jobs:
 
       - name: Unit tests (if configured)
         run: npm run test --if-present
+
+  doc-check:
+    name: Documentation — fichiers présents
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: README et API.md existent
+        run: |
+          test -f README.md
+          test -f doc/API.md
+          test -f doc/INDEX.md

@@ -121,7 +121,6 @@ ALTER TABLE "articles_medias"
     ADD FOREIGN KEY("media_id") REFERENCES "médias"("id")
     ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-
 -- =========================================================
 -- DONNEES DE TEST (SEED)
 -- Toutes les données ci-dessous sont fictives, générées pour
