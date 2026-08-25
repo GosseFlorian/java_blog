@@ -25,6 +25,13 @@ public class ArticleController {
     }
 
     @GetMapping
+    public List<ArticleResponse> all() {
+        return articleRepository.findAll().stream()
+                .map(ArticleMapper::toResponse)
+                .toList();
+    }
+
+    @GetMapping
     public List<ArticleResponse> listerPublies() {
         return articleRepository.findPublies().stream()
                 .map(ArticleMapper::toResponse)

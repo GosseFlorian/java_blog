@@ -12,15 +12,8 @@ public class Article {
     private LocalDateTime update;
     private Integer userId;
 
-    public Article(
-            Integer id,
-            String titre,
-            String contenu,
-            boolean publie,
-            LocalDateTime date,
-            LocalDateTime update,
-            Integer userId
-    ) {
+    public Article(Integer id, String titre, String contenu, boolean publie, LocalDateTime date, LocalDateTime update,
+            Integer userId) {
         this.id = id;
         this.titre = titre;
         this.contenu = contenu;
@@ -30,24 +23,59 @@ public class Article {
         this.userId = userId;
     }
 
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Integer getId() {
+        return id;
+    }
 
-    public String getTitre() { return titre; }
-    public void setTitre(String titre) { this.titre = titre; }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-    public String getContenu() { return contenu; }
-    public void setContenu(String contenu) { this.contenu = contenu; }
+    public String getTitre() {
+        return titre;
+    }
 
-    public boolean isPublie() { return publie; }
-    public void setPublie(boolean publie) { this.publie = publie; }
+    public void setTitre(String titre) {
+        this.titre = titre;
+    }
 
-    public LocalDateTime getDate() { return date; }
-    public void setDate(LocalDateTime date) { this.date = date; }
+    public String getContenu() {
+        return contenu;
+    }
 
-    public LocalDateTime getUpdate() { return update; }
-    public void setUpdate(LocalDateTime update) { this.update = update; }
+    public void setContenu(String contenu) {
+        this.contenu = contenu;
+    }
 
-    public Integer getUserId() { return userId; }
-    public void setUserId(Integer userId) { this.userId = userId; }
+    public boolean isPublie() {
+        return publie;
+    }
+
+    public void setPublie(boolean publie) {
+        this.publie = publie;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public LocalDateTime getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(LocalDateTime update) {
+        this.update = update;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 }
