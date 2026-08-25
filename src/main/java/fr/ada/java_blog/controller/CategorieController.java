@@ -41,7 +41,7 @@ public class CategorieController {
 
     @GetMapping("/{id}/articles")
     public List<ArticleResponse> articlesByCategorieId(@PathVariable int id) {
-        return categorieRepository.findArticlesByCategorieId(id).stream()
+        return categorieRepository.findArticlesPubliesByCategorieId(id).stream()
                 .map(ArticleMapper::toResponse)
                 .toList();
     }

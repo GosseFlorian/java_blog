@@ -61,13 +61,13 @@ public class CategorieRepository {
         return categories.stream().findFirst();
     }
 
-    public List<Article> findArticlesByCategorieId(int categorieId) {
+    public List<Article> findArticlesPubliesByCategorieId(int categorieId) {
         return jdbcTemplate.query(
                 """
                         SELECT a.id, a.titre, a.contenu, a.statut, a.date, a."update", a.user_id
                         FROM articles a
                         JOIN articles_categories ac ON ac.article_id = a.id
-                        WHERE ac.categorie_id = ?
+                        WHERE ac.categorie_id = ? AND a.statut = TRUE
                         ORDER BY a.date DESC
                         """,
                 ArticleRowMapper,
