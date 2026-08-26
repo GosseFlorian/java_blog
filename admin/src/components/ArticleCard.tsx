@@ -11,9 +11,17 @@ interface ArticleCardProps {
   article: Article;
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
+  onTogglePublish: (id: number, publie: boolean) => void;
+  isTogglingPublish: boolean;
 }
 
-function ArticleCard({ article, onEdit, onDelete }: ArticleCardProps) {
+function ArticleCard({
+  article,
+  onEdit,
+  onDelete,
+  onTogglePublish,
+  isTogglingPublish,
+}: ArticleCardProps) {
   // On extrait les champs pour la lisibilité (équivalent article.titre, etc.)
   const { id, titre, contenu, publie, date } = article;
 
@@ -28,6 +36,13 @@ function ArticleCard({ article, onEdit, onDelete }: ArticleCardProps) {
       </p>
       <p className="article-contenu">{contenu}</p>
       <div className="article-actions">
+        <button
+          type="button"
+          onClick={() => onTogglePublish(id, publie)}
+          disabled={isTogglingPublish}
+        >
+          {publie ? "Dépublier" : "Publier"}
+        </button>
         <button type="button" onClick={() => onEdit(id)}>
           Modifier
         </button>

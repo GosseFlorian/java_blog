@@ -7,10 +7,12 @@ import FeedbackMessage from "./components/FeedbackMessage.tsx";
 import type { FeedbackType } from "./components/FeedbackMessage.tsx";
 import LoginForm from "./components/LoginForm.tsx";
 import {
-  fetchRecentArticles,
+  fetchArticles,
   createArticle,
   updateArticle,
   deleteArticle,
+  publishArticle,
+  unpublishArticle,
 } from "./api/articles.ts";
 import type {
   CreateArticlePayload,
@@ -41,12 +43,15 @@ function App() {
   const [mode, setMode] = useState<Mode>("list");
   const [editingArticle, setEditingArticle] = useState<Article | null>(null);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
+  const [togglingPublishId, setTogglingPublishId] = useState<number | null>(
+    null,
+  );
 
   const loadArticles = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await fetchRecentArticles();
+      const data = await fetchArticles();
       setArticles(data);
     } catch (err) {
       console.error(err);
@@ -159,6 +164,32 @@ function App() {
     }
   }
 
+  async function handleTogglePublish(id: number, publie: boolean) {
+    clearFeedback();
+    try {
+      setTogglingPublishId(id);
+      if (publie) {
+        await unpublishArticle(id);
+      } else {
+        await publishArticle(id);
+      }
+      await loadArticles();
+      setFeedback({
+        type: "success",
+        message: publie ? "Article dépublié." : "Article publié.",
+      });
+    } catch (err) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : "Erreur lors du changement de statut.";
+      handleSessionExpired(message);
+      setFeedback({ type: "error", message });
+    } finally {
+      setTogglingPublishId(null);
+    }
+  }
+
   async function handleDelete(id: number) {
     clearFeedback();
 
@@ -261,6 +292,8 @@ function App() {
             articles={articles}
             onEdit={handleEdit}
             onDelete={handleDelete}
+            onTogglePublish={handleTogglePublish}
+            togglingPublishId={togglingPublishId}
           />
         )}
       </main>
