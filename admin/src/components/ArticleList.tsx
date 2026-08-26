@@ -11,17 +11,9 @@ interface ArticleListProps {
   articles: Article[];
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
-  onTogglePublish: (id: number, publie: boolean) => void;
-  togglingPublishId: number | null;
 }
 
-function ArticleList({
-  articles,
-  onEdit,
-  onDelete,
-  onTogglePublish,
-  togglingPublishId,
-}: ArticleListProps) {
+function ArticleList({ articles, onEdit, onDelete }: ArticleListProps) {
   // Cas limite : tableau vide — message clair pour l'utilisateur
   if (articles.length === 0) {
     return <p className="empty-list">Aucun article à afficher.</p>;
@@ -35,8 +27,6 @@ function ArticleList({
           article={article}
           onEdit={onEdit}
           onDelete={onDelete}
-          onTogglePublish={onTogglePublish}
-          isTogglingPublish={togglingPublishId === article.id}
         />
       ))}
     </section>

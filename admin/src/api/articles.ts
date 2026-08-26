@@ -30,15 +30,8 @@ function adminJsonHeaders(): Record<string, string> {
 /**
  * Récupère les 5 articles les plus récents (GET public).
  */
-export async function fetchArticles(): Promise<Article[]> {
-  const response = await fetch(`${API_URL}/admin/articles`, {
-    method: "GET",
-    headers: adminJsonHeaders(),
-  });
-
-  if (response.status === 401) {
-    throw new Error("Session expirée — reconnecte-toi.");
-  }
+export async function fetchRecentArticles(): Promise<Article[]> {
+  const response = await fetch(`${API_URL}/articles/recents`);
 
   if (!response.ok) {
     throw new Error(`Erreur HTTP ${response.status}`);
@@ -84,38 +77,6 @@ export async function updateArticle(
   }
 
   return response.json();
-}
-
-/**
- * Bascule rapide publié / brouillon — PATCH /admin/articles/{id}/publier
- * et /admin/articles/{id}/depublier (204 No Content en cas de succès).
- */
-export async function publishArticle(id: number): Promise<void> {
-  const response = await fetch(`${API_URL}/admin/articles/${id}/publier`, {
-    method: "PATCH",
-    headers: getAuthHeaders(),
-  });
-
-  if (response.status === 401) {
-    throw new Error("Session expirée — reconnecte-toi.");
-  }
-  if (!response.ok) {
-    throw new Error(`Erreur HTTP ${response.status} lors de la publication`);
-  }
-}
-
-export async function unpublishArticle(id: number): Promise<void> {
-  const response = await fetch(`${API_URL}/admin/articles/${id}/depublier`, {
-    method: "PATCH",
-    headers: getAuthHeaders(),
-  });
-
-  if (response.status === 401) {
-    throw new Error("Session expirée — reconnecte-toi.");
-  }
-  if (!response.ok) {
-    throw new Error(`Erreur HTTP ${response.status} lors de la dépublication`);
-  }
 }
 
 export async function deleteArticle(id: number): Promise<void> {
