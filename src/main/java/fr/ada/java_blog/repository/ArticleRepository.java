@@ -39,6 +39,7 @@ public class ArticleRepository {
                 """
                         SELECT id, titre, contenu, statut, date, "update", user_id
                         FROM articles
+                        WHERE statut = true
                         ORDER BY date DESC, id DESC
                         LIMIT ?
                         """,
@@ -46,33 +47,18 @@ public class ArticleRepository {
                 limit);
     }
 
-    public int countRecents(int limit) {
+    public int countPublies() {
         Integer count = jdbcTemplate.queryForObject(
                 """
                         SELECT COUNT(*)
-                        FROM (
-                            SELECT 1 FROM articles
-                            ORDER BY date DESC, id DESC
-                            LIMIT ?
-                        ) AS recents
+                        FROM articles
+                        WHERE statut = true
                         """,
-                Integer.class,
-                limit);
+                Integer.class);
         return count != null ? count : 0;
     }
 
     public List<Article> findPublies() {
-        return jdbcTemplate.query(
-                """
-                        SELECT id, titre, contenu, statut, date, "update", user_id
-                        FROM articles
-                        WHERE statut = true
-                        ORDER BY date DESC, id DESC
-                        """,
-                ROW_MAPPER);
-    }
-
-    public List<Article> findAll() {
         return jdbcTemplate.query(
                 """
                         SELECT id, titre, contenu, statut, date, "update", user_id

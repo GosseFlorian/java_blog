@@ -25,13 +25,6 @@ public class ArticleController {
     }
 
     @GetMapping
-    public List<ArticleResponse> all() {
-        return articleRepository.findAll().stream()
-                .map(ArticleMapper::toResponse)
-                .toList();
-    }
-
-    @GetMapping
     public List<ArticleResponse> listerPublies() {
         return articleRepository.findPublies().stream()
                 .map(ArticleMapper::toResponse)
@@ -46,8 +39,8 @@ public class ArticleController {
     }
 
     @GetMapping("/recents/count")
-    public Integer countRecents() {
-        return articleRepository.countRecents(LIMITE_RECENTS);
+    public Integer countPublies() {
+        return articleRepository.countPublies();
     }
 
     @GetMapping("/{id}")

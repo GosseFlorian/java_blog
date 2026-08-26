@@ -8,6 +8,7 @@ import fr.ada.java_blog.model.User;
 import fr.ada.java_blog.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,9 +19,11 @@ import java.util.List;
 public class AdminUserController {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AdminUserController(UserRepository userRepository) {
+    public AdminUserController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -40,7 +43,8 @@ public class AdminUserController {
 
     @PostMapping
     public ResponseEntity<UserResponse> create(@RequestBody UserCreateRequest body) {
-        User user = new User(null, body.pseudo(), body.mail(), body.mdp());
+        String hash = passwordEncoder.encode(body.mdp());
+        User user = new User(null, body.pseudo(), body.mail(), hash);
         User sauve = userRepository.save(user);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -55,7 +59,7 @@ public class AdminUserController {
 
         user.setPseudo(body.pseudo());
         user.setMail(body.mail());
-        user.setMdp(body.mdp());
+        user.setMdp(passwordEncoder.encode(body.mdp()));
 
         if (!userRepository.updateById(id, user)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur introuvable");
