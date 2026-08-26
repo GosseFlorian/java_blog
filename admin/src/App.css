@@ -128,11 +128,6 @@
   line-height: 1;
 }
 
-.error-message {
-  color: #b00020;
-  padding: 0.5rem;
-}
-
 .login-form {
   display: flex;
   flex-direction: column;
