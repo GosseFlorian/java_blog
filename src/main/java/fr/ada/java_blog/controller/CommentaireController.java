@@ -8,6 +8,8 @@ import fr.ada.java_blog.repository.ArticleRepository;
 import fr.ada.java_blog.repository.CommentaireRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class CommentaireController {
@@ -41,8 +44,10 @@ public class CommentaireController {
     @PostMapping("/articles/{articleId}/commentaires")
     public ResponseEntity<CommentaireResponse> create(
             @PathVariable int articleId,
-            @RequestBody CommentaireCreateRequest body) {
+            @RequestBody CommentaireCreateRequest body,
+            Authentication authentication) {
         verifierArticleExiste(articleId);
+        verifierUserIdCorrespondAuToken(body.userId(), authentication);
         var saved = commentaireRepository.save(articleId, body.contenu(), body.userId());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -58,21 +63,61 @@ public class CommentaireController {
     }
 
     @PatchMapping("/commentaires/{id}")
-    public CommentaireResponse update(@PathVariable int id, @RequestBody CommentaireUpdateRequest body) {
-        if (!commentaireRepository.updateById(id, body.contenu())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Commentaire introuvable");
-        }
-
+    public CommentaireResponse update(
+            @PathVariable int id,
+            @RequestBody CommentaireUpdateRequest body,
+            Authentication authentication) {
         var commentaire = commentaireRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Commentaire introuvable"));
 
-        return CommentaireMapper.toResponse(commentaire);
+        verifierUserIdCorrespondAuToken(commentaire.getUserId(), authentication);
+
+        if (!commentaireRepository.updateById(id, body.contenu())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Commentaire introuvable");
+        }
+
+        var misAJour = commentaireRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Commentaire introuvable"));
+
+        return CommentaireMapper.toResponse(misAJour);
     }
 
     private void verifierArticleExiste(int articleId) {
         articleRepository.findById(articleId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Article introuvable"));
+    }
+
+    @DeleteMapping("/commentaires/{id}")
+    public ResponseEntity<Void> delete(@PathVariable int id, Authentication authentication) {
+        var commentaire = commentaireRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Commentaire introuvable"));
+
+        verifierUserIdCorrespondAuToken(commentaire.getUserId(), authentication);
+
+        if (!commentaireRepository.deleteById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Commentaire introuvable");
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Le principal posé par JwtAuthFilter est le userId (subject du JWT) sous
+     * forme de String. On refuse si le userId attendu (celui du corps pour
+     * create, celui de l'auteur en base pour update) ne correspond pas à
+     * celui du token — empêche de poster ou modifier "au nom" d'un autre
+     * utilisateur via un appel direct à l'API.
+     */
+    private void verifierUserIdCorrespondAuToken(Integer userId, Authentication authentication) {
+        int userIdDuToken = Integer.parseInt(authentication.getName());
+        if (!Objects.equals(userId, userIdDuToken)) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "Le userId envoyé ne correspond pas à l'utilisateur authentifié");
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useBlogStore } from "../store/blogStore";
+import { useAuthStore } from "../store/authStore";
 import CommentForm from "../components/CommentForm";
 import CommentList from "../components/CommentList";
 
@@ -20,9 +21,7 @@ function ArticlePage() {
   const articleLoading = useBlogStore((state) => state.currentArticleLoading);
   const articleError = useBlogStore((state) => state.currentArticleError);
   const loadArticle = useBlogStore((state) => state.loadArticle);
-  const resetCurrentArticle = useBlogStore(
-    (state) => state.resetCurrentArticle,
-  );
+  const resetCurrentArticle = useBlogStore((state) => state.resetCurrentArticle);
 
   const comments = useBlogStore((state) => state.comments);
   const commentsLoading = useBlogStore((state) => state.commentsLoading);
@@ -32,6 +31,8 @@ function ArticlePage() {
   const commentSubmitting = useBlogStore((state) => state.commentSubmitting);
   const commentSubmitError = useBlogStore((state) => state.commentSubmitError);
   const submitComment = useBlogStore((state) => state.submitComment);
+
+  const userId = useAuthStore((state) => state.userId);
 
   useEffect(() => {
     if (!Number.isNaN(articleId)) {
@@ -49,9 +50,7 @@ function ArticlePage() {
   if (articleError || !article) {
     return (
       <main className="article-page">
-        <p className="error-message">
-          {articleError ?? "Article introuvable."}
-        </p>
+        <p className="error-message">{articleError ?? "Article introuvable."}</p>
         <Link to="/" className="back-link">
           ← Retour aux articles
         </Link>
@@ -82,12 +81,15 @@ function ArticlePage() {
           <p className="loading-message">Chargement des commentaires…</p>
         )}
         {commentsError && <p className="error-message">{commentsError}</p>}
-        {!commentsLoading && !commentsError && (
-          <CommentList comments={comments} />
-        )}
+        {!commentsLoading && !commentsError && <CommentList comments={comments} />}
 
         <CommentForm
-          onSubmit={(payload) => submitComment(articleId, payload)}
+          onSubmit={(contenu) => {
+            if (userId === null) {
+              return Promise.resolve(false);
+            }
+            return submitComment(articleId, { contenu, userId });
+          }}
           isSubmitting={commentSubmitting}
           error={commentSubmitError}
         />

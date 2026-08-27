@@ -1,7 +1,10 @@
 import { create } from "zustand";
 import { fetchArticle, fetchArticles } from "../api/articles";
 import type { Article } from "../api/articles";
-import { createComment, fetchComments } from "../api/commentaires";
+import {
+  createComment,
+  fetchComments,
+} from "../api/commentaires";
 import type { Commentaire, CommentairePayload } from "../api/commentaires";
 
 /**
@@ -51,9 +54,7 @@ export const useBlogStore = create<BlogState>((set, get) => ({
       set({ articles, articlesLoading: false });
     } catch (err) {
       const message =
-        err instanceof Error
-          ? err.message
-          : "Impossible de charger les articles.";
+        err instanceof Error ? err.message : "Impossible de charger les articles.";
       set({ articlesError: message, articlesLoading: false });
     }
   },
@@ -124,9 +125,7 @@ export const useBlogStore = create<BlogState>((set, get) => ({
       return true;
     } catch (err) {
       const message =
-        err instanceof Error
-          ? err.message
-          : "Impossible d'envoyer le commentaire.";
+        err instanceof Error ? err.message : "Impossible d'envoyer le commentaire.";
       set({ commentSubmitError: message, commentSubmitting: false });
       return false;
     }

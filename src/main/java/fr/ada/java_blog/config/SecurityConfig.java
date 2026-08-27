@@ -30,8 +30,21 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Preflight CORS (navigateur) — doit rester public
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // Login
-                        .requestMatchers("/auth/login").permitAll()
+                        // Login / inscription
+                        .requestMatchers("/auth/login", "/auth/register").permitAll()
+                        // Poster un commentaire nécessite d'être connecté (le userId
+                        // envoyé est vérifié dans CommentaireController à partir du
+                        // token — voir ci-dessous). Doit être déclaré AVANT la règle
+                        // générale /articles/** pour prendre le dessus.
+                        .requestMatchers(HttpMethod.POST, "/articles/*/commentaires").authenticated()
+                        // Modifier un commentaire nécessite d'être connecté ; le contrôle
+                        // "c'est bien SON commentaire" est fait dans CommentaireController
+                        // (pas exprimable ici, il faut lire le commentaire en base).
+                        .requestMatchers(HttpMethod.PATCH, "/commentaires/*").authenticated()
+                        // supprimer un commentaire nécessite d'être connecté (site/) ; le contrôle
+                        // "c'est bien SON commentaire" est fait dans CommentaireController
+                        // (pas exprimable ici, il faut lire le commentaire en base).
+                        .requestMatchers(HttpMethod.DELETE, "/commentaires/*").authenticated()
                         // API publique (lecture articles, santé)
                         .requestMatchers(
                                 "/articles/**",

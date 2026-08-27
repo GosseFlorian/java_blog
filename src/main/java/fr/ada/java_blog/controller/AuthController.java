@@ -2,10 +2,12 @@ package fr.ada.java_blog.controller;
 
 import fr.ada.java_blog.dto.LoginRequest;
 import fr.ada.java_blog.dto.LoginResponse;
+import fr.ada.java_blog.dto.RegisterRequest;
 import fr.ada.java_blog.model.User;
 import fr.ada.java_blog.repository.UserRepository;
 import fr.ada.java_blog.service.JwtService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +43,30 @@ public class AuthController {
 
         String token = jwtService.generateToken(user);
         return new LoginResponse(token, user.getPseudo(), user.getId());
+    }
+
+    /**
+     * Inscription publique — il n'existait auparavant aucune route non
+     * protégée pour créer un compte (POST /admin/users exige déjà un JWT).
+     * Retourne directement un token comme /auth/login pour connecter
+     * l'utilisateur dès la création de son compte.
+     */
+    @PostMapping("/register")
+    public ResponseEntity<LoginResponse> register(@RequestBody RegisterRequest body) {
+        if (userRepository.findByMail(body.mail()).isPresent()) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Un compte existe déjà avec cette adresse mail");
+        }
+
+        String hash = passwordEncoder.encode(body.mdp());
+        User user = new User(null, body.pseudo(), body.mail(), hash);
+        User sauve = userRepository.save(user);
+
+        String token = jwtService.generateToken(sauve);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new LoginResponse(token, sauve.getPseudo(), sauve.getId()));
     }
 
     private static ResponseStatusException unauthorized() {

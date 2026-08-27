@@ -1,35 +1,42 @@
 import { useState, type FormEvent } from "react";
-import type { CommentairePayload } from "../api/commentaires";
+import { Link } from "react-router-dom";
+import { useAuthStore } from "../store/authStore";
 
 interface CommentFormProps {
-  onSubmit: (payload: CommentairePayload) => Promise<boolean>;
+  onSubmit: (contenu: string) => Promise<boolean>;
   isSubmitting: boolean;
   error: string | null;
 }
 
 /**
- * TODO(auth-visiteur) : l'API n'a pas de route publique d'inscription /
- * connexion pour un visiteur (POST /admin/users est protégé par JWT).
- * En attendant un vrai mécanisme d'authentification, ce formulaire demande
- * directement un userId existant (voir doc/blog.sql — users 1 à 10).
- * Cette saisie manuelle est un pis-aller à remplacer dès qu'une inscription
- * publique (ou une identité anonyme) existera côté backend.
+ * Le userId n'est plus demandé dans le formulaire : il vient de la session
+ * connectée (useAuthStore). Si personne n'est connecté, on affiche un lien
+ * vers la page de connexion à la place du formulaire.
  */
 function CommentForm({ onSubmit, isSubmitting, error }: CommentFormProps) {
   const [contenu, setContenu] = useState("");
-  const [userId, setUserId] = useState(1);
   const [success, setSuccess] = useState(false);
+  const pseudo = useAuthStore((state) => state.pseudo);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSuccess(false);
 
-    const ok = await onSubmit({ contenu, userId: Number(userId) });
+    const ok = await onSubmit(contenu);
 
     if (ok) {
       setContenu("");
       setSuccess(true);
     }
+  }
+
+  if (!pseudo) {
+    return (
+      <p className="comment-form-locked">
+        <Link to="/connexion">Connecte-toi</Link> pour laisser un commentaire
+        (ou <Link to="/inscription">crée un compte</Link>).
+      </p>
+    );
   }
 
   return (
@@ -49,18 +56,6 @@ function CommentForm({ onSubmit, isSubmitting, error }: CommentFormProps) {
           value={contenu}
           onChange={(e) => setContenu(e.target.value)}
           rows={4}
-          required
-        />
-      </label>
-
-      {/* TODO(auth-visiteur) : remplacer par l'identité du visiteur connecté */}
-      <label>
-        ID utilisateur (démo — pas d'inscription publique pour l'instant)
-        <input
-          type="number"
-          min={1}
-          value={userId}
-          onChange={(e) => setUserId(Number(e.target.value))}
           required
         />
       </label>
