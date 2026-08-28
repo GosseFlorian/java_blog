@@ -53,7 +53,7 @@ public class AdminArticleController {
     }
 
     @GetMapping("/{id}")
-    public ArticleResponse ById(@PathVariable int id) {
+    public ArticleResponse byId(@PathVariable int id) {
         return articleRepository.findByIdAdmin(id)
                 .map(ArticleMapper::toResponse)
                 .orElseThrow(() -> new ResponseStatusException(

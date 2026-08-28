@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -123,6 +125,7 @@ public class CategorieRepository {
         return rows > 0;
     }
 
+    @Transactional
     public void replaceCategoriesArticle(int articleId, List<Integer> categorieIds) {
         jdbcTemplate.update(
                 """

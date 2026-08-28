@@ -1,4 +1,4 @@
-import type { ArticleCategory } from "../data/articleSample.ts";
+import type { ArticleCategory } from "../types/article.ts";
 
 interface CategoryTagsProps {
   categories?: ArticleCategory[];
@@ -10,13 +10,13 @@ function CategoryTags({ categories }: CategoryTagsProps) {
   }
 
   return (
-    <div className="category-tags">
+    <ul className="category-tags">
       {categories.map((cat) => (
-        <span key={cat.id} className="category-tag">
+        <li key={cat.id} className="category-tag">
           {cat.nom}
-        </span>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
 

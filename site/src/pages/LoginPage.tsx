@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type SubmitEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 
@@ -11,7 +11,7 @@ function LoginPage() {
   const error = useAuthStore((state) => state.authError);
   const navigate = useNavigate();
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     const ok = await login({ mail, mdp });
     if (ok) {
@@ -22,6 +22,10 @@ function LoginPage() {
   return (
     <main className="auth-page">
       <h1>Connexion</h1>
+      <p className="login-hint">
+        Compte démo : <strong>alice@example.com</strong> /{" "}
+        <strong>demo1234</strong>
+      </p>
 
       {error && (
         <p className="error-message" role="alert">

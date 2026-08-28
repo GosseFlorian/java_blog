@@ -1,5 +1,5 @@
 import { useState, type SubmitEvent } from "react";
-import type { Article } from "../data/articleSample.ts";
+import type { Article } from "../types/article.ts";
 import type { Categorie } from "../api/categories.ts";
 import type {
   CreateArticlePayload,
@@ -77,7 +77,7 @@ function ArticleForm({
         </button>
       )}
 
-      <form className="article-form" onSubmit={handleSubmit}>
+      <form className="article-form admin-form" onSubmit={handleSubmit}>
         <h2>{isEdit ? "Modifier l'article" : "Nouvel article"}</h2>
 
         <label>

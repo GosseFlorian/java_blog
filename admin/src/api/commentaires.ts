@@ -1,5 +1,4 @@
-import { getAuthHeaders } from "./auth.ts";
-import { API_URL } from "./articles.ts";
+import { API_URL, getAuthHeaders } from "./client.ts";
 
 export interface Commentaire {
   id: number;

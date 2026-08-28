@@ -52,7 +52,7 @@ public class ArticleController {
 
     @GetMapping("/{id}")
     public ArticleResponse un(@PathVariable int id) {
-        return articleRepository.findById(id)
+        return articleRepository.findPublishedById(id)
                 .map(ArticleMapper::toResponse)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Article introuvable"));
@@ -60,7 +60,7 @@ public class ArticleController {
 
     @GetMapping("/{id}/categories")
     public List<CategorieResponse> categories(@PathVariable int id) {
-        if (articleRepository.findById(id).isEmpty()) {
+        if (articleRepository.findPublishedById(id).isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Article introuvable");
         }
         return categorieRepository.findByArticleId(id).stream()

@@ -5,7 +5,7 @@ import { useAuthStore } from "../store/authStore";
 import CommentForm from "../components/CommentForm";
 import CommentList from "../components/CommentList";
 import CategoryTags from "../components/CategoryTags";
-import { formatArticleDate } from "../utils/articleDisplay";
+import { formatArticleDate } from "../utils/formatUtils";
 
 function ArticlePage() {
   const { id } = useParams<{ id: string }>();
@@ -44,7 +44,11 @@ function ArticlePage() {
   }, [articleId]);
 
   if (articleLoading) {
-    return <p className="loading-message">Chargement de l'article…</p>;
+    return (
+      <main className="article-page">
+        <p className="loading-message">Chargement de l'article…</p>
+      </main>
+    );
   }
 
   if (articleError || !article) {
@@ -67,7 +71,9 @@ function ArticlePage() {
       <article>
         <h1>{article.titre}</h1>
         <CategoryTags categories={article.categories} />
-        <p className="article-date">{formatArticleDate(article.date)}</p>
+        <time className="article-date" dateTime={article.date}>
+          {formatArticleDate(article.date)}
+        </time>
         <div className="article-contenu">
           {article.contenu.split("\n").map((paragraphe, index) => (
             <p key={index}>{paragraphe}</p>

@@ -1,5 +1,4 @@
-import { getAuthHeaders } from "./auth.ts";
-import { API_URL } from "./articles.ts";
+import { API_URL, getAuthHeaders, adminJsonHeaders } from "./client.ts";
 
 export interface Categorie {
   id: number;
@@ -15,13 +14,6 @@ export interface CreateCategoriePayload {
 export interface UpdateCategoriePayload {
   nom: string;
   description: string;
-}
-
-function adminJsonHeaders(): Record<string, string> {
-  return {
-    "Content-Type": "application/json",
-    ...getAuthHeaders(),
-  };
 }
 
 export async function fetchCategories(): Promise<Categorie[]> {

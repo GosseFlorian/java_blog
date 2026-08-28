@@ -1,5 +1,5 @@
 import ArticleCard from "./ArticleCard.tsx";
-import type { Article } from "../data/articleSample.ts";
+import type { Article } from "../types/article.ts";
 
 interface ArticleListProps {
   articles: Article[];
@@ -14,7 +14,8 @@ function ArticleList({ articles, onEdit, onDelete, onView }: ArticleListProps) {
   }
 
   return (
-    <section className="article-list">
+    <section className="article-list" aria-label="Liste des articles">
+      <h2 className="sr-only">Articles</h2>
       {articles.map((article) => (
         <ArticleCard
           key={article.id}

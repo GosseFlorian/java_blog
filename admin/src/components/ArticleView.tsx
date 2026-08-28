@@ -3,7 +3,7 @@ import {
   fetchArticleById,
   fetchArticleCategories,
 } from "../api/articles.ts";
-import type { Article } from "../data/articleSample.ts";
+import type { Article } from "../types/article.ts";
 import {
   deleteComment,
   fetchComments,
@@ -11,8 +11,7 @@ import {
 import type { Commentaire } from "../api/commentaires.ts";
 import {
   formatArticleDate,
-} from "../utils/articleDisplay.ts";
-import { formatCommentAuthor } from "../utils/commentDisplay.ts";
+} from "../utils/formatUtils.ts";
 import CategoryTags from "./CategoryTags.tsx";
 import LoadingMessage from "./LoadingMessage.tsx";
 
@@ -20,16 +19,6 @@ interface ArticleViewProps {
   articleId: number;
   onBack: () => void;
   onSessionExpired: (message: string) => void;
-}
-
-function formatCommentDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString("fr-FR", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
 }
 
 function ArticleView({
@@ -133,8 +122,7 @@ function ArticleView({
             {comments.map((comment) => (
               <li key={comment.id} className="comment-item">
                 <p className="comment-meta">
-                  {formatCommentAuthor(comment.pseudo, comment.userId)} —{" "}
-                  {formatCommentDate(comment.date)}
+                  {comment.pseudo} — {formatArticleDate(comment.date)}
                 </p>
                 <p className="comment-contenu">{comment.contenu}</p>
                 <button

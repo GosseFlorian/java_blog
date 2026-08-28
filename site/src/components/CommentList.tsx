@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Commentaire } from "../api/commentaires";
 import CommentEditForm from "./CommentEditForm";
-import { formatCommentAuthor } from "../utils/commentDisplay";
+import { formatArticleDate } from "../utils/formatUtils";
 
 interface CommentListProps {
   comments: Commentaire[];
@@ -11,16 +11,6 @@ interface CommentListProps {
   isUpdating: boolean;
   isDeleting: boolean;
   actionError: string | null;
-}
-
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString("fr-FR", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
 }
 
 function CommentList({
@@ -52,8 +42,8 @@ function CommentList({
         return (
           <li key={comment.id} className="comment-item">
             <p className="comment-meta">
-              {formatCommentAuthor(comment.pseudo, comment.userId)} —{" "}
-              {formatDate(comment.date)}
+              <strong>{comment.pseudo}</strong> —{" "}
+              {formatArticleDate(comment.date)}
             </p>
 
             {isEditing ? (

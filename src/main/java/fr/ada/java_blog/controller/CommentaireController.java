@@ -85,7 +85,7 @@ public class CommentaireController {
     }
 
     private void verifierArticleExiste(int articleId) {
-        articleRepository.findById(articleId)
+        articleRepository.findPublishedById(articleId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Article introuvable"));
     }
 

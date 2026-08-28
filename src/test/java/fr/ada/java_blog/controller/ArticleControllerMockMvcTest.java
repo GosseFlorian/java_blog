@@ -43,6 +43,12 @@ class ArticleControllerMockMvcTest {
     }
 
     @Test
+    void getById_brouillon_retourne404() throws Exception {
+        mockMvc.perform(get("/articles/2"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     void ping_retourne200() throws Exception {
         mockMvc.perform(get("/ping"))
                 .andExpect(status().isOk());

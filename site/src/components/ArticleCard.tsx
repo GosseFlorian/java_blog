@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import type { Article } from "../api/articles";
-import { excerpt, formatArticleDate } from "../utils/articleDisplay";
+import { excerpt, formatArticleDate } from "../utils/formatUtils";
 import CategoryTags from "./CategoryTags";
 
 interface ArticleCardProps {
@@ -9,7 +9,7 @@ interface ArticleCardProps {
 
 function ArticleCard({ article }: ArticleCardProps) {
   return (
-    <figure className="article-card">
+    <article className="article-card">
       <h2>{article.titre}</h2>
       <CategoryTags categories={article.categories} />
       <blockquote className="article-excerpt">
@@ -21,7 +21,7 @@ function ArticleCard({ article }: ArticleCardProps) {
           lire la suite ➧
         </Link>
       </p>
-    </figure>
+    </article>
   );
 }
 

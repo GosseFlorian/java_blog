@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type SubmitEvent } from "react";
 
 interface CommentEditFormProps {
   initialContenu: string;
@@ -17,7 +17,7 @@ function CommentEditForm({
 }: CommentEditFormProps) {
   const [contenu, setContenu] = useState(initialContenu);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     await onSubmit(contenu);
   }

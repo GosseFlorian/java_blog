@@ -30,7 +30,8 @@ class CommentaireRepositoryTest {
         List<Commentaire> liste = commentaireRepository.findByArticleId(1);
 
         assertTrue(liste.size() >= 1);
-        assertEquals("Commentaire seed CI", liste.get(0).getContenu());
+        assertEquals("Commentaire test", liste.get(0).getContenu());
+        assertEquals("alice_dev", liste.get(0).getPseudo());
     }
 
     @Test

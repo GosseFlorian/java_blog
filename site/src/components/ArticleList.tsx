@@ -11,11 +11,15 @@ function ArticleList({ articles }: ArticleListProps) {
   }
 
   return (
-    <div className="article-list">
-      {articles.map((article) => (
-        <ArticleCard key={article.id} article={article} />
-      ))}
-    </div>
+    <section className="article-list" aria-label="Articles récents">
+      <ul>
+        {articles.map((article) => (
+          <li key={article.id}>
+            <ArticleCard article={article} />
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 

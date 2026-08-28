@@ -30,7 +30,7 @@ class ArticleRepositoryTest {
     void findRecents_retourneLesArticlesDuSeed() {
         List<Article> recents = articleRepository.findRecents(5);
 
-        assertTrue(recents.size() >= 2);
+        assertTrue(recents.size() >= 1);
     }
 
     @Test

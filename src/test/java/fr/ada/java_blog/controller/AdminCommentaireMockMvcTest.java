@@ -2,6 +2,7 @@ package fr.ada.java_blog.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.ada.java_blog.testutil.JwtTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +34,7 @@ class AdminCommentaireMockMvcTest {
 
     @BeforeEach
     void loginAndGetToken() throws Exception {
-        String body = """
-                {"mail":"alice@example.com","mdp":"demo1234"}
-                """;
-
-        MvcResult result = mockMvc.perform(post("/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(body))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        JsonNode json = objectMapper.readTree(result.getResponse().getContentAsString());
-        bearerToken = json.get("token").asText();
+        bearerToken = JwtTestHelper.loginAndGetToken(mockMvc, objectMapper);
     }
 
     @Test
@@ -60,6 +50,7 @@ class AdminCommentaireMockMvcTest {
                 {"contenu":"Temporaire","userId":1}
                 """;
         MvcResult created = mockMvc.perform(post("/articles/1/commentaires")
+                .header("Authorization", "Bearer " + bearerToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createBody))
                 .andExpect(status().isCreated())

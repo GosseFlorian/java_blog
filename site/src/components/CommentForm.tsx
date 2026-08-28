@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type SubmitEvent } from "react";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 
@@ -18,7 +18,7 @@ function CommentForm({ onSubmit, isSubmitting, error }: CommentFormProps) {
   const [success, setSuccess] = useState(false);
   const pseudo = useAuthStore((state) => state.pseudo);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setSuccess(false);
 

@@ -2,10 +2,8 @@
  * articles.ts — appels HTTP vers l'API Spring Boot.
  */
 
-import { getAuthHeaders } from "./auth.ts";
-import type { Article, ArticleCategory } from "../data/articleSample.ts";
-
-export const API_URL = "http://localhost:8080";
+import { API_URL, getAuthHeaders, adminJsonHeaders } from "./client.ts";
+import type { Article, ArticleCategory } from "../types/article.ts";
 
 export interface CreateArticlePayload {
   titre: string;
@@ -17,14 +15,6 @@ export interface UpdateArticlePayload {
   titre: string;
   contenu: string;
   publie: boolean;
-}
-
-/** En-têtes JSON + Authorization pour /admin */
-function adminJsonHeaders(): Record<string, string> {
-  return {
-    "Content-Type": "application/json",
-    ...getAuthHeaders(),
-  };
 }
 
 /**

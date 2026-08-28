@@ -2,20 +2,9 @@
  * articlesSample — articles fictifs pour tester les composants SANS API.
  * Même forme que le JSON renvoyé par GET /articles (ArticleResponse côté Java).
  */
-export interface ArticleCategory {
-  id: number;
-  nom: string;
-  description: string;
-}
+import type { Article, ArticleCategory } from "../types/article.ts";
 
-export interface Article {
-  id: number;
-  titre: string;
-  contenu: string;
-  publie: boolean;
-  date: string;
-  categories?: ArticleCategory[];
-}
+export type { Article, ArticleCategory };
 
 export const articlesSample: Article[] = [
   {

@@ -1,8 +1,8 @@
-import type { Article } from "../data/articleSample.ts";
+import type { Article } from "../types/article.ts";
 import {
   excerpt,
   formatArticleDate,
-} from "../utils/articleDisplay.ts";
+} from "../utils/formatUtils.ts";
 import CategoryTags from "./CategoryTags.tsx";
 
 interface ArticleCardProps {
@@ -17,7 +17,7 @@ function ArticleCard({ article, onEdit, onDelete, onView }: ArticleCardProps) {
   const statutLabel = publie ? "Publié" : "Brouillon";
 
   return (
-    <figure className="article-card">
+    <article className="article-card">
       <h2>{titre}</h2>
       <CategoryTags categories={categories} />
       <blockquote className="article-excerpt">
@@ -38,7 +38,7 @@ function ArticleCard({ article, onEdit, onDelete, onView }: ArticleCardProps) {
           Supprimer
         </button>
       </div>
-    </figure>
+    </article>
   );
 }
 

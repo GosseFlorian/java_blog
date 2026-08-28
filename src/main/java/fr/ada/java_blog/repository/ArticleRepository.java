@@ -69,6 +69,18 @@ public class ArticleRepository {
                 ROW_MAPPER);
     }
 
+    public Optional<Article> findPublishedById(int id) {
+        List<Article> articles = jdbcTemplate.query(
+                """
+                        SELECT id, titre, contenu, statut, date, "update", user_id
+                        FROM articles
+                        WHERE id = ? AND statut = true
+                        """,
+                ROW_MAPPER,
+                id);
+        return articles.stream().findFirst();
+    }
+
     public Optional<Article> findById(int id) {
         List<Article> articles = jdbcTemplate.query(
                 """

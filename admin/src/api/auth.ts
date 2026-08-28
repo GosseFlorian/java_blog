@@ -2,7 +2,7 @@
  * auth.ts — login, logout, stockage du JWT (partie 05).
  */
 
-import { API_URL } from "./articles.ts";
+import { API_URL, getAuthHeaders } from "./client.ts";
 import { clearUserId, setUserId } from "./userId.ts";
 
 const TOKEN_KEY = "java_blog_token";
@@ -13,6 +13,7 @@ export function getToken(): string | null {
 }
 
 export { getUserId } from "./userId.ts";
+export { getAuthHeaders };
 
 export function getPseudo(): string | null {
   return localStorage.getItem(PSEUDO_KEY);
@@ -21,17 +22,6 @@ export function getPseudo(): string | null {
 export function isLoggedIn(): boolean {
   const token = getToken();
   return token != null && token.length > 0;
-}
-
-/**
- * En-têtes Authorization pour les routes /admin.
- */
-export function getAuthHeaders(): Record<string, string> {
-  const token = getToken();
-  if (!token) {
-    return {};
-  }
-  return { Authorization: `Bearer ${token}` };
 }
 
 export interface LoginCredentials {
