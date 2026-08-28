@@ -1,33 +1,36 @@
 import type { Article } from "../data/articleSample.ts";
+import {
+  excerpt,
+  formatArticleDate,
+} from "../utils/articleDisplay.ts";
+import CategoryTags from "./CategoryTags.tsx";
 
-/**
- * ArticleCard — carte d'un article (affichage + actions).
- * Props :
- *   - article : { id, titre, contenu, publie, date }
- *   - onEdit : fonction(id) — appelée au clic « Modifier »
- *   - onDelete : fonction(id) — appelée au clic « Supprimer »
- */
 interface ArticleCardProps {
   article: Article;
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
+  onView: (id: number) => void;
 }
 
-function ArticleCard({ article, onEdit, onDelete }: ArticleCardProps) {
-  // On extrait les champs pour la lisibilité (équivalent article.titre, etc.)
-  const { id, titre, contenu, publie, date } = article;
-
-  // Texte affiché selon le booléen publie (comme en Java : true / false)
+function ArticleCard({ article, onEdit, onDelete, onView }: ArticleCardProps) {
+  const { id, titre, contenu, publie, date, categories } = article;
   const statutLabel = publie ? "Publié" : "Brouillon";
 
   return (
-    <article className="article-card">
+    <figure className="article-card">
       <h2>{titre}</h2>
-      <p className="article-meta">
-        #{id} — {statutLabel} — {date}
+      <CategoryTags categories={categories} />
+      <blockquote className="article-excerpt">
+        <p>{excerpt(contenu)}</p>
+      </blockquote>
+      <p className="article-date">
+        Posté le {formatArticleDate(date)}{" "}
+        <span className="article-statut">— {statutLabel}</span>
       </p>
-      <p className="article-contenu">{contenu}</p>
       <div className="article-actions">
+        <button type="button" onClick={() => onView(id)}>
+          Voir l'article
+        </button>
         <button type="button" onClick={() => onEdit(id)}>
           Modifier
         </button>
@@ -35,7 +38,7 @@ function ArticleCard({ article, onEdit, onDelete }: ArticleCardProps) {
           Supprimer
         </button>
       </div>
-    </article>
+    </figure>
   );
 }
 

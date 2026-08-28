@@ -1,35 +1,27 @@
 import { Link } from "react-router-dom";
 import type { Article } from "../api/articles";
+import { excerpt, formatArticleDate } from "../utils/articleDisplay";
+import CategoryTags from "./CategoryTags";
 
 interface ArticleCardProps {
   article: Article;
 }
 
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString("fr-FR", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
-}
-
-function excerpt(text: string, length = 180): string {
-  if (text.length <= length) return text;
-  return `${text.slice(0, length).trimEnd()}…`;
-}
-
 function ArticleCard({ article }: ArticleCardProps) {
   return (
-    <article className="article-card">
-      <h2>
-        <Link to={`/articles/${article.id}`}>{article.titre}</Link>
-      </h2>
-      <p className="article-date">{formatDate(article.date)}</p>
-      <p className="article-excerpt">{excerpt(article.contenu)}</p>
-      <Link to={`/articles/${article.id}`} className="article-link">
-        Lire la suite →
-      </Link>
-    </article>
+    <figure className="article-card">
+      <h2>{article.titre}</h2>
+      <CategoryTags categories={article.categories} />
+      <blockquote className="article-excerpt">
+        <p>{excerpt(article.contenu)}</p>
+      </blockquote>
+      <p className="article-date">
+        Posté le {formatArticleDate(article.date)}{" "}
+        <Link to={`/articles/${article.id}`} className="article-link">
+          lire la suite ➧
+        </Link>
+      </p>
+    </figure>
   );
 }
 

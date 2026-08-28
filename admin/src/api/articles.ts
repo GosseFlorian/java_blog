@@ -3,7 +3,7 @@
  */
 
 import { getAuthHeaders } from "./auth.ts";
-import type { Article } from "../data/articleSample.ts";
+import type { Article, ArticleCategory } from "../data/articleSample.ts";
 
 export const API_URL = "http://localhost:8080";
 
@@ -25,6 +25,39 @@ function adminJsonHeaders(): Record<string, string> {
     "Content-Type": "application/json",
     ...getAuthHeaders(),
   };
+}
+
+/**
+ * Récupère tous les articles (GET admin).
+ */
+export async function fetchAllArticles(): Promise<Article[]> {
+  const response = await fetch(`${API_URL}/admin/articles`, {
+    headers: getAuthHeaders(),
+  });
+
+  if (response.status === 401) {
+    throw new Error("Session expirée — reconnecte-toi.");
+  }
+  if (!response.ok) {
+    throw new Error(`Erreur HTTP ${response.status}`);
+  }
+
+  return response.json();
+}
+
+export async function fetchArticleById(id: number): Promise<Article> {
+  const response = await fetch(`${API_URL}/admin/articles/${id}`, {
+    headers: getAuthHeaders(),
+  });
+
+  if (response.status === 401) {
+    throw new Error("Session expirée — reconnecte-toi.");
+  }
+  if (!response.ok) {
+    throw new Error(`Erreur HTTP ${response.status}`);
+  }
+
+  return response.json();
 }
 
 /**
@@ -77,6 +110,56 @@ export async function updateArticle(
   }
 
   return response.json();
+}
+
+export async function fetchArticleCategories(
+  id: number,
+): Promise<ArticleCategory[]> {
+  const response = await fetch(`${API_URL}/admin/articles/${id}/categories`, {
+    headers: getAuthHeaders(),
+  });
+
+  if (response.status === 401) {
+    throw new Error("Session expirée — reconnecte-toi.");
+  }
+  if (!response.ok) {
+    throw new Error(`Erreur HTTP ${response.status}`);
+  }
+
+  return response.json();
+}
+
+export async function updateArticleCategories(
+  id: number,
+  categorieIds: number[],
+): Promise<void> {
+  const response = await fetch(`${API_URL}/admin/articles/${id}/categories`, {
+    method: "PUT",
+    headers: adminJsonHeaders(),
+    body: JSON.stringify({ categorieIds }),
+  });
+
+  if (response.status === 401) {
+    throw new Error("Session expirée — reconnecte-toi.");
+  }
+  if (!response.ok) {
+    throw new Error(`Erreur HTTP ${response.status} lors de la mise à jour des catégories`);
+  }
+}
+
+export async function enrichArticlesWithCategories(
+  articles: Article[],
+): Promise<Article[]> {
+  return Promise.all(
+    articles.map(async (article) => {
+      try {
+        const categories = await fetchArticleCategories(article.id);
+        return { ...article, categories };
+      } catch {
+        return { ...article, categories: [] };
+      }
+    }),
+  );
 }
 
 export async function deleteArticle(id: number): Promise<void> {

@@ -1,14 +1,11 @@
 import { API_URL } from "./articles";
 import { getToken } from "./auth";
 
-/**
- * Correspond au DTO CommentaireResponse renvoyé par l'API
- * (fr.ada.java_blog.dto.CommentaireResponse : id, contenu, userId, date).
- */
 export interface Commentaire {
   id: number;
   contenu: string;
   userId: number;
+  pseudo: string | null;
   date: string;
 }
 
@@ -17,9 +14,17 @@ export interface CommentairePayload {
   userId: number;
 }
 
-/**
- * GET /articles/{articleId}/commentaires — public, pas d'auth requise.
- */
+function authJsonHeaders(): Record<string, string> {
+  const token = getToken();
+  if (!token) {
+    return { "Content-Type": "application/json" };
+  }
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+}
+
 export async function fetchComments(articleId: number): Promise<Commentaire[]> {
   const res = await fetch(`${API_URL}/articles/${articleId}/commentaires`);
   if (!res.ok) {
@@ -28,11 +33,6 @@ export async function fetchComments(articleId: number): Promise<Commentaire[]> {
   return res.json();
 }
 
-/**
- * POST /articles/{articleId}/commentaires — nécessite désormais d'être
- * connecté : l'API vérifie que le userId envoyé correspond au token JWT
- * fourni (403 sinon). Le header Authorization est donc obligatoire ici.
- */
 export async function createComment(
   articleId: number,
   payload: CommentairePayload,
@@ -45,10 +45,7 @@ export async function createComment(
 
   const res = await fetch(`${API_URL}/articles/${articleId}/commentaires`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
+    headers: authJsonHeaders(),
     body: JSON.stringify(payload),
   });
 
@@ -63,4 +60,56 @@ export async function createComment(
   }
 
   return res.json();
+}
+
+export async function updateComment(
+  id: number,
+  contenu: string,
+): Promise<Commentaire> {
+  const token = getToken();
+
+  if (!token) {
+    throw new Error("Connecte-toi pour modifier ton commentaire.");
+  }
+
+  const res = await fetch(`${API_URL}/commentaires/${id}`, {
+    method: "PATCH",
+    headers: authJsonHeaders(),
+    body: JSON.stringify({ contenu }),
+  });
+
+  if (res.status === 401) {
+    throw new Error("Session expirée — reconnecte-toi.");
+  }
+  if (res.status === 403) {
+    throw new Error("Tu ne peux modifier que tes propres commentaires.");
+  }
+  if (!res.ok) {
+    throw new Error("Erreur lors de la modification du commentaire.");
+  }
+
+  return res.json();
+}
+
+export async function deleteComment(id: number): Promise<void> {
+  const token = getToken();
+
+  if (!token) {
+    throw new Error("Connecte-toi pour supprimer ton commentaire.");
+  }
+
+  const res = await fetch(`${API_URL}/commentaires/${id}`, {
+    method: "DELETE",
+    headers: authJsonHeaders(),
+  });
+
+  if (res.status === 401) {
+    throw new Error("Session expirée — reconnecte-toi.");
+  }
+  if (res.status === 403) {
+    throw new Error("Tu ne peux supprimer que tes propres commentaires.");
+  }
+  if (!res.ok) {
+    throw new Error("Erreur lors de la suppression du commentaire.");
+  }
 }

@@ -1,20 +1,14 @@
 import ArticleCard from "./ArticleCard.tsx";
 import type { Article } from "../data/articleSample.ts";
 
-/**
- * ArticleList — liste de cartes articles.
- * Props :
- *   - articles : tableau d'objets article
- *   - onEdit, onDelete : callbacks transmis à chaque ArticleCard
- */
 interface ArticleListProps {
   articles: Article[];
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
+  onView: (id: number) => void;
 }
 
-function ArticleList({ articles, onEdit, onDelete }: ArticleListProps) {
-  // Cas limite : tableau vide — message clair pour l'utilisateur
+function ArticleList({ articles, onEdit, onDelete, onView }: ArticleListProps) {
   if (articles.length === 0) {
     return <p className="empty-list">Aucun article à afficher.</p>;
   }
@@ -27,6 +21,7 @@ function ArticleList({ articles, onEdit, onDelete }: ArticleListProps) {
           article={article}
           onEdit={onEdit}
           onDelete={onDelete}
+          onView={onView}
         />
       ))}
     </section>

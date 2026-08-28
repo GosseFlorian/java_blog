@@ -4,14 +4,8 @@ import { useBlogStore } from "../store/blogStore";
 import { useAuthStore } from "../store/authStore";
 import CommentForm from "../components/CommentForm";
 import CommentList from "../components/CommentList";
-
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString("fr-FR", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
-}
+import CategoryTags from "../components/CategoryTags";
+import { formatArticleDate } from "../utils/articleDisplay";
 
 function ArticlePage() {
   const { id } = useParams<{ id: string }>();
@@ -31,6 +25,12 @@ function ArticlePage() {
   const commentSubmitting = useBlogStore((state) => state.commentSubmitting);
   const commentSubmitError = useBlogStore((state) => state.commentSubmitError);
   const submitComment = useBlogStore((state) => state.submitComment);
+
+  const commentUpdating = useBlogStore((state) => state.commentUpdating);
+  const commentDeleting = useBlogStore((state) => state.commentDeleting);
+  const commentActionError = useBlogStore((state) => state.commentActionError);
+  const updateComment = useBlogStore((state) => state.updateComment);
+  const deleteComment = useBlogStore((state) => state.deleteComment);
 
   const userId = useAuthStore((state) => state.userId);
 
@@ -66,7 +66,8 @@ function ArticlePage() {
 
       <article>
         <h1>{article.titre}</h1>
-        <p className="article-date">{formatDate(article.date)}</p>
+        <CategoryTags categories={article.categories} />
+        <p className="article-date">{formatArticleDate(article.date)}</p>
         <div className="article-contenu">
           {article.contenu.split("\n").map((paragraphe, index) => (
             <p key={index}>{paragraphe}</p>
@@ -81,7 +82,17 @@ function ArticlePage() {
           <p className="loading-message">Chargement des commentaires…</p>
         )}
         {commentsError && <p className="error-message">{commentsError}</p>}
-        {!commentsLoading && !commentsError && <CommentList comments={comments} />}
+        {!commentsLoading && !commentsError && (
+          <CommentList
+            comments={comments}
+            currentUserId={userId}
+            onUpdate={updateComment}
+            onDelete={deleteComment}
+            isUpdating={commentUpdating}
+            isDeleting={commentDeleting}
+            actionError={commentActionError}
+          />
+        )}
 
         <CommentForm
           onSubmit={(contenu) => {

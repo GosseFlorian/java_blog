@@ -61,7 +61,7 @@
 .article-page {
   flex-grow: 1;
   width: 100%;
-  max-width: 760px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 32px;
   text-align: left;
@@ -72,10 +72,44 @@
   }
 }
 
-.home-page h1 {
-  font-size: 40px;
-  margin: 0 0 24px;
-  text-align: left;
+/* ─── Navigation catégories (inspirée coeurdurugby.com/news) ─── */
+
+.category-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.category-nav-link {
+  font: inherit;
+  font-size: 14px;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--text-h);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.category-nav-link:hover {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
+
+.category-nav-link.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.category-nav-loading {
+  font-size: 14px;
+  color: var(--text);
+  align-self: center;
 }
 
 /* ─── Liste d'articles ─── */
@@ -83,42 +117,62 @@
 .article-list {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 32px;
 }
 
 .article-card {
-  padding-bottom: 24px;
+  margin: 0;
+  padding-bottom: 32px;
   border-bottom: 1px solid var(--border);
 }
 
-.article-card h2 {
-  margin: 0 0 4px;
-  text-align: left;
-}
-
-.article-card h2 a {
+.category-tag {
+  font: inherit;
+  font-size: 13px;
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
   color: var(--text-h);
-  text-decoration: none;
 }
 
-.article-card h2 a:hover {
-  color: var(--accent);
+.category-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 12px;
+}
+
+.article-card h2 {
+  margin: 0 0 8px;
+  text-align: left;
+  font-size: 22px;
+  line-height: 1.25;
+}
+
+.article-excerpt {
+  margin: 0 0 12px;
+  padding: 0 0 0 16px;
+  border-left: 3px solid var(--border);
+  color: var(--text);
+  font-style: normal;
+}
+
+.article-excerpt p {
+  margin: 0;
+  line-height: 1.55;
 }
 
 .article-date {
   font-size: 14px;
   color: var(--text);
-  margin-bottom: 8px;
-}
-
-.article-excerpt {
-  margin-bottom: 8px;
 }
 
 .article-link {
   color: var(--accent);
-  font-size: 15px;
+  font-size: 14px;
   text-decoration: none;
+  margin-left: 4px;
 }
 
 .article-link:hover {
@@ -155,7 +209,11 @@
 .article-page article h1 {
   font-size: 36px;
   text-align: left;
-  margin: 0 0 4px;
+  margin: 0 0 8px;
+}
+
+.article-page .category-tags {
+  margin-bottom: 8px;
 }
 
 .article-page .article-contenu {
@@ -204,6 +262,47 @@
 
 .comment-contenu {
   color: var(--text-h);
+}
+
+.comment-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.comment-actions button {
+  font: inherit;
+  font-size: 14px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.comment-actions button:hover {
+  text-decoration: underline;
+}
+
+.comment-edit-form {
+  margin-top: 8px;
+}
+
+.comment-form-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.comment-form-actions button {
+  align-self: auto;
+  font-size: 14px;
+  padding: 6px 14px;
+}
+
+.comment-form-actions button[type="button"] {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text);
 }
 
 .comment-form {

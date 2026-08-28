@@ -3,6 +3,7 @@
  */
 
 import { API_URL } from "./articles.ts";
+import { clearUserId, setUserId } from "./userId.ts";
 
 const TOKEN_KEY = "java_blog_token";
 const PSEUDO_KEY = "java_blog_pseudo";
@@ -10,6 +11,8 @@ const PSEUDO_KEY = "java_blog_pseudo";
 export function getToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
 }
+
+export { getUserId } from "./userId.ts";
 
 export function getPseudo(): string | null {
   return localStorage.getItem(PSEUDO_KEY);
@@ -62,6 +65,7 @@ export async function login(
 
   localStorage.setItem(TOKEN_KEY, data.token);
   localStorage.setItem(PSEUDO_KEY, data.pseudo);
+  setUserId(data.userId);
 
   return data;
 }
@@ -70,4 +74,5 @@ export async function login(
 export function logout(): void {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(PSEUDO_KEY);
+  clearUserId();
 }
