@@ -15,7 +15,7 @@ interface LoginFormProps {
 }
 
 function LoginForm({ onSubmit, errorMessage, isSubmitting }: LoginFormProps) {
-  const [mail, setMail] = useState("alice@example.com");
+  const [mail, setMail] = useState("");
   const [mdp, setMdp] = useState("");
 
   function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
