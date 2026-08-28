@@ -9,6 +9,7 @@ public class Commentaire {
     private Integer userId;
     private Integer articleId;
     private LocalDateTime date;
+    private String pseudo;
 
     public Commentaire(Integer id, String contenu, Integer userId, Integer articleId, LocalDateTime date) {
         this.id = id;
@@ -56,5 +57,13 @@ public class Commentaire {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public String getPseudo() {
+        return pseudo;
+    }
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
     }
 }

@@ -5,7 +5,9 @@ import fr.ada.java_blog.dto.ArticleCreateRequest;
 import fr.ada.java_blog.dto.ArticleMediaLinkRequest;
 import fr.ada.java_blog.dto.ArticleResponse;
 import fr.ada.java_blog.dto.ArticleUpdateRequest;
+import fr.ada.java_blog.dto.CategorieResponse;
 import fr.ada.java_blog.mapper.ArticleMapper;
+import fr.ada.java_blog.mapper.CategorieMapper;
 import fr.ada.java_blog.model.Article;
 import fr.ada.java_blog.repository.ArticleRepository;
 import fr.ada.java_blog.repository.CategorieRepository;
@@ -109,6 +111,16 @@ public class AdminArticleController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Article introuvable");
         }
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/categories")
+    public List<CategorieResponse> categories(@PathVariable int id) {
+        if (articleRepository.findById(id).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Article introuvable");
+        }
+        return categorieRepository.findByArticleId(id).stream()
+                .map(CategorieMapper::toResponse)
+                .toList();
     }
 
     @PutMapping("/{id}/categories")

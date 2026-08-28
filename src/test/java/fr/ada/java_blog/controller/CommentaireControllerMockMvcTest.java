@@ -29,7 +29,8 @@ class CommentaireControllerMockMvcTest {
         mockMvc.perform(get("/articles/1/commentaires"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(org.hamcrest.Matchers.greaterThanOrEqualTo(1))));
+                .andExpect(jsonPath("$", hasSize(org.hamcrest.Matchers.greaterThanOrEqualTo(1))))
+                .andExpect(jsonPath("$[0].pseudo").value("alice_dev"));
     }
 
     @Test

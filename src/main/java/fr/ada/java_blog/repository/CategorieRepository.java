@@ -61,6 +61,19 @@ public class CategorieRepository {
         return categories.stream().findFirst();
     }
 
+    public List<Categorie> findByArticleId(int articleId) {
+        return jdbcTemplate.query(
+                """
+                        SELECT c.id, c.nom, c.description
+                        FROM catégories c
+                        JOIN articles_categories ac ON ac.categorie_id = c.id
+                        WHERE ac.article_id = ?
+                        ORDER BY c.nom ASC
+                        """,
+                RowMapper,
+                articleId);
+    }
+
     public List<Article> findArticlesPubliesByCategorieId(int categorieId) {
         return jdbcTemplate.query(
                 """

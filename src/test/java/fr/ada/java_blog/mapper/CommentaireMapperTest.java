@@ -20,12 +20,14 @@ class CommentaireMapperTest {
                 2,
                 1,
                 date);
+        commentaire.setPseudo("alice");
 
         CommentaireResponse response = CommentaireMapper.toResponse(commentaire);
 
         assertEquals(10, response.id());
         assertEquals("Bravo !", response.contenu());
         assertEquals(2, response.userId());
+        assertEquals("alice", response.pseudo());
         assertEquals(date, response.date());
     }
 }

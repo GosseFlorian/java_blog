@@ -13,6 +13,7 @@ public final class CommentaireMapper {
                 commentaire.getId(),
                 commentaire.getContenu(),
                 commentaire.getUserId(),
+                commentaire.getPseudo(),
                 commentaire.getDate());
     }
 }

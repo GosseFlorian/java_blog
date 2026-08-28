@@ -6,5 +6,8 @@ INSERT INTO articles (id, titre, contenu, statut, date, "update", user_id) VALUE
 (1, 'Article test CI', 'Contenu pour JUnit', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
 (2, 'Brouillon test', 'Non publié', FALSE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
 
+INSERT INTO commentaires (contenu, user_id, article_id, date) VALUES
+('Commentaire test', 1, 1, CURRENT_TIMESTAMP);
+
 SELECT setval(pg_get_serial_sequence('users', 'id'), (SELECT MAX(id) FROM users));
 SELECT setval(pg_get_serial_sequence('articles', 'id'), (SELECT MAX(id) FROM articles));
