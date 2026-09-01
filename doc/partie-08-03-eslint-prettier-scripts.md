@@ -18,6 +18,7 @@
 
 ## Todo
 
+- [ ] Vérifier que **`make --version`** fonctionne (sinon installer — voir [08-01](partie-08-01-cadrage-exploitation-securite.md))
 - [ ] Installer Prettier + `eslint-config-prettier` dans `admin/` et `site/`
 - [ ] Enrichir les `"scripts"` npm des deux fronts
 - [ ] Créer `.prettierrc` à la racine
@@ -105,6 +106,8 @@ target
 
 ## 3. Makefile — modèle complet
 
+> ⚠️ **Prérequis :** l'outil `make` doit être installé (`make --version`). Sous Windows + Git Bash : `choco install make` ou `scoop install make` — détail dans [README.md](../README.md#installer-make-windows).
+
 **Chemin :** `Makefile` (remplace ou étends celui de la partie 06)
 
 ```makefile
@@ -165,7 +168,7 @@ site:
 	cd site && npm run dev
 ```
 
-> 🪟 **Windows :** utilise **Git Bash** pour `make` et `psql`. Sous PowerShell pur, `make` n'existe pas — installe Make via Chocolatey ou reste en Git Bash.
+> 🪟 **Windows :** Git Bash ne fournit pas `make`. Installe-le **avant** d'utiliser ce Makefile — voir [README](../README.md#installer-make-windows).
 
 > 💡 `db-init` appelle **`psql` directement** — pas de script `.sh` intermédiaire.
 
