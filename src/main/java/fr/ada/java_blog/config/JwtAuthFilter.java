@@ -11,6 +11,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import fr.ada.java_blog.util.LogSanitizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,6 +26,7 @@ import java.util.List;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    private static final Logger log = LoggerFactory.getLogger(JwtAuthFilter.class);
 
     public JwtAuthFilter(JwtService jwtService) {
         this.jwtService = jwtService;
@@ -61,6 +65,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         } catch (Exception ex) {
             // Token invalide ou expiré → on ne met PAS d'authentification
             SecurityContextHolder.clearContext();
+            log.warn("JWT invalide (path={})", LogSanitizer.sanitizePath(request.getRequestURI()));
         }
 
         filterChain.doFilter(request, response);

@@ -11,15 +11,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import fr.ada.java_blog.util.LogSanitizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final RequestAuditFilter requestAuditFilter;
+    private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
 
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter, RequestAuditFilter requestAuditFilter) {
         this.jwtAuthFilter = jwtAuthFilter;
+        this.requestAuditFilter = requestAuditFilter;
     }
 
     @Bean
@@ -55,8 +61,16 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").authenticated()
                         .anyRequest().permitAll())
                 .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint((request, response, authException) -> response
-                                .sendError(HttpServletResponse.SC_UNAUTHORIZED, "Non authentifié")))
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            log.warn(
+                                    "Acces refuse - non authentifie ({} {})",
+                                    request.getMethod(),
+                                    LogSanitizer.sanitizePath(request.getRequestURI()));
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Non authentifie");
+                        }))
+                .addFilterBefore(
+                        requestAuditFilter,
+                        UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(
                         jwtAuthFilter,
                         UsernamePasswordAuthenticationFilter.class);

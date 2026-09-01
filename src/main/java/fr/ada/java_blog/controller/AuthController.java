@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import fr.ada.java_blog.util.LogSanitizer;
 
 @RestController
 @RequestMapping("/auth")
@@ -22,6 +25,7 @@ public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     public AuthController(
             UserRepository userRepository,
@@ -35,12 +39,18 @@ public class AuthController {
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest body) {
         User user = userRepository.findByMail(body.mail())
-                .orElseThrow(() -> unauthorized());
+                // Échec login (user inconnu ou mauvais mot de passe) :
+                .orElseThrow(() -> {
+                    log.warn("Echec login - utilisateur inconnu (mail={})", LogSanitizer.maskEmail(body.mail()));
+                    return unauthorized();
+                });
 
         if (!passwordEncoder.matches(body.mdp(), user.getMdp())) {
+            log.warn("Echec login - mot de passe incorrect (mail={})", LogSanitizer.maskEmail(body.mail()));
             throw unauthorized();
         }
 
+        log.info("Login reussi (userId={}, mail={})", user.getId(), LogSanitizer.maskEmail(body.mail()));
         String token = jwtService.generateToken(user);
         return new LoginResponse(token, user.getPseudo(), user.getId());
     }
@@ -56,13 +66,14 @@ public class AuthController {
         if (userRepository.findByMail(body.mail()).isPresent()) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
-                    "Un compte existe déjà avec cette adresse mail");
+                    "Un compte existe deja avec cette adresse mail");
         }
 
         String hash = passwordEncoder.encode(body.mdp());
         User user = new User(null, body.pseudo(), body.mail(), hash);
         User sauve = userRepository.save(user);
 
+        log.info("Inscription reussie (userId={}, mail={})", sauve.getId(), LogSanitizer.maskEmail(body.mail()));
         String token = jwtService.generateToken(sauve);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
