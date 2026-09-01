@@ -1,6 +1,41 @@
 # Raccourcis DevOps — Blog Java
+.PHONY: help setup env db-init db-test lint format test ci backend admin site
 
-.PHONY: test ci backend frontend-build
+help:
+	@echo "Commandes :"
+	@echo "  make setup     - .env + npm install (admin + site)"
+	@echo "  make env       - cp .env.example .env"
+	@echo "  make db-init   - blog.sql + upgrade BCrypt Alice"
+	@echo "  make db-test   - crée java_blog_test"
+	@echo "  make lint      - ESLint admin + site"
+	@echo "  make format    - Prettier admin + site"
+	@echo "  make test      - ./mvnw test"
+	@echo "  make ci        - tests + build admin + build site"
+	@echo "  make backend   - API port 8080"
+	@echo "  make admin     - Vite port 5173"
+	@echo "  make site      - Vite port 5174"
+
+setup: env
+	cd admin && npm install
+	cd site && npm install
+
+env:
+	cp .env.example .env
+
+db-init:
+	PGPASSWORD=$${POSTGRES_PASSWORD:-postgres} psql -h localhost -U $${POSTGRES_USER:-postgres} -d java_blog -f doc/blog.sql
+	PGPASSWORD=$${POSTGRES_PASSWORD:-postgres} psql -h localhost -U $${POSTGRES_USER:-postgres} -d java_blog -f doc/sql/upgrade-05-01-bcrypt-alice.sql
+
+db-test:
+	PGPASSWORD=$${POSTGRES_PASSWORD:-postgres} psql -h localhost -U $${POSTGRES_USER:-postgres} -d postgres -f doc/sql/upgrade-06-01-create-java-blog-test.sql
+
+lint:
+	cd admin && npm run lint
+	cd site && npm run lint
+
+format:
+	cd admin && npm run format
+	cd site && npm run format
 
 test:
 	./mvnw test
@@ -8,9 +43,13 @@ test:
 ci:
 	./mvnw -B test
 	cd admin && npm ci && npm run build
+	cd site && npm ci && npm run build
 
 backend:
 	./mvnw spring-boot:run
 
-frontend-build:
-	cd admin && npm ci && npm run build
+admin:
+	cd admin && npm run dev
+
+site:
+	cd site && npm run dev
