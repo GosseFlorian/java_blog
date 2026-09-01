@@ -37,7 +37,6 @@ build/
 
 ### Env ###
 .env
-.env.*
 
 ### React admin ###
 admin/node_modules/
