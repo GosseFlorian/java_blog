@@ -13,6 +13,7 @@
 | **05** | Verrou             | Authentification JWT + login React + `/admin` protégé                   |
 | **06** | Usine              | DevOps : tests auto + CI + documentation                                |
 | **07** | TP libre           | Routes restantes + front-office React `site/`                           |
+| **08** | Exploitation       | `.env`, lint, Makefile, logs, OWASP, doc Diátaxis (à toi de coder)      |
 
 > 💡 **Syntaxe partie 03 :** model `Article` = classe + `getTitre()` / `setId()` ; DTO = **records** + `body.titre()`.
 
@@ -303,6 +304,19 @@ Chaque **partie** = **une branche** ; chaque **étape avec code** = **un commit*
 | `partie-07` | [partie-07-01](partie-07-01-enonce-tp-routes.md)           | commits libres (`07 — …`) |
 
 > 💡 Les **cadrages `-01`** créent la branche **sans commit obligatoire**. Chaque support **code** rappelle la branche active et se termine par un commit. **Partie 07** : commits au fil du TP (voir énoncé).
+
+### Partie 08 — `partie-08-…` *(exploitation & sécurité — tu codes)*
+
+| Fichier | Document | Code ? |
+| --- | --- | --- |
+| [partie-08-01-cadrage-exploitation-securite.md](partie-08-01-cadrage-exploitation-securite.md) | Cadrage : npm vs Makefile, plan RNCP | Non |
+| [partie-08-02-variables-environnement.md](partie-08-02-variables-environnement.md) | `.env`, dotenv, Spring config | **Oui (toi)** |
+| [partie-08-03-eslint-prettier-scripts.md](partie-08-03-eslint-prettier-scripts.md) | ESLint, Prettier, scripts npm + Makefile | **Oui (toi)** |
+| [partie-08-04-journalisation-securisee.md](partie-08-04-journalisation-securisee.md) | SLF4J / Logback sans secrets | **Oui (toi)** |
+| [partie-08-05-securite-owasp.md](partie-08-05-securite-owasp.md) | OWASP Top 10 appliqué | **Oui (toi)** |
+| [partie-08-06-documentation-diataxis.md](partie-08-06-documentation-diataxis.md) | `docs/README-exploitation.md`, etc. | **Oui (toi)** |
+
+Branche Git : **`partie-08`**. Doc exploitation cible : `docs/README-<rôle>.md` (pas de sous-dossiers par rôle).
 
 ---
 
