@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import fr.ada.java_blog.util.LogSanitizer;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -37,7 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest body) {
+    public LoginResponse login(@Valid @RequestBody LoginRequest body) {
         User user = userRepository.findByMail(body.mail())
                 // Échec login (user inconnu ou mauvais mot de passe) :
                 .orElseThrow(() -> {
@@ -62,7 +63,7 @@ public class AuthController {
      * l'utilisateur dès la création de son compte.
      */
     @PostMapping("/register")
-    public ResponseEntity<LoginResponse> register(@RequestBody RegisterRequest body) {
+    public ResponseEntity<LoginResponse> register(@Valid @RequestBody RegisterRequest body) {
         if (userRepository.findByMail(body.mail()).isPresent()) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,

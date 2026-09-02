@@ -1,4 +1,4 @@
-package fr.ada.java_blog.testutil;
+package fr.ada.java_blog.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

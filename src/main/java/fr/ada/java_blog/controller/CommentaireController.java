@@ -6,6 +6,9 @@ import fr.ada.java_blog.dto.CommentaireUpdateRequest;
 import fr.ada.java_blog.mapper.CommentaireMapper;
 import fr.ada.java_blog.repository.ArticleRepository;
 import fr.ada.java_blog.repository.CommentaireRepository;
+import jakarta.validation.Valid;
+import fr.ada.java_blog.util.InputSanitizer;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -44,11 +47,12 @@ public class CommentaireController {
     @PostMapping("/articles/{articleId}/commentaires")
     public ResponseEntity<CommentaireResponse> create(
             @PathVariable int articleId,
-            @RequestBody CommentaireCreateRequest body,
+            @Valid @RequestBody CommentaireCreateRequest body,
             Authentication authentication) {
         verifierArticleExiste(articleId);
         verifierUserIdCorrespondAuToken(body.userId(), authentication);
-        var saved = commentaireRepository.save(articleId, body.contenu(), body.userId());
+        String contenu = sanitizeContenu(body.contenu());
+        var saved = commentaireRepository.save(articleId, contenu, body.userId());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(CommentaireMapper.toResponse(saved));
@@ -65,7 +69,7 @@ public class CommentaireController {
     @PatchMapping("/commentaires/{id}")
     public CommentaireResponse update(
             @PathVariable int id,
-            @RequestBody CommentaireUpdateRequest body,
+            @Valid @RequestBody CommentaireUpdateRequest body,
             Authentication authentication) {
         var commentaire = commentaireRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
@@ -73,7 +77,8 @@ public class CommentaireController {
 
         verifierUserIdCorrespondAuToken(commentaire.getUserId(), authentication);
 
-        if (!commentaireRepository.updateById(id, body.contenu())) {
+        String contenu = sanitizeContenu(body.contenu());
+        if (!commentaireRepository.updateById(id, contenu)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Commentaire introuvable");
         }
 
@@ -120,4 +125,10 @@ public class CommentaireController {
         }
     }
 
+    private static String sanitizeContenu(String contenu) {
+        if (InputSanitizer.looksLikeSqlInjection(contenu)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Contenu refusé");
+        }
+        return InputSanitizer.stripDangerousHtml(contenu);
+    }
 }

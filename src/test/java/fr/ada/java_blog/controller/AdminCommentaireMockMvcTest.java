@@ -2,7 +2,9 @@ package fr.ada.java_blog.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.ada.java_blog.testutil.JwtTestHelper;
+
+import fr.ada.java_blog.util.JwtTestHelper;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

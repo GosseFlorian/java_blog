@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import fr.ada.java_blog.util.LogSanitizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +24,13 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final RequestAuditFilter requestAuditFilter;
     private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
+    private final LoginRateLimitFilter loginRateLimitFilter;
 
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter, RequestAuditFilter requestAuditFilter) {
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter, RequestAuditFilter requestAuditFilter,
+            LoginRateLimitFilter loginRateLimitFilter) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.requestAuditFilter = requestAuditFilter;
+        this.loginRateLimitFilter = loginRateLimitFilter;
     }
 
     @Bean
@@ -33,6 +38,13 @@ public class SecurityConfig {
         http
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(csrf -> csrf.disable())
+                .headers(headers -> headers
+                        .contentSecurityPolicy(csp -> csp.policyDirectives(
+                                "default-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'"))
+                        .frameOptions(frame -> frame.deny())
+                        .contentTypeOptions(Customizer.withDefaults())
+                        .referrerPolicy(referrer -> referrer
+                                .policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)))
                 .authorizeHttpRequests(auth -> auth
                         // Preflight CORS (navigateur) — doit rester public
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
@@ -68,9 +80,13 @@ public class SecurityConfig {
                                     LogSanitizer.sanitizePath(request.getRequestURI()));
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Non authentifie");
                         }))
+                // Bloquer l'abus le plus tôt possible
+                .addFilterBefore(loginRateLimitFilter, UsernamePasswordAuthenticationFilter.class)
+                // Logger la requête (y compris les 429)
                 .addFilterBefore(
                         requestAuditFilter,
                         UsernamePasswordAuthenticationFilter.class)
+                // Vérifier le token JWT sur les routes protégées
                 .addFilterBefore(
                         jwtAuthFilter,
                         UsernamePasswordAuthenticationFilter.class);

@@ -38,7 +38,7 @@ class AuthControllerMockMvcTest {
     @Test
     void login_motDePasseIncorrect_retourne401() throws Exception {
         String body = """
-                {"mail":"alice@example.com","mdp":"wrong"}
+                {"mail":"alice@example.com","mdp":"wrongpass"}
                 """;
 
         mockMvc.perform(post("/auth/login")
