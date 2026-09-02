@@ -1,7 +1,6 @@
 package fr.ada.java_blog.model;
 
 public class User {
-
     private Integer id;
     private String pseudo;
     private String mail;
@@ -18,15 +17,31 @@ public class User {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getPseudo() {
         return pseudo;
+    }
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
     }
 
     public String getMail() {
         return mail;
     }
 
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
     public String getMdp() {
         return mdp;
+    }
+
+    public void setMdp(String mdp) {
+        this.mdp = mdp;
     }
 }

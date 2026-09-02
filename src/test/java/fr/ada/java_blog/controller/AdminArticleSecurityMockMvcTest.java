@@ -38,8 +38,8 @@ class AdminArticleSecurityMockMvcTest {
                 """;
 
         MvcResult result = mockMvc.perform(post("/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -54,21 +54,21 @@ class AdminArticleSecurityMockMvcTest {
                 """;
 
         mockMvc.perform(post("/admin/articles")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     void postAdmin_avecToken_retourne201() throws Exception {
         String body = """
-                {"titre":"Via JWT","contenu":"OK","userId":1}
+                {"titre":"Via test","contenu":"Créé en CI","userId":1}
                 """;
 
         mockMvc.perform(post("/admin/articles")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + bearerToken)
-                        .content(body))
+                .header("Authorization", "Bearer " + bearerToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
                 .andExpect(status().isCreated());
     }
 
@@ -78,9 +78,9 @@ class AdminArticleSecurityMockMvcTest {
                 {"titre":"Temp","contenu":"x","userId":1}
                 """;
         MvcResult created = mockMvc.perform(post("/admin/articles")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + bearerToken)
-                        .content(createBody))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + bearerToken)
+                .content(createBody))
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -88,7 +88,7 @@ class AdminArticleSecurityMockMvcTest {
         int id = json.get("id").asInt();
 
         mockMvc.perform(delete("/admin/articles/" + id)
-                        .header("Authorization", "Bearer " + bearerToken))
+                .header("Authorization", "Bearer " + bearerToken))
                 .andExpect(status().isNoContent());
     }
 }

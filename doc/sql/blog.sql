@@ -123,7 +123,6 @@ ALTER TABLE "articles_medias"
     ADD FOREIGN KEY("media_id") REFERENCES "médias"("id")
     ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-
 -- =========================================================
 -- DONNEES DE TEST (SEED)
 -- Toutes les données ci-dessous sont fictives, générées pour
@@ -134,7 +133,7 @@ ALTER TABLE "articles_medias"
 
 -- 10 utilisateurs
 INSERT INTO "users" ("id", "pseudo", "mail", "mdp") VALUES
-(1, 'alice_dev',    'alice@example.com',    'hash_placeholder_1'),
+(1, 'alice_dev',    'alice@example.com',    '$2y$10$dogkYyhsfVKlpjKpyhRUkecSPVCJA3D5yUSvj4L050OGVolNJUuG6'),
 (2, 'bob_martin',   'bob@example.com',      'hash_placeholder_2'),
 (3, 'clara_lyon',   'clara@example.com',    'hash_placeholder_3'),
 (4, 'david_k',      'david@example.com',    'hash_placeholder_4'),
@@ -145,20 +144,20 @@ INSERT INTO "users" ("id", "pseudo", "mail", "mdp") VALUES
 (9, 'ines_m',       'ines@example.com',     'hash_placeholder_9'),
 (10,'julien_v',     'julien@example.com',   'hash_placeholder_10');
 
--- 12 articles répartis entre les users
+-- 12 articles répartis entre les users (contenus de longueurs variées pour tester l'affichage)
 INSERT INTO "articles" ("id", "titre", "contenu", "date", "statut", "update", "user_id") VALUES
-(1,  'Les bases du SQL',                 'Contenu de démonstration sur les fondamentaux du SQL...',            '2026-01-05 10:00:00', TRUE,  '2026-01-05 10:00:00', 1),
-(2,  'Introduction à PostgreSQL',        'Contenu de démonstration sur PostgreSQL...',                          '2026-01-10 09:30:00', TRUE,  '2026-01-11 14:00:00', 1),
-(3,  'Modéliser une base avec Merise',   'Contenu de démonstration sur MCD/MLD...',                             '2026-01-12 11:15:00', TRUE,  '2026-01-12 11:15:00', 2),
-(4,  'JavaScript pour débutants',        'Contenu de démonstration sur les bases JS...',                        '2026-01-15 08:00:00', TRUE,  '2026-01-16 09:00:00', 3),
-(5,  'Comprendre les API REST',          'Contenu de démonstration sur REST...',                                '2026-01-18 13:45:00', FALSE, '2026-01-18 13:45:00', 3),
-(6,  'Spring Boot en pratique',          'Contenu de démonstration sur Spring Boot...',                         '2026-01-20 10:20:00', TRUE,  '2026-01-21 10:20:00', 4),
-(7,  'Le rugby et les stats sportives',  'Contenu de démonstration éditorial rugby...',                         '2026-02-01 07:30:00', TRUE,  '2026-02-01 07:30:00', 5),
-(8,  'Gérer une copropriété',            'Contenu de démonstration sur la gestion de syndic...',                '2026-02-03 16:00:00', TRUE,  '2026-02-03 16:00:00', 5),
-(9,  'PHP moderne',                      'Contenu de démonstration sur PHP 8...',                               '2026-02-05 12:00:00', TRUE,  '2026-02-06 08:00:00', 6),
-(10, 'Le hi-fi vintage',                 'Contenu de démonstration sur les platines vinyles...',                '2026-02-08 18:00:00', FALSE, '2026-02-08 18:00:00', 7),
-(11, 'Percussions du monde',             'Contenu de démonstration sur l''histoire des percussions...',        '2026-02-10 09:00:00', TRUE,  '2026-02-10 09:00:00', 8),
-(12, 'Automatiser avec n8n',             'Contenu de démonstration sur l''automatisation...',                   '2026-02-12 15:30:00', TRUE,  '2026-02-13 10:00:00', 9);
+(1,  'Les bases du SQL',                 E'Le SELECT permet de lire des données. C''est la requête la plus utilisée en SQL.', '2026-01-05 10:00:00', TRUE,  '2026-01-05 10:00:00', 1),
+(2,  'Introduction à PostgreSQL',        E'PostgreSQL est un SGBDR open source fiable et conforme aux standards SQL.\n\nContrairement à SQLite, il convient à la production : utilisateurs simultanés, gros volumes, transactions. Choix fréquent pour Java, Node.js ou Python.\n\nIci, JDBC et SQL direct, sans ORM.\n\nCommandes utiles : CREATE DATABASE java_blog ; \\dt pour lister les tables ; SELECT * FROM articles WHERE statut = TRUE.\n\nProchaine partie : types, FOREIGN KEY et index.', '2026-01-10 09:30:00', TRUE,  '2026-01-11 14:00:00', 1),
+(3,  'Modéliser une base avec Merise',   E'Merise structure la conception en trois niveaux.\n\n1. MCD : entités, associations, cardinalités.\n2. MLD : tables de jonction pour le N-N.\n3. MPD : implémentation PostgreSQL.\n\nPour un blog : user, article, commentaire, catégorie. articles_categories gère le N-N.\n\nConseil : dessine le MCD avant le CREATE TABLE.', '2026-01-12 11:15:00', TRUE,  '2026-01-12 11:15:00', 2),
+(4,  'JavaScript pour débutants',        E'console.log("Hello World");', '2026-01-15 08:00:00', TRUE,  '2026-01-16 09:00:00', 3),
+(5,  'Comprendre les API REST',          E'Une API REST expose des ressources via HTTP.\n\nGET /articles — liste\nGET /articles/3 — détail\nPOST /admin/articles — créer (admin + JWT)\nPUT /admin/articles/3 — modifier\nDELETE /admin/articles/3 — supprimer\n\nCodes : 200, 201, 204, 401, 404.\n\nExemple : {"titre":"Mon titre","contenu":"Mon texte","userId":1}\n\n[Brouillon — headers Authorization à compléter]', '2026-01-18 13:45:00', FALSE, '2026-01-18 13:45:00', 3),
+(6,  'Spring Boot en pratique',          E'Spring Boot démarre une app Java avec une dépendance Maven et @SpringBootApplication.\n\nCouches :\n- Controller : HTTP → JSON\n- Repository : SQL via JdbcTemplate\n- Model / DTO : données\n\nInjection de dépendances : pas de new ArticleRepository() partout.\n\nMockMvc teste les routes en JUnit sans navigateur.', '2026-01-20 10:20:00', TRUE,  '2026-01-21 10:20:00', 4),
+(7,  'Le rugby et les stats sportives',  E'Le Top 14 2025-2026 : essais, mètres parcourus, tackles — un bilan stats passionnant.', '2026-02-01 07:30:00', TRUE,  '2026-02-01 07:30:00', 5),
+(8,  'Gérer une copropriété',            E'Gérer une copropriété demande organisation et communication. Retour après deux ans dans un immeuble de 24 lots.\n\nLire les PV d''AG : travaux, budget, décisions.\n\nCharges courantes : entretien, électricité, ascenseur. Exceptionnelles : ravalement, chaudière, normes.\n\nLe syndic tient la comptabilité. Médiation avant tribunal en cas de conflit.\n\nAstuces : anticiper les travaux, documenter par écrit, participer aux AG, comparer trois devis.\n\nProchain article : contester une hausse de charges.', '2026-02-03 16:00:00', TRUE,  '2026-02-03 16:00:00', 5),
+(9,  'PHP moderne',                      E'PHP 8 : types stricts, enums, attributs, meilleures perfs. Composer pour les dépendances.\n\nExemple :\ndeclare(strict_types=1);\nfunction saluer(string $nom): string { return "Bonjour $nom"; }\n\nSymfony / Laravel pour les gros projets. Slim ou natif pour un petit CRUD.\n\nPHP démarre vite ; Java scale mieux en entreprise.', '2026-02-05 12:00:00', TRUE,  '2026-02-06 08:00:00', 6),
+(10, 'Le hi-fi vintage',                 E'Ma platine Technics SL-1200 tourne encore parfaitement.', '2026-02-08 18:00:00', FALSE, '2026-02-08 18:00:00', 7),
+(11, 'Percussions du monde',             E'Les percussions traversent les cultures.\n\nDjembé (Afrique) : basse, ton, slap.\nCongas (Cuba) : salsa, latin jazz.\nCajón (Pérou) : flamenco moderne.\nTaiko (Japon) : ensemble kumi-daiko.\n\nPour un dev, le rythme rapproche patterns et boucles de code.\n\nConseil : 15 min par jour plutôt qu''un marathon le week-end.', '2026-02-10 09:00:00', TRUE,  '2026-02-10 09:00:00', 8),
+(12, 'Automatiser avec n8n',             E'n8n automatise des workflows (alternative open source à Zapier).\n\nExemple blog :\n1. Webhook à la publication\n2. HTTP vers Mastodon\n3. Email aux abonnés\n\nInterface visuelle, node Function pour du JS.\n\nInstallation : docker run n8nio/n8n. Pas de secrets en clair dans les exports.', '2026-02-12 15:30:00', TRUE,  '2026-02-13 10:00:00', 9);
 
 -- Commentaires
 INSERT INTO "commentaires" ("id", "contenu", "user_id", "article_id", "date") VALUES

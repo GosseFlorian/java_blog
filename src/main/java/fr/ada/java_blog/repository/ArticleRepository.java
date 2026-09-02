@@ -25,8 +25,7 @@ public class ArticleRepository {
                 rs.getBoolean("statut"),
                 dateTs != null ? dateTs.toLocalDateTime() : null,
                 updateTs != null ? updateTs.toLocalDateTime() : null,
-                userId
-        );
+                userId);
     };
 
     private final JdbcTemplate jdbcTemplate;
@@ -38,72 +37,98 @@ public class ArticleRepository {
     public List<Article> findRecents(int limit) {
         return jdbcTemplate.query(
                 """
-                SELECT id, titre, contenu, statut, date, "update", user_id
-                FROM articles
-                ORDER BY date DESC, id DESC
-                LIMIT ?
-                """,
+                        SELECT id, titre, contenu, statut, date, "update", user_id
+                        FROM articles
+                        WHERE statut = true
+                        ORDER BY date DESC, id DESC
+                        LIMIT ?
+                        """,
                 ROW_MAPPER,
-                limit
-        );
+                limit);
     }
 
-    public int countRecents(int limit) {
+    public int countPublies() {
         Integer count = jdbcTemplate.queryForObject(
                 """
-                SELECT COUNT(*)
-                FROM (
-                    SELECT 1 FROM articles
-                    ORDER BY date DESC, id DESC
-                    LIMIT ?
-                ) AS recents
-                """,
-                Integer.class,
-                limit
-        );
+                        SELECT COUNT(*)
+                        FROM articles
+                        WHERE statut = true
+                        """,
+                Integer.class);
         return count != null ? count : 0;
     }
 
     public List<Article> findPublies() {
         return jdbcTemplate.query(
                 """
-                SELECT id, titre, contenu, statut, date, "update", user_id
-                FROM articles
-                WHERE statut = true
-                ORDER BY date DESC, id DESC
-                """,
-                ROW_MAPPER
-        );
+                        SELECT id, titre, contenu, statut, date, "update", user_id
+                        FROM articles
+                        WHERE statut = true
+                        ORDER BY date DESC, id DESC
+                        """,
+                ROW_MAPPER);
+    }
+
+    public Optional<Article> findPublishedById(int id) {
+        List<Article> articles = jdbcTemplate.query(
+                """
+                        SELECT id, titre, contenu, statut, date, "update", user_id
+                        FROM articles
+                        WHERE id = ? AND statut = true
+                        """,
+                ROW_MAPPER,
+                id);
+        return articles.stream().findFirst();
     }
 
     public Optional<Article> findById(int id) {
         List<Article> articles = jdbcTemplate.query(
                 """
-                SELECT id, titre, contenu, statut, date, "update", user_id
-                FROM articles
-                WHERE id = ?
-                """,
+                        SELECT id, titre, contenu, statut, date, "update", user_id
+                        FROM articles
+                        WHERE id = ?
+                        """,
                 ROW_MAPPER,
-                id
-        );
+                id);
+        return articles.stream().findFirst();
+    }
+
+    public List<Article> findAllAdmin() {
+        return jdbcTemplate.query(
+                """
+                        SELECT id, titre, contenu, statut, date, "update", user_id
+                        FROM articles
+                        ORDER BY date DESC, id DESC
+                        """,
+                ROW_MAPPER);
+    }
+
+    public Optional<Article> findByIdAdmin(int id) {
+        List<Article> articles = jdbcTemplate.query(
+                """
+                        SELECT id, titre, contenu, statut, date, "update", user_id
+                        FROM articles
+                        WHERE id = ?
+                        """,
+                ROW_MAPPER,
+                id);
         return articles.stream().findFirst();
     }
 
     public Article save(Article article) {
         Integer id = jdbcTemplate.queryForObject(
                 """
-                INSERT INTO articles (titre, contenu, date, statut, "update", user_id)
-                VALUES (?, ?, ?, ?, ?, ?)
-                RETURNING id
-                """,
+                        INSERT INTO articles (titre, contenu, date, statut, "update", user_id)
+                        VALUES (?, ?, ?, ?, ?, ?)
+                        RETURNING id
+                        """,
                 Integer.class,
                 article.getTitre(),
                 article.getContenu(),
                 toTimestamp(article.getDate()),
                 article.isPublie(),
                 toTimestamp(article.getUpdate()),
-                article.getUserId()
-        );
+                article.getUserId());
         article.setId(id);
         return article;
     }
@@ -111,16 +136,28 @@ public class ArticleRepository {
     public boolean update(int id, Article article) {
         int rows = jdbcTemplate.update(
                 """
-                UPDATE articles
-                SET titre = ?, contenu = ?, statut = ?, "update" = ?
-                WHERE id = ?
-                """,
+                        UPDATE articles
+                        SET titre = ?, contenu = ?, statut = ?, "update" = ?
+                        WHERE id = ?
+                        """,
                 article.getTitre(),
                 article.getContenu(),
                 article.isPublie(),
                 toTimestamp(article.getUpdate()),
-                id
-        );
+                id);
+        return rows > 0;
+    }
+
+    public boolean updateStatut(int id, boolean publie) {
+        int rows = jdbcTemplate.update(
+                """
+                        UPDATE articles
+                        SET statut = ?, "update" = ?
+                        WHERE id = ?
+                        """,
+                publie,
+                Timestamp.valueOf(LocalDateTime.now()),
+                id);
         return rows > 0;
     }
 
@@ -154,8 +191,7 @@ public class ArticleRepository {
         Boolean exists = jdbcTemplate.queryForObject(
                 "SELECT to_regclass(?) IS NOT NULL",
                 Boolean.class,
-                regclass
-        );
+                regclass);
 
         if (Boolean.TRUE.equals(exists)) {
             jdbcTemplate.update(sql, args);

@@ -19,12 +19,14 @@ public class JwtService {
 
     public JwtService(
             @Value("${jwt.secret}") String secret,
-            @Value("${jwt.expiration-ms}") long expirationMs
-    ) {
+            @Value("${jwt.expiration-ms}") long expirationMs) {
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.expirationMs = expirationMs;
     }
 
+    /**
+     * Crée un JWT pour l'utilisateur connecté.
+     */
     public String generateToken(User user) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + expirationMs);
@@ -39,6 +41,9 @@ public class JwtService {
                 .compact();
     }
 
+    /**
+     * Lit et vérifie un JWT. Lance une exception si invalide ou expiré.
+     */
     public Claims parseToken(String token) {
         return Jwts.parser()
                 .verifyWith(secretKey)

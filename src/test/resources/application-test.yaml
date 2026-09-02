@@ -11,5 +11,9 @@ spring:
       data-locations: classpath:data-test.sql
 
 jwt:
-  secret: "test-jwt-secret-minimum-32-characters"
+  secret: 'test-jwt-secret-minimum-32-characters'
   expiration-ms: 3600000
+
+security:
+  login-rate-limit:
+    enabled: false

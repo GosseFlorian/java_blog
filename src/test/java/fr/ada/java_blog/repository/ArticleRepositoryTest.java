@@ -30,7 +30,7 @@ class ArticleRepositoryTest {
     void findRecents_retourneLesArticlesDuSeed() {
         List<Article> recents = articleRepository.findRecents(5);
 
-        assertTrue(recents.size() >= 2);
+        assertTrue(recents.size() >= 1);
     }
 
     @Test
@@ -50,8 +50,7 @@ class ArticleRepositoryTest {
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
-                1
-        );
+                1);
 
         Article sauve = articleRepository.save(nouveau);
 
@@ -62,8 +61,7 @@ class ArticleRepositoryTest {
     void deleteById_supprimeLaLigne() {
         Article nouveau = articleRepository.save(new Article(
                 null, "A supprimer", "x", false,
-                LocalDateTime.now(), LocalDateTime.now(), 1
-        ));
+                LocalDateTime.now(), LocalDateTime.now(), 1));
 
         boolean supprime = articleRepository.deleteById(nouveau.getId());
 

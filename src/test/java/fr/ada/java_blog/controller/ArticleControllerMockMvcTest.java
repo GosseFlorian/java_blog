@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -26,7 +25,7 @@ class ArticleControllerMockMvcTest {
         mockMvc.perform(get("/articles/recents"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))));
+                .andExpect(jsonPath("$", hasSize(org.hamcrest.Matchers.greaterThanOrEqualTo(1))));
     }
 
     @Test
@@ -40,6 +39,12 @@ class ArticleControllerMockMvcTest {
     @Test
     void getById_inexistant_retourne404() throws Exception {
         mockMvc.perform(get("/articles/99999"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void getById_brouillon_retourne404() throws Exception {
+        mockMvc.perform(get("/articles/2"))
                 .andExpect(status().isNotFound());
     }
 

@@ -27,8 +27,8 @@ class AuthControllerMockMvcTest {
                 """;
 
         mockMvc.perform(post("/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").isNotEmpty())
                 .andExpect(jsonPath("$.pseudo").value("alice_dev"))
@@ -38,12 +38,39 @@ class AuthControllerMockMvcTest {
     @Test
     void login_motDePasseIncorrect_retourne401() throws Exception {
         String body = """
-                {"mail":"alice@example.com","mdp":"wrong"}
+                {"mail":"alice@example.com","mdp":"wrongpass"}
                 """;
 
         mockMvc.perform(post("/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void register_nouveauMail_creeUnCompteEtRetourneToken() throws Exception {
+        String body = """
+                {"pseudo":"nouveau_visiteur","mail":"nouveau@example.com","mdp":"motdepasse"}
+                """;
+
+        mockMvc.perform(post("/auth/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.token").isNotEmpty())
+                .andExpect(jsonPath("$.pseudo").value("nouveau_visiteur"))
+                .andExpect(jsonPath("$.userId").isNotEmpty());
+    }
+
+    @Test
+    void register_mailDejaUtilise_retourne409() throws Exception {
+        String body = """
+                {"pseudo":"alice_bis","mail":"alice@example.com","mdp":"autremdp"}
+                """;
+
+        mockMvc.perform(post("/auth/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
+                .andExpect(status().isConflict());
     }
 }

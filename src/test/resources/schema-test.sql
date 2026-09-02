@@ -1,3 +1,8 @@
+DROP TABLE IF EXISTS articles_categories CASCADE;
+DROP TABLE IF EXISTS articles_medias CASCADE;
+DROP TABLE IF EXISTS commentaires CASCADE;
+DROP TABLE IF EXISTS "médias" CASCADE;
+DROP TABLE IF EXISTS "catégories" CASCADE;
 DROP TABLE IF EXISTS articles CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 
@@ -16,4 +21,25 @@ CREATE TABLE articles (
     date TIMESTAMP,
     "update" TIMESTAMP,
     user_id INT
+);
+
+CREATE TABLE commentaires (
+    id SERIAL PRIMARY KEY,
+    contenu TEXT,
+    user_id INT,
+    article_id INT,
+    date TIMESTAMP
+);
+
+CREATE TABLE "catégories" (
+    id SERIAL PRIMARY KEY,
+    nom VARCHAR(255),
+    description TEXT,
+    article_id INT
+);
+
+CREATE TABLE articles_categories (
+    id SERIAL PRIMARY KEY,
+    article_id INT,
+    categorie_id INT
 );

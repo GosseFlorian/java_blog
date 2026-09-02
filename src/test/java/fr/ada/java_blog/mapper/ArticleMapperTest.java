@@ -22,8 +22,7 @@ class ArticleMapperTest {
                 true,
                 date,
                 date,
-                99
-        );
+                99);
 
         ArticleResponse response = ArticleMapper.toResponse(article);
 
@@ -38,8 +37,7 @@ class ArticleMapperTest {
     void toResponse_neExposePasUserIdNiUpdate() {
         Article article = new Article(
                 1, "A", "B", false,
-                LocalDateTime.now(), LocalDateTime.now(), 5
-        );
+                LocalDateTime.now(), LocalDateTime.now(), 5);
 
         ArticleResponse response = ArticleMapper.toResponse(article);
 

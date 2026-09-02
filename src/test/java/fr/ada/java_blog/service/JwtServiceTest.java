@@ -2,24 +2,25 @@ package fr.ada.java_blog.service;
 
 import fr.ada.java_blog.model.User;
 import io.jsonwebtoken.Claims;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
-@ActiveProfiles("test")
 class JwtServiceTest {
 
-    @Autowired
     private JwtService jwtService;
 
+    @BeforeEach
+    void setUp() {
+        jwtService = new JwtService(
+                "test-jwt-secret-minimum-32-characters",
+                3_600_000L);
+    }
+
     @Test
-    void generateToken_puisParse_retourneLesClaims() {
+    void generateTokenPuisParseToken_retourneUserId() {
         User user = new User(1, "alice_dev", "alice@example.com", "hash");
 
         String token = jwtService.generateToken(user);
@@ -33,11 +34,5 @@ class JwtServiceTest {
     @Test
     void parseToken_invalide_lanceException() {
         assertThrows(Exception.class, () -> jwtService.parseToken("token.bidon"));
-    }
-
-    @Test
-    void generateToken_nonVide() {
-        User user = new User(2, "bob", "bob@example.com", "hash");
-        assertNotNull(jwtService.generateToken(user));
     }
 }

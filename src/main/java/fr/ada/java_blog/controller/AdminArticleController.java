@@ -1,14 +1,23 @@
 package fr.ada.java_blog.controller;
 
+import fr.ada.java_blog.dto.ArticleCategoriesRequest;
 import fr.ada.java_blog.dto.ArticleCreateRequest;
+import fr.ada.java_blog.dto.ArticleMediaLinkRequest;
 import fr.ada.java_blog.dto.ArticleResponse;
 import fr.ada.java_blog.dto.ArticleUpdateRequest;
+import fr.ada.java_blog.dto.CategorieResponse;
 import fr.ada.java_blog.mapper.ArticleMapper;
+import fr.ada.java_blog.mapper.CategorieMapper;
 import fr.ada.java_blog.model.Article;
 import fr.ada.java_blog.repository.ArticleRepository;
+import fr.ada.java_blog.repository.CategorieRepository;
+import fr.ada.java_blog.repository.MediaRepository;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,15 +27,37 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/articles")
 public class AdminArticleController {
-
     private final ArticleRepository articleRepository;
+    private final CategorieRepository categorieRepository;
+    private final MediaRepository mediaRepository;
 
-    public AdminArticleController(ArticleRepository articleRepository) {
+    public AdminArticleController(
+            ArticleRepository articleRepository,
+            CategorieRepository categorieRepository,
+            MediaRepository mediaRepository) {
         this.articleRepository = articleRepository;
+        this.categorieRepository = categorieRepository;
+        this.mediaRepository = mediaRepository;
+    }
+
+    @GetMapping
+    public List<ArticleResponse> all() {
+        return articleRepository.findAllAdmin().stream()
+                .map(ArticleMapper::toResponse)
+                .toList();
+    }
+
+    @GetMapping("/{id}")
+    public ArticleResponse byId(@PathVariable int id) {
+        return articleRepository.findByIdAdmin(id)
+                .map(ArticleMapper::toResponse)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Article introuvable"));
     }
 
     @PostMapping
@@ -34,8 +65,7 @@ public class AdminArticleController {
         LocalDateTime maintenant = LocalDateTime.now();
         Article article = new Article(
                 null, body.titre(), body.contenu(),
-                false, maintenant, maintenant, body.userId()
-        );
+                false, maintenant, maintenant, body.userId());
         Article sauve = articleRepository.save(article);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -59,11 +89,53 @@ public class AdminArticleController {
         return ArticleMapper.toResponse(article);
     }
 
+    @PatchMapping("/{id}/publier")
+    public ResponseEntity<Void> publier(@PathVariable int id) {
+        if (!articleRepository.updateStatut(id, true)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Article introuvable");
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/depublier")
+    public ResponseEntity<Void> depublier(@PathVariable int id) {
+        if (!articleRepository.updateStatut(id, false)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Article introuvable");
+        }
+        return ResponseEntity.noContent().build();
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> supprimer(@PathVariable int id) {
         if (!articleRepository.deleteById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Article introuvable");
         }
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/categories")
+    public List<CategorieResponse> categories(@PathVariable int id) {
+        if (articleRepository.findById(id).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Article introuvable");
+        }
+        return categorieRepository.findByArticleId(id).stream()
+                .map(CategorieMapper::toResponse)
+                .toList();
+    }
+
+    @PutMapping("/{id}/categories")
+    public ResponseEntity<Void> remplacerCategories(
+            @PathVariable int id,
+            @RequestBody ArticleCategoriesRequest body) {
+        categorieRepository.replaceCategoriesArticle(id, body.categorieIds());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/medias")
+    public ResponseEntity<Void> lierMedia(
+            @PathVariable int id,
+            @RequestBody ArticleMediaLinkRequest body) {
+        mediaRepository.lierArticle(id, body.mediaId());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
