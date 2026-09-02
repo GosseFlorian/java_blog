@@ -1,5 +1,5 @@
-import UserCard from "./UserCard.tsx";
-import type { User } from "../api/users.ts";
+import UserCard from './UserCard.tsx';
+import type { User } from '../api/users.ts';
 
 interface UserListProps {
   users: User[];

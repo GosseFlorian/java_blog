@@ -1,4 +1,4 @@
-import { API_URL, getAuthHeaders, adminJsonHeaders } from "./client.ts";
+import { API_URL, getAuthHeaders, adminJsonHeaders } from './client.ts';
 
 export interface Categorie {
   id: number;
@@ -24,17 +24,15 @@ export async function fetchCategories(): Promise<Categorie[]> {
   return response.json();
 }
 
-export async function createCategory(
-  payload: CreateCategoriePayload,
-): Promise<Categorie> {
+export async function createCategory(payload: CreateCategoriePayload): Promise<Categorie> {
   const response = await fetch(`${API_URL}/admin/categories`, {
-    method: "POST",
+    method: 'POST',
     headers: adminJsonHeaders(),
     body: JSON.stringify(payload),
   });
 
   if (response.status === 401) {
-    throw new Error("Session expirée — reconnecte-toi.");
+    throw new Error('Session expirée — reconnecte-toi.');
   }
   if (!response.ok) {
     throw new Error(`Erreur HTTP ${response.status} lors de la création`);
@@ -45,16 +43,16 @@ export async function createCategory(
 
 export async function updateCategory(
   id: number,
-  payload: UpdateCategoriePayload,
+  payload: UpdateCategoriePayload
 ): Promise<Categorie> {
   const response = await fetch(`${API_URL}/admin/categories/${id}`, {
-    method: "PUT",
+    method: 'PUT',
     headers: adminJsonHeaders(),
     body: JSON.stringify(payload),
   });
 
   if (response.status === 401) {
-    throw new Error("Session expirée — reconnecte-toi.");
+    throw new Error('Session expirée — reconnecte-toi.');
   }
   if (!response.ok) {
     throw new Error(`Erreur HTTP ${response.status} lors de la modification`);
@@ -65,12 +63,12 @@ export async function updateCategory(
 
 export async function deleteCategory(id: number): Promise<void> {
   const response = await fetch(`${API_URL}/admin/categories/${id}`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: getAuthHeaders(),
   });
 
   if (response.status === 401) {
-    throw new Error("Session expirée — reconnecte-toi.");
+    throw new Error('Session expirée — reconnecte-toi.');
   }
   if (!response.ok) {
     throw new Error(`Erreur HTTP ${response.status} lors de la suppression`);

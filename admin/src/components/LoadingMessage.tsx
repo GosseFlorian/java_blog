@@ -7,9 +7,7 @@ interface LoadingMessageProps {
   text?: string;
 }
 
-function LoadingMessage({
-  text = "Chargement en cours…",
-}: LoadingMessageProps) {
+function LoadingMessage({ text = 'Chargement en cours…' }: LoadingMessageProps) {
   return <p className="loading-message">{text}</p>;
 }
 
