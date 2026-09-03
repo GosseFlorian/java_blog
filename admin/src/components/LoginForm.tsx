@@ -1,5 +1,5 @@
-import { useState, type SubmitEvent } from "react";
-import type { LoginCredentials } from "../api/auth.ts";
+import { useState, type SubmitEvent } from 'react';
+import type { LoginCredentials } from '../api/auth.ts';
 
 /**
  * LoginForm — connexion admin.
@@ -15,8 +15,8 @@ interface LoginFormProps {
 }
 
 function LoginForm({ onSubmit, errorMessage, isSubmitting }: LoginFormProps) {
-  const [mail, setMail] = useState("");
-  const [mdp, setMdp] = useState("");
+  const [mail, setMail] = useState('');
+  const [mdp, setMdp] = useState('');
 
   function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -27,8 +27,7 @@ function LoginForm({ onSubmit, errorMessage, isSubmitting }: LoginFormProps) {
     <form className="login-form" onSubmit={handleSubmit}>
       <h2>Connexion admin</h2>
       <p className="login-hint">
-        Compte démo : <strong>alice@example.com</strong> /{" "}
-        <strong>demo1234</strong>
+        Compte démo : <strong>alice@example.com</strong> / <strong>demo1234</strong>
       </p>
 
       {errorMessage && (
@@ -60,7 +59,7 @@ function LoginForm({ onSubmit, errorMessage, isSubmitting }: LoginFormProps) {
       </label>
 
       <button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "Connexion…" : "Se connecter"}
+        {isSubmitting ? 'Connexion…' : 'Se connecter'}
       </button>
     </form>
   );

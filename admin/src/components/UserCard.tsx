@@ -1,4 +1,4 @@
-import type { User } from "../api/users.ts";
+import type { User } from '../api/users.ts';
 
 interface UserCardProps {
   user: User;
