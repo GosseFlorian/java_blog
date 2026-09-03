@@ -2,9 +2,9 @@
  * client.ts — URL de base et en-têtes HTTP communs.
  */
 
-const TOKEN_KEY = "java_blog_token";
+const TOKEN_KEY = 'java_blog_token';
 
-export const API_URL = "http://localhost:8080";
+export const API_URL = 'http://localhost:8080';
 
 export function getAuthHeaders(): Record<string, string> {
   const token = localStorage.getItem(TOKEN_KEY);
@@ -16,7 +16,7 @@ export function getAuthHeaders(): Record<string, string> {
 
 export function adminJsonHeaders(): Record<string, string> {
   return {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
     ...getAuthHeaders(),
   };
 }

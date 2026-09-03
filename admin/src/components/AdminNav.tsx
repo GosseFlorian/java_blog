@@ -1,4 +1,4 @@
-export type AdminSection = "articles" | "categories" | "users";
+export type AdminSection = 'articles' | 'categories' | 'users';
 
 interface AdminNavProps {
   active: AdminSection;
@@ -7,9 +7,9 @@ interface AdminNavProps {
 
 function AdminNav({ active, onChange }: AdminNavProps) {
   const links: { id: AdminSection; label: string }[] = [
-    { id: "articles", label: "Articles" },
-    { id: "categories", label: "Catégories" },
-    { id: "users", label: "Utilisateurs" },
+    { id: 'articles', label: 'Articles' },
+    { id: 'categories', label: 'Catégories' },
+    { id: 'users', label: 'Utilisateurs' },
   ];
 
   return (
@@ -18,8 +18,8 @@ function AdminNav({ active, onChange }: AdminNavProps) {
         <button
           key={id}
           type="button"
-          className={active === id ? "admin-nav-link active" : "admin-nav-link"}
-          aria-current={active === id ? "page" : undefined}
+          className={active === id ? 'admin-nav-link active' : 'admin-nav-link'}
+          aria-current={active === id ? 'page' : undefined}
           onClick={() => onChange(id)}
         >
           {label}
