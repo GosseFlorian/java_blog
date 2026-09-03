@@ -1,6 +1,6 @@
-import UserList from "../components/UserList.tsx";
-import LoadingMessage from "../components/LoadingMessage.tsx";
-import { useAdminStore } from "../store/adminStore.ts";
+import UserList from '../components/UserList.tsx';
+import LoadingMessage from '../components/LoadingMessage.tsx';
+import { useAdminStore } from '../store/adminStore.ts';
 
 function UsersPage() {
   const mode = useAdminStore((s) => s.mode);
@@ -11,11 +11,11 @@ function UsersPage() {
 
   return (
     <>
-      {mode === "list" && isLoading && <LoadingMessage />}
+      {mode === 'list' && isLoading && <LoadingMessage />}
 
-      {mode === "list" && error && <p className="error-message">{error}</p>}
+      {mode === 'list' && error && <p className="error-message">{error}</p>}
 
-      {mode === "list" && !isLoading && !error && (
+      {mode === 'list' && !isLoading && !error && (
         <UserList users={users} onDelete={handleDeleteUser} />
       )}
     </>

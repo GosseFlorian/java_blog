@@ -1,10 +1,7 @@
-import { useState, type SubmitEvent } from "react";
-import type { Article } from "../types/article.ts";
-import type { Categorie } from "../api/categories.ts";
-import type {
-  CreateArticlePayload,
-  UpdateArticlePayload,
-} from "../api/articles.ts";
+import { useState, type SubmitEvent } from 'react';
+import type { Article } from '../types/article.ts';
+import type { Categorie } from '../api/categories.ts';
+import type { CreateArticlePayload, UpdateArticlePayload } from '../api/articles.ts';
 
 interface ArticleFormProps {
   initialValues: Article | null;
@@ -13,7 +10,7 @@ interface ArticleFormProps {
   connectedUserId: number;
   onSubmit: (
     payload: CreateArticlePayload | (UpdateArticlePayload & { id: number }),
-    categorieIds?: number[],
+    categorieIds?: number[]
   ) => void;
   onCancel: () => void;
   submitLabel: string;
@@ -32,15 +29,14 @@ function ArticleForm({
 }: ArticleFormProps) {
   const isEdit = initialValues != null;
 
-  const [titre, setTitre] = useState(initialValues?.titre ?? "");
-  const [contenu, setContenu] = useState(initialValues?.contenu ?? "");
+  const [titre, setTitre] = useState(initialValues?.titre ?? '');
+  const [contenu, setContenu] = useState(initialValues?.contenu ?? '');
   const [publie, setPublie] = useState(initialValues?.publie ?? false);
-  const [selectedCategoryIds, setSelectedCategoryIds] =
-    useState<number[]>(initialCategoryIds);
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>(initialCategoryIds);
 
   function toggleCategory(id: number) {
     setSelectedCategoryIds((prev) =>
-      prev.includes(id) ? prev.filter((cId) => cId !== id) : [...prev, id],
+      prev.includes(id) ? prev.filter((cId) => cId !== id) : [...prev, id]
     );
   }
 
@@ -55,7 +51,7 @@ function ArticleForm({
           contenu,
           publie,
         },
-        selectedCategoryIds,
+        selectedCategoryIds
       );
     } else {
       onSubmit(
@@ -64,7 +60,7 @@ function ArticleForm({
           contenu,
           userId: connectedUserId,
         },
-        selectedCategoryIds,
+        selectedCategoryIds
       );
     }
   }
@@ -78,16 +74,11 @@ function ArticleForm({
       )}
 
       <form className="article-form admin-form" onSubmit={handleSubmit}>
-        <h2>{isEdit ? "Modifier l'article" : "Nouvel article"}</h2>
+        <h2>{isEdit ? "Modifier l'article" : 'Nouvel article'}</h2>
 
         <label>
           Titre
-          <input
-            type="text"
-            value={titre}
-            onChange={(e) => setTitre(e.target.value)}
-            required
-          />
+          <input type="text" value={titre} onChange={(e) => setTitre(e.target.value)} required />
         </label>
 
         <label>
@@ -102,11 +93,7 @@ function ArticleForm({
 
         {isEdit && (
           <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={publie}
-              onChange={(e) => setPublie(e.target.checked)}
-            />
+            <input type="checkbox" checked={publie} onChange={(e) => setPublie(e.target.checked)} />
             Publié
           </label>
         )}

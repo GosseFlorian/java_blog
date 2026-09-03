@@ -1,17 +1,10 @@
-import { useState, type SubmitEvent } from "react";
-import type { Categorie } from "../api/categories.ts";
-import type {
-  CreateCategoriePayload,
-  UpdateCategoriePayload,
-} from "../api/categories.ts";
+import { useState, type SubmitEvent } from 'react';
+import type { Categorie } from '../api/categories.ts';
+import type { CreateCategoriePayload, UpdateCategoriePayload } from '../api/categories.ts';
 
 interface CategorieFormProps {
   initialValues: Categorie | null;
-  onSubmit: (
-    payload:
-      | CreateCategoriePayload
-      | (UpdateCategoriePayload & { id: number }),
-  ) => void;
+  onSubmit: (payload: CreateCategoriePayload | (UpdateCategoriePayload & { id: number })) => void;
   onCancel: () => void;
   submitLabel: string;
   showBackButton?: boolean;
@@ -26,10 +19,8 @@ function CategorieForm({
 }: CategorieFormProps) {
   const isEdit = initialValues != null;
 
-  const [nom, setNom] = useState(initialValues?.nom ?? "");
-  const [description, setDescription] = useState(
-    initialValues?.description ?? "",
-  );
+  const [nom, setNom] = useState(initialValues?.nom ?? '');
+  const [description, setDescription] = useState(initialValues?.description ?? '');
 
   function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -50,16 +41,11 @@ function CategorieForm({
       )}
 
       <form className="article-form admin-form" onSubmit={handleSubmit}>
-        <h2>{isEdit ? "Modifier la catégorie" : "Nouvelle catégorie"}</h2>
+        <h2>{isEdit ? 'Modifier la catégorie' : 'Nouvelle catégorie'}</h2>
 
         <label>
           Nom
-          <input
-            type="text"
-            value={nom}
-            onChange={(e) => setNom(e.target.value)}
-            required
-          />
+          <input type="text" value={nom} onChange={(e) => setNom(e.target.value)} required />
         </label>
 
         <label>
