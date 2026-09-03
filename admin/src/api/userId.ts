@@ -1,4 +1,4 @@
-const USER_ID_KEY = "java_blog_user_id";
+const USER_ID_KEY = 'java_blog_user_id';
 
 export function getUserId(): number | null {
   const raw = localStorage.getItem(USER_ID_KEY);

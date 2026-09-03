@@ -7,7 +7,7 @@ on:
   push:
     branches:
       - main
-      - "partie-*"
+      - 'partie-*'
   pull_request:
     branches:
       - main
@@ -21,9 +21,6 @@ jobs:
     name: Backend — Maven test
     runs-on: ubuntu-latest
     timeout-minutes: 15
-
-    env:
-      POSTGRES_PASSWORD: postgres
 
     services:
       postgres:
@@ -51,7 +48,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "21"
+          java-version: '21'
           cache: maven
 
       - name: Install PostgreSQL client
@@ -82,12 +79,15 @@ jobs:
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
           cache: npm
           cache-dependency-path: admin/package-lock.json
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Lint
+        run: npm run lint
 
       - name: Build
         run: npm run build
@@ -110,12 +110,15 @@ jobs:
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
           cache: npm
           cache-dependency-path: site/package-lock.json
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Lint
+        run: npm run lint
 
       - name: Build
         run: npm run build
@@ -128,8 +131,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: README et API.md existent
+      - name: Fichiers doc obligatoires
         run: |
           test -f README.md
-          test -f doc/API.md
-          test -f doc/INDEX.md
+          test -f docs/README-diataxis.md
+          test -f docs/README-exploitation.md
+          test -f docs/README-runbook.md
+          test -f docs/README-api.md
+          test -f docs/README-architecture.md
+          test -f docs/adr/README-adr.md

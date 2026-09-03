@@ -2,8 +2,8 @@
  * articles.ts — appels HTTP vers l'API Spring Boot.
  */
 
-import { API_URL, getAuthHeaders, adminJsonHeaders } from "./client.ts";
-import type { Article, ArticleCategory } from "../types/article.ts";
+import { API_URL, getAuthHeaders, adminJsonHeaders } from './client.ts';
+import type { Article, ArticleCategory } from '../types/article.ts';
 
 export interface CreateArticlePayload {
   titre: string;
@@ -26,7 +26,7 @@ export async function fetchAllArticles(): Promise<Article[]> {
   });
 
   if (response.status === 401) {
-    throw new Error("Session expirée — reconnecte-toi.");
+    throw new Error('Session expirée — reconnecte-toi.');
   }
   if (!response.ok) {
     throw new Error(`Erreur HTTP ${response.status}`);
@@ -41,7 +41,7 @@ export async function fetchArticleById(id: number): Promise<Article> {
   });
 
   if (response.status === 401) {
-    throw new Error("Session expirée — reconnecte-toi.");
+    throw new Error('Session expirée — reconnecte-toi.');
   }
   if (!response.ok) {
     throw new Error(`Erreur HTTP ${response.status}`);
@@ -63,17 +63,15 @@ export async function fetchRecentArticles(): Promise<Article[]> {
   return response.json();
 }
 
-export async function createArticle(
-  payload: CreateArticlePayload,
-): Promise<Article> {
+export async function createArticle(payload: CreateArticlePayload): Promise<Article> {
   const response = await fetch(`${API_URL}/admin/articles`, {
-    method: "POST",
+    method: 'POST',
     headers: adminJsonHeaders(),
     body: JSON.stringify(payload),
   });
 
   if (response.status === 401) {
-    throw new Error("Session expirée — reconnecte-toi.");
+    throw new Error('Session expirée — reconnecte-toi.');
   }
   if (!response.ok) {
     throw new Error(`Erreur HTTP ${response.status} lors de la création`);
@@ -82,18 +80,15 @@ export async function createArticle(
   return response.json();
 }
 
-export async function updateArticle(
-  id: number,
-  payload: UpdateArticlePayload,
-): Promise<Article> {
+export async function updateArticle(id: number, payload: UpdateArticlePayload): Promise<Article> {
   const response = await fetch(`${API_URL}/admin/articles/${id}`, {
-    method: "PUT",
+    method: 'PUT',
     headers: adminJsonHeaders(),
     body: JSON.stringify(payload),
   });
 
   if (response.status === 401) {
-    throw new Error("Session expirée — reconnecte-toi.");
+    throw new Error('Session expirée — reconnecte-toi.');
   }
   if (!response.ok) {
     throw new Error(`Erreur HTTP ${response.status} lors de la modification`);
@@ -102,15 +97,13 @@ export async function updateArticle(
   return response.json();
 }
 
-export async function fetchArticleCategories(
-  id: number,
-): Promise<ArticleCategory[]> {
+export async function fetchArticleCategories(id: number): Promise<ArticleCategory[]> {
   const response = await fetch(`${API_URL}/admin/articles/${id}/categories`, {
     headers: getAuthHeaders(),
   });
 
   if (response.status === 401) {
-    throw new Error("Session expirée — reconnecte-toi.");
+    throw new Error('Session expirée — reconnecte-toi.');
   }
   if (!response.ok) {
     throw new Error(`Erreur HTTP ${response.status}`);
@@ -119,27 +112,22 @@ export async function fetchArticleCategories(
   return response.json();
 }
 
-export async function updateArticleCategories(
-  id: number,
-  categorieIds: number[],
-): Promise<void> {
+export async function updateArticleCategories(id: number, categorieIds: number[]): Promise<void> {
   const response = await fetch(`${API_URL}/admin/articles/${id}/categories`, {
-    method: "PUT",
+    method: 'PUT',
     headers: adminJsonHeaders(),
     body: JSON.stringify({ categorieIds }),
   });
 
   if (response.status === 401) {
-    throw new Error("Session expirée — reconnecte-toi.");
+    throw new Error('Session expirée — reconnecte-toi.');
   }
   if (!response.ok) {
     throw new Error(`Erreur HTTP ${response.status} lors de la mise à jour des catégories`);
   }
 }
 
-export async function enrichArticlesWithCategories(
-  articles: Article[],
-): Promise<Article[]> {
+export async function enrichArticlesWithCategories(articles: Article[]): Promise<Article[]> {
   return Promise.all(
     articles.map(async (article) => {
       try {
@@ -148,18 +136,18 @@ export async function enrichArticlesWithCategories(
       } catch {
         return { ...article, categories: [] };
       }
-    }),
+    })
   );
 }
 
 export async function deleteArticle(id: number): Promise<void> {
   const response = await fetch(`${API_URL}/admin/articles/${id}`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: getAuthHeaders(),
   });
 
   if (response.status === 401) {
-    throw new Error("Session expirée — reconnecte-toi.");
+    throw new Error('Session expirée — reconnecte-toi.');
   }
   if (!response.ok) {
     throw new Error(`Erreur HTTP ${response.status} lors de la suppression`);
