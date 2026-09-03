@@ -1,4 +1,4 @@
-import type { ArticleCategory } from "../types/article.ts";
+import type { ArticleCategory } from '../types/article.ts';
 
 interface CategoryTagsProps {
   categories?: ArticleCategory[];

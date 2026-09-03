@@ -1,4 +1,4 @@
-import type { Categorie } from "../api/categories.ts";
+import type { Categorie } from '../api/categories.ts';
 
 interface CategorieCardProps {
   categorie: Categorie;

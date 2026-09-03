@@ -72,7 +72,7 @@
   padding: 6px 14px;
 }
 
-.comment-form-actions button[type="button"] {
+.comment-form-actions button[type='button'] {
   background: transparent;
   border-color: var(--border);
   color: var(--text);
