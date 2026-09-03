@@ -1,10 +1,10 @@
-import { Link, Route, Routes } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import ArticlePage from "./pages/ArticlePage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import { useAuthStore } from "./store/authStore";
-import "./App.css";
+import { Link, Route, Routes } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import ArticlePage from './pages/ArticlePage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import { useAuthStore } from './store/authStore';
+import './App.css';
 
 function App() {
   const pseudo = useAuthStore((state) => state.pseudo);

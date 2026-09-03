@@ -1,8 +1,8 @@
-import { API_URL } from "./articles";
+import { API_URL } from './articles';
 
-const TOKEN_KEY = "site_token";
-const PSEUDO_KEY = "site_pseudo";
-const USER_ID_KEY = "site_user_id";
+const TOKEN_KEY = 'site_token';
+const PSEUDO_KEY = 'site_pseudo';
+const USER_ID_KEY = 'site_user_id';
 
 /**
  * Correspond au DTO LoginResponse renvoyé par /auth/login et /auth/register
@@ -55,16 +55,16 @@ export function clearAuth(): void {
 /** POST /auth/login — public. */
 export async function login(payload: LoginPayload): Promise<AuthResponse> {
   const res = await fetch(`${API_URL}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
 
   if (res.status === 401) {
-    throw new Error("Email ou mot de passe incorrect.");
+    throw new Error('Email ou mot de passe incorrect.');
   }
   if (!res.ok) {
-    throw new Error("Erreur lors de la connexion.");
+    throw new Error('Erreur lors de la connexion.');
   }
 
   return res.json();
@@ -73,16 +73,16 @@ export async function login(payload: LoginPayload): Promise<AuthResponse> {
 /** POST /auth/register — public, renvoie directement un token (connexion auto). */
 export async function register(payload: RegisterPayload): Promise<AuthResponse> {
   const res = await fetch(`${API_URL}/auth/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
 
   if (res.status === 409) {
-    throw new Error("Un compte existe déjà avec cette adresse mail.");
+    throw new Error('Un compte existe déjà avec cette adresse mail.');
   }
   if (!res.ok) {
-    throw new Error("Erreur lors de la création du compte.");
+    throw new Error('Erreur lors de la création du compte.');
   }
 
   return res.json();

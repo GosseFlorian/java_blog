@@ -1,12 +1,12 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 import {
   clearAuth,
   getStoredAuth,
   login as apiLogin,
   persistAuth,
   register as apiRegister,
-} from "../api/auth";
-import type { LoginPayload, RegisterPayload } from "../api/auth";
+} from '../api/auth';
+import type { LoginPayload, RegisterPayload } from '../api/auth';
 
 /**
  * Store zustand — session du visiteur (token JWT, userId, pseudo).
@@ -52,7 +52,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       });
       return true;
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Erreur de connexion.";
+      const message = err instanceof Error ? err.message : 'Erreur de connexion.';
       set({ authError: message, authSubmitting: false });
       return false;
     }
@@ -71,8 +71,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       });
       return true;
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Erreur lors de la création du compte.";
+      const message = err instanceof Error ? err.message : 'Erreur lors de la création du compte.';
       set({ authError: message, authSubmitting: false });
       return false;
     }
