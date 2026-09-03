@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
-import type { Article } from "../api/articles";
-import { excerpt, formatArticleDate } from "../utils/formatUtils";
-import CategoryTags from "./CategoryTags";
+import { Link } from 'react-router-dom';
+import type { Article } from '../api/articles';
+import { excerpt, formatArticleDate } from '../utils/formatUtils';
+import CategoryTags from './CategoryTags';
 
 interface ArticleCardProps {
   article: Article;
@@ -16,7 +16,7 @@ function ArticleCard({ article }: ArticleCardProps) {
         <p>{excerpt(article.contenu)}</p>
       </blockquote>
       <p className="article-date">
-        Posté le {formatArticleDate(article.date)}{" "}
+        Posté le {formatArticleDate(article.date)}{' '}
         <Link to={`/articles/${article.id}`} className="article-link">
           lire la suite ➧
         </Link>

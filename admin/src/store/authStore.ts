@@ -1,12 +1,12 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 import {
   login as apiLogin,
   logout as apiLogout,
   isLoggedIn,
   getPseudo,
   getUserId,
-} from "../api/auth.ts";
-import type { LoginCredentials } from "../api/auth.ts";
+} from '../api/auth.ts';
+import type { LoginCredentials } from '../api/auth.ts';
 
 interface AuthState {
   pseudo: string | null;
@@ -38,8 +38,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       });
     } catch (err) {
       set({
-        loginError:
-          err instanceof Error ? err.message : "Connexion impossible.",
+        loginError: err instanceof Error ? err.message : 'Connexion impossible.',
         isLoggingIn: false,
       });
     }

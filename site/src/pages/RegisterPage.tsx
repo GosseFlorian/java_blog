@@ -1,12 +1,12 @@
-import { useState, type SubmitEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuthStore } from "../store/authStore";
+import { useState, type SubmitEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../store/authStore';
 
 function RegisterPage() {
-  const [pseudo, setPseudo] = useState("");
-  const [mail, setMail] = useState("");
-  const [mdp, setMdp] = useState("");
-  const [confirmMdp, setConfirmMdp] = useState("");
+  const [pseudo, setPseudo] = useState('');
+  const [mail, setMail] = useState('');
+  const [mdp, setMdp] = useState('');
+  const [confirmMdp, setConfirmMdp] = useState('');
   const [localError, setLocalError] = useState<string | null>(null);
 
   const register = useAuthStore((state) => state.register);
@@ -19,17 +19,17 @@ function RegisterPage() {
     setLocalError(null);
 
     if (mdp !== confirmMdp) {
-      setLocalError("Les mots de passe ne correspondent pas.");
+      setLocalError('Les mots de passe ne correspondent pas.');
       return;
     }
     if (mdp.length < 8) {
-      setLocalError("Le mot de passe doit contenir au moins 8 caractères.");
+      setLocalError('Le mot de passe doit contenir au moins 8 caractères.');
       return;
     }
 
     const ok = await register({ pseudo, mail, mdp });
     if (ok) {
-      navigate("/");
+      navigate('/');
     }
   }
 
@@ -92,7 +92,7 @@ function RegisterPage() {
         </label>
 
         <button type="submit" disabled={submitting}>
-          {submitting ? "Création…" : "Créer mon compte"}
+          {submitting ? 'Création…' : 'Créer mon compte'}
         </button>
       </form>
 
