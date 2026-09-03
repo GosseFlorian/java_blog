@@ -16,9 +16,9 @@
   font-size: 0.9rem;
 }
 
-.article-form input[type="text"],
+.article-form input[type='text'],
 .article-form textarea,
-.article-form input[type="number"] {
+.article-form input[type='number'] {
   padding: 0.4rem;
   font: inherit;
 }
