@@ -1,6 +1,6 @@
-import { useState, type SubmitEvent } from "react";
-import { Link } from "react-router-dom";
-import { useAuthStore } from "../store/authStore";
+import { useState, type SubmitEvent } from 'react';
+import { Link } from 'react-router-dom';
+import { useAuthStore } from '../store/authStore';
 
 interface CommentFormProps {
   onSubmit: (contenu: string) => Promise<boolean>;
@@ -14,7 +14,7 @@ interface CommentFormProps {
  * vers la page de connexion à la place du formulaire.
  */
 function CommentForm({ onSubmit, isSubmitting, error }: CommentFormProps) {
-  const [contenu, setContenu] = useState("");
+  const [contenu, setContenu] = useState('');
   const [success, setSuccess] = useState(false);
   const pseudo = useAuthStore((state) => state.pseudo);
 
@@ -25,7 +25,7 @@ function CommentForm({ onSubmit, isSubmitting, error }: CommentFormProps) {
     const ok = await onSubmit(contenu);
 
     if (ok) {
-      setContenu("");
+      setContenu('');
       setSuccess(true);
     }
   }
@@ -33,8 +33,8 @@ function CommentForm({ onSubmit, isSubmitting, error }: CommentFormProps) {
   if (!pseudo) {
     return (
       <p className="comment-form-locked">
-        <Link to="/connexion">Connecte-toi</Link> pour laisser un commentaire
-        (ou <Link to="/inscription">crée un compte</Link>).
+        <Link to="/connexion">Connecte-toi</Link> pour laisser un commentaire (ou{' '}
+        <Link to="/inscription">crée un compte</Link>).
       </p>
     );
   }
@@ -52,16 +52,11 @@ function CommentForm({ onSubmit, isSubmitting, error }: CommentFormProps) {
 
       <label>
         Votre message
-        <textarea
-          value={contenu}
-          onChange={(e) => setContenu(e.target.value)}
-          rows={4}
-          required
-        />
+        <textarea value={contenu} onChange={(e) => setContenu(e.target.value)} rows={4} required />
       </label>
 
       <button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "Envoi…" : "Publier le commentaire"}
+        {isSubmitting ? 'Envoi…' : 'Publier le commentaire'}
       </button>
     </form>
   );

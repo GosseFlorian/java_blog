@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 import {
   fetchArticle,
   fetchRecentArticles,
@@ -6,15 +6,15 @@ import {
   fetchArticlesByCategory,
   enrichArticlesWithCategories,
   fetchArticleCategories,
-} from "../api/articles";
-import type { Article, Categorie } from "../api/articles";
+} from '../api/articles';
+import type { Article, Categorie } from '../api/articles';
 import {
   createComment,
   fetchComments,
   updateComment as apiUpdateComment,
   deleteComment as apiDeleteComment,
-} from "../api/commentaires";
-import type { Commentaire, CommentairePayload } from "../api/commentaires";
+} from '../api/commentaires';
+import type { Commentaire, CommentairePayload } from '../api/commentaires';
 
 interface BlogState {
   articles: Article[];
@@ -41,10 +41,7 @@ interface BlogState {
 
   commentSubmitting: boolean;
   commentSubmitError: string | null;
-  submitComment: (
-    articleId: number,
-    payload: CommentairePayload,
-  ) => Promise<boolean>;
+  submitComment: (articleId: number, payload: CommentairePayload) => Promise<boolean>;
 
   commentUpdating: boolean;
   commentDeleting: boolean;
@@ -53,9 +50,7 @@ interface BlogState {
   deleteComment: (id: number) => Promise<boolean>;
 }
 
-async function loadArticlesForFilter(
-  selectedCategoryId: number | null,
-): Promise<Article[]> {
+async function loadArticlesForFilter(selectedCategoryId: number | null): Promise<Article[]> {
   if (selectedCategoryId == null) {
     return fetchRecentArticles();
   }
@@ -77,10 +72,7 @@ export const useBlogStore = create<BlogState>((set, get) => ({
       const categories = await fetchCategories();
       set({ categories, categoriesLoading: false });
     } catch (err) {
-      const message =
-        err instanceof Error
-          ? err.message
-          : "Impossible de charger les catégories.";
+      const message = err instanceof Error ? err.message : 'Impossible de charger les catégories.';
       set({ categoriesError: message, categoriesLoading: false });
     }
   },
@@ -93,8 +85,7 @@ export const useBlogStore = create<BlogState>((set, get) => ({
       const enriched = await enrichArticlesWithCategories(articles);
       set({ articles: enriched, articlesLoading: false });
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Impossible de charger les articles.";
+      const message = err instanceof Error ? err.message : 'Impossible de charger les articles.';
       set({ articlesError: message, articlesLoading: false });
     }
   },
@@ -106,8 +97,7 @@ export const useBlogStore = create<BlogState>((set, get) => ({
       const enriched = await enrichArticlesWithCategories(articles);
       set({ articles: enriched, articlesLoading: false });
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Impossible de charger les articles.";
+      const message = err instanceof Error ? err.message : 'Impossible de charger les articles.';
       set({ articlesError: message, articlesLoading: false });
     }
   },
@@ -125,7 +115,7 @@ export const useBlogStore = create<BlogState>((set, get) => ({
       const article = await fetchArticle(id);
       if (!article) {
         set({
-          currentArticleError: "Article introuvable.",
+          currentArticleError: 'Article introuvable.',
           currentArticleLoading: false,
         });
         return;
@@ -136,8 +126,7 @@ export const useBlogStore = create<BlogState>((set, get) => ({
         currentArticleLoading: false,
       });
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Impossible de charger l'article.";
+      const message = err instanceof Error ? err.message : "Impossible de charger l'article.";
       set({ currentArticleError: message, currentArticleLoading: false });
     }
   },
@@ -163,9 +152,7 @@ export const useBlogStore = create<BlogState>((set, get) => ({
       set({ comments, commentsLoading: false });
     } catch (err) {
       const message =
-        err instanceof Error
-          ? err.message
-          : "Impossible de charger les commentaires.";
+        err instanceof Error ? err.message : 'Impossible de charger les commentaires.';
       set({ commentsError: message, commentsLoading: false });
     }
   },
@@ -182,8 +169,7 @@ export const useBlogStore = create<BlogState>((set, get) => ({
       });
       return true;
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Impossible d'envoyer le commentaire.";
+      const message = err instanceof Error ? err.message : "Impossible d'envoyer le commentaire.";
       set({ commentSubmitError: message, commentSubmitting: false });
       return false;
     }
@@ -202,10 +188,7 @@ export const useBlogStore = create<BlogState>((set, get) => ({
       });
       return true;
     } catch (err) {
-      const message =
-        err instanceof Error
-          ? err.message
-          : "Impossible de modifier le commentaire.";
+      const message = err instanceof Error ? err.message : 'Impossible de modifier le commentaire.';
       set({ commentActionError: message, commentUpdating: false });
       return false;
     }
@@ -221,9 +204,7 @@ export const useBlogStore = create<BlogState>((set, get) => ({
       return true;
     } catch (err) {
       const message =
-        err instanceof Error
-          ? err.message
-          : "Impossible de supprimer le commentaire.";
+        err instanceof Error ? err.message : 'Impossible de supprimer le commentaire.';
       set({ commentActionError: message, commentDeleting: false });
       return false;
     }

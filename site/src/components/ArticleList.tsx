@@ -1,5 +1,5 @@
-import ArticleCard from "./ArticleCard";
-import type { Article } from "../api/articles";
+import ArticleCard from './ArticleCard';
+import type { Article } from '../api/articles';
 
 interface ArticleListProps {
   articles: Article[];

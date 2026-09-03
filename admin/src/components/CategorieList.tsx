@@ -1,5 +1,5 @@
-import CategorieCard from "./CategorieCard.tsx";
-import type { Categorie } from "../api/categories.ts";
+import CategorieCard from './CategorieCard.tsx';
+import type { Categorie } from '../api/categories.ts';
 
 interface CategorieListProps {
   categories: Categorie[];

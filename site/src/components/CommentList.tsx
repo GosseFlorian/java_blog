@@ -1,7 +1,7 @@
-import { useState } from "react";
-import type { Commentaire } from "../api/commentaires";
-import CommentEditForm from "./CommentEditForm";
-import { formatArticleDate } from "../utils/formatUtils";
+import { useState } from 'react';
+import type { Commentaire } from '../api/commentaires';
+import CommentEditForm from './CommentEditForm';
+import { formatArticleDate } from '../utils/formatUtils';
 
 interface CommentListProps {
   comments: Commentaire[];
@@ -26,24 +26,20 @@ function CommentList({
 
   if (comments.length === 0) {
     return (
-      <p className="empty-list">
-        Aucun commentaire pour l'instant. Soyez le premier à réagir !
-      </p>
+      <p className="empty-list">Aucun commentaire pour l'instant. Soyez le premier à réagir !</p>
     );
   }
 
   return (
     <ul className="comment-list">
       {comments.map((comment) => {
-        const isOwner =
-          currentUserId != null && comment.userId === currentUserId;
+        const isOwner = currentUserId != null && comment.userId === currentUserId;
         const isEditing = editingId === comment.id;
 
         return (
           <li key={comment.id} className="comment-item">
             <p className="comment-meta">
-              <strong>{comment.pseudo}</strong> —{" "}
-              {formatArticleDate(comment.date)}
+              <strong>{comment.pseudo}</strong> — {formatArticleDate(comment.date)}
             </p>
 
             {isEditing ? (
@@ -65,10 +61,7 @@ function CommentList({
                 <p className="comment-contenu">{comment.contenu}</p>
                 {isOwner && (
                   <div className="comment-actions">
-                    <button
-                      type="button"
-                      onClick={() => setEditingId(comment.id)}
-                    >
+                    <button type="button" onClick={() => setEditingId(comment.id)}>
                       Modifier
                     </button>
                     <button
@@ -76,7 +69,7 @@ function CommentList({
                       onClick={async () => {
                         if (
                           !window.confirm(
-                            "Supprimer ce commentaire ?\n\nCette action est définitive.",
+                            'Supprimer ce commentaire ?\n\nCette action est définitive.'
                           )
                         ) {
                           return;
