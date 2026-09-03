@@ -1,6 +1,6 @@
-import PageHeader from "../components/PageHeader.tsx";
-import LoginForm from "../components/LoginForm.tsx";
-import { useAuthStore } from "../store/authStore.ts";
+import PageHeader from '../components/PageHeader.tsx';
+import LoginForm from '../components/LoginForm.tsx';
+import { useAuthStore } from '../store/authStore.ts';
 
 function LoginPage() {
   const login = useAuthStore((s) => s.login);
@@ -11,11 +11,7 @@ function LoginPage() {
     <div className="app">
       <PageHeader title="Back-office — Blog Java" />
       <main>
-        <LoginForm
-          onSubmit={login}
-          errorMessage={loginError}
-          isSubmitting={isLoggingIn}
-        />
+        <LoginForm onSubmit={login} errorMessage={loginError} isSubmitting={isLoggingIn} />
       </main>
     </div>
   );

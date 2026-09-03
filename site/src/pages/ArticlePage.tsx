@@ -1,11 +1,11 @@
-import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { useBlogStore } from "../store/blogStore";
-import { useAuthStore } from "../store/authStore";
-import CommentForm from "../components/CommentForm";
-import CommentList from "../components/CommentList";
-import CategoryTags from "../components/CategoryTags";
-import { formatArticleDate } from "../utils/formatUtils";
+import { useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useBlogStore } from '../store/blogStore';
+import { useAuthStore } from '../store/authStore';
+import CommentForm from '../components/CommentForm';
+import CommentList from '../components/CommentList';
+import CategoryTags from '../components/CategoryTags';
+import { formatArticleDate } from '../utils/formatUtils';
 
 function ArticlePage() {
   const { id } = useParams<{ id: string }>();
@@ -54,7 +54,7 @@ function ArticlePage() {
   if (articleError || !article) {
     return (
       <main className="article-page">
-        <p className="error-message">{articleError ?? "Article introuvable."}</p>
+        <p className="error-message">{articleError ?? 'Article introuvable.'}</p>
         <Link to="/" className="back-link">
           ← Retour aux articles
         </Link>
@@ -75,7 +75,7 @@ function ArticlePage() {
           {formatArticleDate(article.date)}
         </time>
         <div className="article-contenu">
-          {article.contenu.split("\n").map((paragraphe, index) => (
+          {article.contenu.split('\n').map((paragraphe, index) => (
             <p key={index}>{paragraphe}</p>
           ))}
         </div>
@@ -84,9 +84,7 @@ function ArticlePage() {
       <section className="comments-section">
         <h2>Commentaires</h2>
 
-        {commentsLoading && (
-          <p className="loading-message">Chargement des commentaires…</p>
-        )}
+        {commentsLoading && <p className="loading-message">Chargement des commentaires…</p>}
         {commentsError && <p className="error-message">{commentsError}</p>}
         {!commentsLoading && !commentsError && (
           <CommentList

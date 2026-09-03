@@ -1,10 +1,10 @@
-import { useState, type SubmitEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuthStore } from "../store/authStore";
+import { useState, type SubmitEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../store/authStore';
 
 function LoginPage() {
-  const [mail, setMail] = useState("");
-  const [mdp, setMdp] = useState("");
+  const [mail, setMail] = useState('');
+  const [mdp, setMdp] = useState('');
 
   const login = useAuthStore((state) => state.login);
   const submitting = useAuthStore((state) => state.authSubmitting);
@@ -15,7 +15,7 @@ function LoginPage() {
     event.preventDefault();
     const ok = await login({ mail, mdp });
     if (ok) {
-      navigate("/");
+      navigate('/');
     }
   }
 
@@ -23,8 +23,7 @@ function LoginPage() {
     <main className="auth-page">
       <h1>Connexion</h1>
       <p className="login-hint">
-        Compte démo : <strong>alice@example.com</strong> /{" "}
-        <strong>demo1234</strong>
+        Compte démo : <strong>alice@example.com</strong> / <strong>demo1234</strong>
       </p>
 
       {error && (
@@ -57,7 +56,7 @@ function LoginPage() {
         </label>
 
         <button type="submit" disabled={submitting}>
-          {submitting ? "Connexion…" : "Se connecter"}
+          {submitting ? 'Connexion…' : 'Se connecter'}
         </button>
       </form>
 

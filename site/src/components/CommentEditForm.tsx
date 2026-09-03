@@ -1,4 +1,4 @@
-import { useState, type SubmitEvent } from "react";
+import { useState, type SubmitEvent } from 'react';
 
 interface CommentEditFormProps {
   initialContenu: string;
@@ -32,17 +32,12 @@ function CommentEditForm({
 
       <label>
         Modifier votre message
-        <textarea
-          value={contenu}
-          onChange={(e) => setContenu(e.target.value)}
-          rows={4}
-          required
-        />
+        <textarea value={contenu} onChange={(e) => setContenu(e.target.value)} rows={4} required />
       </label>
 
       <div className="comment-form-actions">
         <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Enregistrement…" : "Enregistrer"}
+          {isSubmitting ? 'Enregistrement…' : 'Enregistrer'}
         </button>
         <button type="button" onClick={onCancel} disabled={isSubmitting}>
           Annuler

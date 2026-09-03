@@ -1,9 +1,6 @@
-import type { Article } from "../types/article.ts";
-import {
-  excerpt,
-  formatArticleDate,
-} from "../utils/formatUtils.ts";
-import CategoryTags from "./CategoryTags.tsx";
+import type { Article } from '../types/article.ts';
+import { excerpt, formatArticleDate } from '../utils/formatUtils.ts';
+import CategoryTags from './CategoryTags.tsx';
 
 interface ArticleCardProps {
   article: Article;
@@ -14,7 +11,7 @@ interface ArticleCardProps {
 
 function ArticleCard({ article, onEdit, onDelete, onView }: ArticleCardProps) {
   const { id, titre, contenu, publie, date, categories } = article;
-  const statutLabel = publie ? "Publié" : "Brouillon";
+  const statutLabel = publie ? 'Publié' : 'Brouillon';
 
   return (
     <article className="article-card">
@@ -24,8 +21,7 @@ function ArticleCard({ article, onEdit, onDelete, onView }: ArticleCardProps) {
         <p>{excerpt(contenu)}</p>
       </blockquote>
       <p className="article-date">
-        Posté le {formatArticleDate(date)}{" "}
-        <span className="article-statut">— {statutLabel}</span>
+        Posté le {formatArticleDate(date)} <span className="article-statut">— {statutLabel}</span>
       </p>
       <div className="article-actions">
         <button type="button" onClick={() => onView(id)}>
