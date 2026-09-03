@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { useBlogStore } from "../store/blogStore";
-import ArticleList from "../components/ArticleList";
+import { useEffect } from 'react';
+import { useBlogStore } from '../store/blogStore';
+import ArticleList from '../components/ArticleList';
 
 function HomePage() {
   const articles = useBlogStore((state) => state.articles);
@@ -12,9 +12,7 @@ function HomePage() {
   const selectedCategoryId = useBlogStore((state) => state.selectedCategoryId);
   const loadArticles = useBlogStore((state) => state.loadArticles);
   const loadCategories = useBlogStore((state) => state.loadCategories);
-  const setSelectedCategoryId = useBlogStore(
-    (state) => state.setSelectedCategoryId,
-  );
+  const setSelectedCategoryId = useBlogStore((state) => state.setSelectedCategoryId);
 
   useEffect(() => {
     loadCategories();
@@ -26,33 +24,23 @@ function HomePage() {
       <nav className="category-nav" aria-label="Filtrer par catégorie">
         <button
           type="button"
-          className={
-            selectedCategoryId == null
-              ? "category-nav-link active"
-              : "category-nav-link"
-          }
-          aria-current={selectedCategoryId == null ? "true" : undefined}
+          className={selectedCategoryId == null ? 'category-nav-link active' : 'category-nav-link'}
+          aria-current={selectedCategoryId == null ? 'true' : undefined}
           onClick={() => setSelectedCategoryId(null)}
         >
           Toutes
         </button>
-        {categoriesLoading && (
-          <span className="category-nav-loading">Chargement…</span>
-        )}
-        {categoriesError && (
-          <span className="error-message">{categoriesError}</span>
-        )}
+        {categoriesLoading && <span className="category-nav-loading">Chargement…</span>}
+        {categoriesError && <span className="error-message">{categoriesError}</span>}
         {!categoriesLoading &&
           categories.map((cat) => (
             <button
               key={cat.id}
               type="button"
               className={
-                selectedCategoryId === cat.id
-                  ? "category-nav-link active"
-                  : "category-nav-link"
+                selectedCategoryId === cat.id ? 'category-nav-link active' : 'category-nav-link'
               }
-              aria-current={selectedCategoryId === cat.id ? "true" : undefined}
+              aria-current={selectedCategoryId === cat.id ? 'true' : undefined}
               onClick={() => setSelectedCategoryId(cat.id)}
             >
               {cat.nom}

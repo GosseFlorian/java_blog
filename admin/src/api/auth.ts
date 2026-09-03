@@ -2,17 +2,17 @@
  * auth.ts — login, logout, stockage du JWT (partie 05).
  */
 
-import { API_URL, getAuthHeaders } from "./client.ts";
-import { clearUserId, setUserId } from "./userId.ts";
+import { API_URL, getAuthHeaders } from './client.ts';
+import { clearUserId, setUserId } from './userId.ts';
 
-const TOKEN_KEY = "java_blog_token";
-const PSEUDO_KEY = "java_blog_pseudo";
+const TOKEN_KEY = 'java_blog_token';
+const PSEUDO_KEY = 'java_blog_pseudo';
 
 export function getToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
 }
 
-export { getUserId } from "./userId.ts";
+export { getUserId } from './userId.ts';
 export { getAuthHeaders };
 
 export function getPseudo(): string | null {
@@ -38,17 +38,15 @@ export interface LoginResponse {
 /**
  * Connexion — POST /auth/login
  */
-export async function login(
-  credentials: LoginCredentials,
-): Promise<LoginResponse> {
+export async function login(credentials: LoginCredentials): Promise<LoginResponse> {
   const response = await fetch(`${API_URL}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(credentials),
   });
 
   if (!response.ok) {
-    throw new Error("Identifiants invalides");
+    throw new Error('Identifiants invalides');
   }
 
   const data: LoginResponse = await response.json();

@@ -1,4 +1,4 @@
-import type { Categorie } from "../api/articles";
+import type { Categorie } from '../api/articles';
 
 interface CategoryTagsProps {
   categories?: Categorie[];

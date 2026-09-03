@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import { useAuthStore } from "../../store/authStore";
+import { describe, it, expect, beforeEach } from 'vitest';
+import { useAuthStore } from '../../store/authStore';
 
-describe("authStore", () => {
+describe('authStore', () => {
   beforeEach(() => {
     localStorage.clear();
     useAuthStore.setState({
@@ -13,12 +13,12 @@ describe("authStore", () => {
     });
   });
 
-  it("isAuthenticated est false par défaut après reset", () => {
+  it('isAuthenticated est false par défaut après reset', () => {
     expect(useAuthStore.getState().isAuthenticated).toBe(false);
   });
 
-  it("clearLoginError efface loginError", () => {
-    useAuthStore.setState({ loginError: "Erreur test" });
+  it('clearLoginError efface loginError', () => {
+    useAuthStore.setState({ loginError: 'Erreur test' });
     useAuthStore.getState().clearLoginError();
     expect(useAuthStore.getState().loginError).toBeNull();
   });

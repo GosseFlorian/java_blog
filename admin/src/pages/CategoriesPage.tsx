@@ -1,7 +1,7 @@
-import CategorieList from "../components/CategorieList.tsx";
-import CategorieForm from "../components/CategorieForm.tsx";
-import LoadingMessage from "../components/LoadingMessage.tsx";
-import { useAdminStore } from "../store/adminStore.ts";
+import CategorieList from '../components/CategorieList.tsx';
+import CategorieForm from '../components/CategorieForm.tsx';
+import LoadingMessage from '../components/LoadingMessage.tsx';
+import { useAdminStore } from '../store/adminStore.ts';
 
 function CategoriesPage() {
   const mode = useAdminStore((s) => s.mode);
@@ -13,16 +13,12 @@ function CategoriesPage() {
   const showList = useAdminStore((s) => s.showList);
   const handleEditCategorie = useAdminStore((s) => s.handleEditCategorie);
   const handleDeleteCategorie = useAdminStore((s) => s.handleDeleteCategorie);
-  const handleCreateCategorieSubmit = useAdminStore(
-    (s) => s.handleCreateCategorieSubmit,
-  );
-  const handleEditCategorieSubmit = useAdminStore(
-    (s) => s.handleEditCategorieSubmit,
-  );
+  const handleCreateCategorieSubmit = useAdminStore((s) => s.handleCreateCategorieSubmit);
+  const handleEditCategorieSubmit = useAdminStore((s) => s.handleEditCategorieSubmit);
 
   return (
     <>
-      {mode === "list" && (
+      {mode === 'list' && (
         <div className="toolbar">
           <button type="button" onClick={showCreate}>
             + Nouvelle catégorie
@@ -30,7 +26,7 @@ function CategoriesPage() {
         </div>
       )}
 
-      {mode === "create" && (
+      {mode === 'create' && (
         <CategorieForm
           key="create-categorie"
           initialValues={null}
@@ -41,7 +37,7 @@ function CategoriesPage() {
         />
       )}
 
-      {mode === "edit" && editingCategorie && (
+      {mode === 'edit' && editingCategorie && (
         <CategorieForm
           key={editingCategorie.id}
           initialValues={editingCategorie}
@@ -52,11 +48,11 @@ function CategoriesPage() {
         />
       )}
 
-      {mode === "list" && isLoading && <LoadingMessage />}
+      {mode === 'list' && isLoading && <LoadingMessage />}
 
-      {mode === "list" && error && <p className="error-message">{error}</p>}
+      {mode === 'list' && error && <p className="error-message">{error}</p>}
 
-      {mode === "list" && !isLoading && !error && (
+      {mode === 'list' && !isLoading && !error && (
         <CategorieList
           categories={categories}
           onEdit={handleEditCategorie}
