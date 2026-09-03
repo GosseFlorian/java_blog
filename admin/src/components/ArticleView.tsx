@@ -1,19 +1,11 @@
-import { useEffect, useState } from "react";
-import {
-  fetchArticleById,
-  fetchArticleCategories,
-} from "../api/articles.ts";
-import type { Article } from "../types/article.ts";
-import {
-  deleteComment,
-  fetchComments,
-} from "../api/commentaires.ts";
-import type { Commentaire } from "../api/commentaires.ts";
-import {
-  formatArticleDate,
-} from "../utils/formatUtils.ts";
-import CategoryTags from "./CategoryTags.tsx";
-import LoadingMessage from "./LoadingMessage.tsx";
+import { useEffect, useState } from 'react';
+import { fetchArticleById, fetchArticleCategories } from '../api/articles.ts';
+import type { Article } from '../types/article.ts';
+import { deleteComment, fetchComments } from '../api/commentaires.ts';
+import type { Commentaire } from '../api/commentaires.ts';
+import { formatArticleDate } from '../utils/formatUtils.ts';
+import CategoryTags from './CategoryTags.tsx';
+import LoadingMessage from './LoadingMessage.tsx';
 
 interface ArticleViewProps {
   articleId: number;
@@ -21,11 +13,7 @@ interface ArticleViewProps {
   onSessionExpired: (message: string) => void;
 }
 
-function ArticleView({
-  articleId,
-  onBack,
-  onSessionExpired,
-}: ArticleViewProps) {
+function ArticleView({ articleId, onBack, onSessionExpired }: ArticleViewProps) {
   const [article, setArticle] = useState<Article | null>(null);
   const [comments, setComments] = useState<Commentaire[]>([]);
   const [loading, setLoading] = useState(true);
@@ -43,8 +31,7 @@ function ArticleView({
       setArticle({ ...articleData, categories });
       setComments(commentsData);
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Impossible de charger l'article.";
+      const message = err instanceof Error ? err.message : "Impossible de charger l'article.";
       onSessionExpired(message);
       setError(message);
     } finally {
@@ -53,14 +40,14 @@ function ArticleView({
   }
 
   useEffect(() => {
+    // Pattern fetch au changement d'articleId — setLoading(true) est voulu ici
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [articleId]);
 
   async function handleDeleteComment(commentId: number) {
-    if (
-      !window.confirm("Supprimer ce commentaire ?\n\nCette action est définitive.")
-    ) {
+    if (!window.confirm('Supprimer ce commentaire ?\n\nCette action est définitive.')) {
       return;
     }
 
@@ -68,8 +55,7 @@ function ArticleView({
       await deleteComment(commentId);
       setComments((prev) => prev.filter((c) => c.id !== commentId));
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Erreur à la suppression.";
+      const message = err instanceof Error ? err.message : 'Erreur à la suppression.';
       onSessionExpired(message);
       setError(message);
     }
@@ -85,12 +71,12 @@ function ArticleView({
         <button type="button" className="back-button" onClick={onBack}>
           ← Retour à la liste
         </button>
-        <p className="error-message">{error ?? "Article introuvable."}</p>
+        <p className="error-message">{error ?? 'Article introuvable.'}</p>
       </>
     );
   }
 
-  const statutLabel = article.publie ? "Publié" : "Brouillon";
+  const statutLabel = article.publie ? 'Publié' : 'Brouillon';
 
   return (
     <div className="article-view">
@@ -102,11 +88,11 @@ function ArticleView({
         <h1>{article.titre}</h1>
         <CategoryTags categories={article.categories} />
         <p className="article-date">
-          Posté le {formatArticleDate(article.date)}{" "}
+          Posté le {formatArticleDate(article.date)}{' '}
           <span className="article-statut">— {statutLabel}</span>
         </p>
         <div className="article-contenu">
-          {article.contenu.split("\n").map((paragraphe, index) => (
+          {article.contenu.split('\n').map((paragraphe, index) => (
             <p key={index}>{paragraphe}</p>
           ))}
         </div>

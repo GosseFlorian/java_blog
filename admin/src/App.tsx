@@ -1,14 +1,14 @@
-import { useEffect } from "react";
-import PageHeader from "./components/PageHeader.tsx";
-import AdminNav from "./components/AdminNav.tsx";
-import FeedbackMessage from "./components/FeedbackMessage.tsx";
-import LoginPage from "./pages/LoginPage.tsx";
-import ArticlesPage from "./pages/ArticlesPage.tsx";
-import CategoriesPage from "./pages/CategoriesPage.tsx";
-import UsersPage from "./pages/UsersPage.tsx";
-import { useAuthStore } from "./store/authStore.ts";
-import { useAdminStore } from "./store/adminStore.ts";
-import "./App.css";
+import { useEffect } from 'react';
+import PageHeader from './components/PageHeader.tsx';
+import AdminNav from './components/AdminNav.tsx';
+import FeedbackMessage from './components/FeedbackMessage.tsx';
+import LoginPage from './pages/LoginPage.tsx';
+import ArticlesPage from './pages/ArticlesPage.tsx';
+import CategoriesPage from './pages/CategoriesPage.tsx';
+import UsersPage from './pages/UsersPage.tsx';
+import { useAuthStore } from './store/authStore.ts';
+import { useAdminStore } from './store/adminStore.ts';
+import './App.css';
 
 function App() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
@@ -38,11 +38,7 @@ function App() {
 
   return (
     <div className="app">
-      <PageHeader
-        title="Back-office — Blog Java"
-        pseudo={pseudo}
-        onLogout={handleLogout}
-      />
+      <PageHeader title="Back-office — Blog Java" pseudo={pseudo} onLogout={handleLogout} />
 
       <AdminNav active={section} onChange={setSection} />
 
@@ -55,9 +51,9 @@ function App() {
           />
         )}
 
-        {section === "articles" && <ArticlesPage />}
-        {section === "categories" && <CategoriesPage />}
-        {section === "users" && <UsersPage />}
+        {section === 'articles' && <ArticlesPage />}
+        {section === 'categories' && <CategoriesPage />}
+        {section === 'users' && <UsersPage />}
       </main>
     </div>
   );

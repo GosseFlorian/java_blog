@@ -1,5 +1,5 @@
-import ArticleCard from "./ArticleCard.tsx";
-import type { Article } from "../types/article.ts";
+import ArticleCard from './ArticleCard.tsx';
+import type { Article } from '../types/article.ts';
 
 interface ArticleListProps {
   articles: Article[];

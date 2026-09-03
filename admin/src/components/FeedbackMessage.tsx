@@ -5,7 +5,7 @@
  *   - message : string — texte affiché
  *   - onClose : () => void — fermer le bandeau (optionnel)
  */
-export type FeedbackType = "success" | "error";
+export type FeedbackType = 'success' | 'error';
 
 interface FeedbackMessageProps {
   type: FeedbackType;
