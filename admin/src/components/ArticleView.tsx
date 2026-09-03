@@ -40,6 +40,8 @@ function ArticleView({ articleId, onBack, onSessionExpired }: ArticleViewProps) 
   }
 
   useEffect(() => {
+    // Pattern fetch au changement d'articleId — setLoading(true) est voulu ici
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [articleId]);
